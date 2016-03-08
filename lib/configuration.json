@@ -1,0 +1,64 @@
+{
+    "software": {
+        "name": "Veeva CLM Builder"
+    },
+    "clm": {
+        "customFields":{
+            "veevaTrackSubsceneField": "custom sales force field for ClickStream tracking"
+        }
+    },
+    "module": {
+        "dependencies": {
+            "custom": [
+                "veeva.swipeSlider.js",
+                "util-key-messages.js",
+                "plugins.js",
+                "main.js"
+            ],
+            "vendor": [
+                "jquery-1.8.3.js",
+                "jquery-ui-1.9.2.custom.min.js",
+                "jquery.ba-bbq.js",
+                "iscroll.js",
+                "clm-library-2.0.js"
+            ],
+            "vendorDeploy": [
+                "zepto.min.js",
+                "zepto.ghostclick.js"
+            ]
+        },
+         "paths": {
+            "src": "",
+            "dest": "dist",
+            "tmp": "build/.tmp",
+            "js": {
+                "scripts": "js/scripts",
+                "standalone": "js/standalone",
+                "vendor": "js/vendor"
+            }
+        },
+        "workflow":{
+            "assemble":{
+                "defaultLayout": "default",
+                "data": {
+                    "title": "",
+                    "product": "",
+                    "version": "",
+                    "presentationPrimary": "global.clm.primary",
+                    "presentationPDFs": "global.clm.assets",
+                    "presentationVideos": "global.clm.assets",
+                    "deploying": "global.deploy.isDeploying",
+                    "root": "/"
+                }
+            }
+        }
+    },
+    "paths": {
+        "src": "app",
+        "dist": "build",
+        "deploy": "deploy",
+        "tmp": "build/.tmp",
+        "pages": "app/templates/pages/**/*.hbs",
+        "layouts": "app/templates/layouts"
+    }
+}

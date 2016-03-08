@@ -1,0 +1,65 @@
+{
+  "name": "veeva",
+  "description": "Veeva CLM generator and workflow",
+  "version": "0.19.0",
+  "bin": {
+    "veeva": "bin/veeva.js"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "main": "./index.js",
+  "repository": "https://github.com/stevebritton/veeva",
+  "bugs": {
+    "url": "https://github.com/stevebritton/veeva/issues"
+  },
+  "keywords": [
+    "veeva",
+    "clm",
+    "gulp",
+    "sass",
+    "assemble",
+    "builder"
+  ],
+  "author": "Steve Britton",
+  "license": "MIT",
+  "dependencies": {
+    "assemble": "^0.9.1",
+    "browser-sync": "^2.8.2",
+    "chalk": "^1.1.1",
+    "del": "^2.2.0",
+    "graceful-fs": "^4.1.3",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^2.0.2",
+    "gulp-concat": "~2.3.4",
+    "gulp-extname": "^0.2.0",
+    "gulp-filter": "^4.0.0",
+    "gulp-flatten": "^0.2.0",
+    "gulp-plumber": "^0.6.4",
+    "gulp-replace": "^0.3.0",
+    "gulp-ruby-sass": "^1.0.5",
+    "gulp-size": "^2.0.0",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.7",
+    "gulp-zip": "^3.0.2",
+    "imagemagick": "^0.1.3",
+    "insight": "^0.7.0",
+    "lodash": "^4.5.1",
+    "minimist": "^1.2.0",
+    "phantom": "^2.0.2",
+    "phantomjs-prebuilt": "^2.1.4",
+    "promise": "^5.0.0",
+    "q": "^1.4.1",
+    "run-sequence": "^1.0.1",
+    "vinyl-ftp": "^0.4.4",
+    "when": "^3.7.7",
+    "yamljs": "^0.2.4"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  },
+  "engines": {
+    "node": "4.3.1",
+    "npm": "2.14.12"
+  }
+}

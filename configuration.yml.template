@@ -1,0 +1,48 @@
+---
+software:
+  name: Veevenflow CLM Builder
+
+clm:
+ ftp:
+  email:
+  host:
+  user:
+  pass:
+  remotePath: /ctlfile
+ product: must-match-salesforce
+ primary:
+  name: primary-clm-id-or-name-v1
+  key_messages:
+  - key_message: home
+    description: Home
+    display_order: 0
+    slides:
+    - slide: home
+      id: 0
+  - key_message: overview
+    description: CLM Overview
+    display_order: 1
+    slides:
+    - slide: Overview
+      id: 2-0
+  - key_message: moa
+    description: MOA
+    display_order: 2
+    slides:
+    - slide: 'MOA Overview'
+      id: 3-0
+    - slide: 'MOA 2'
+      id: 3-1
+    - slide: 'MOA 3'
+      id: 3-2
+  - key_message: resources
+    description: Resources
+    display_order: 2
+  - key_message: references
+    description: References
+    display_order: 3
+ assets:
+  name: hidden-clm-id-or-name-v1
+  key_messages:
+  - key_message: prescribing-information
+  - key_message: patient-brochure
