@@ -1,6 +1,6 @@
 ---
 software:
-  name: Veevenflow CLM Builder
+  name: Veeva CLM Builder
 
 clm:
  ftp:

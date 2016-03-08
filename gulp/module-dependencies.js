@@ -80,7 +80,7 @@ module.exports = function(gulp) {
     gulp.task('veeva-module:js-copy', function() {
 
         if (global.verbose) {
-            utils.log.note('    ⤷ Copying Veevenflow JS dependencies');
+            utils.log.note('    ⤷ Copying Veeva JS dependencies');
         }
 
         // Filter for JS dependencies that should only be added when deploying
@@ -105,7 +105,7 @@ module.exports = function(gulp) {
     });
 
     /**
-     * Veevenflow JS Scripts
+     * Veeva JS Scripts
      * @author Steven Britton
      * @date   2016-02-24
      * @return {function}   Returns Stream
