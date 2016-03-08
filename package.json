@@ -6,7 +6,7 @@
     "veeva": "bin/veeva.js"
   },
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha"
   },
   "main": "./index.js",
   "repository": "https://github.com/stevebritton/veeva",

@@ -194,7 +194,9 @@ var VEEVA = VEEVA || {};
                         veevaGoToSlide(_keyMessage + '.zip', _presentation);
                     });
                 }
-
+                else{
+                    document.location = '../' + _keyMessage + '/' +  _keyMessage + '.html';
+                }
             });
 
 
