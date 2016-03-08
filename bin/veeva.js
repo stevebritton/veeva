@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-var veevenflow = require('../lib/veevenflow'),
+var veeva = require('../lib/veeva'),
     args = [].slice.call(process.argv, 2);
 
 var exitCode = 0,
     isDebug = args.indexOf('--debug') !== -1;
 
-veevenflow.cli(args).then(function() {
+veeva.cli(args).then(function() {
     process.exit(exitCode);
 }).catch(function(err) {
     exitCode = 1;

@@ -1,7 +1,7 @@
 'use strict';
 
 var ___ = require('lodash'),
-    veevenflow = require('./lib/veevenflow'),
+    veeva = require('./lib/veeva'),
     args = [].slice.call(process.argv, 2),
     exitCode = 0,
     isDebug = args.indexOf('--debug') !== -1;
@@ -9,7 +9,7 @@ var ___ = require('lodash'),
 
 module.exports = function(gulp) {
 
-    veevenflow.cli(args).then(function(options) {
+    veeva.cli(args).then(function(options) {
 
 
         if (options) {

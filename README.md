@@ -1,6 +1,10 @@
-# Veevenflow - Veeva CLM Generator & Workflow
-Complete worklfow for building Veeva iRep CLM Presentations
+# Veeva [![NPM version](https://img.shields.io/npm/v/veeva.svg)](https://www.npmjs.com/package/veeva) [![Build Status](https://img.shields.io/travis/veeva/veeva.svg)](https://travis-ci.org/veeva/veeva)
 
+> Veeva is a powerful, extendable and easy to use worklfow for building Veeva iRep CLM Presentations
+
+```
+$ npm install veeva --save
+```
 
 ## Features
 * Define Veeva CLM presentations in one central configuration.yml file
@@ -18,6 +22,7 @@ Complete worklfow for building Veeva iRep CLM Presentations
     * SASS file changes
     * New images added
 
+
 ## Requirements
 * * *
 Install the following prerequisites on your development machine.
@@ -27,21 +32,6 @@ Install the following prerequisites on your development machine.
 * Gulp - You're going to use the [Gulp Task Runner](http://gulpjs.com/)
 * PhantomJS [Download & Install PhantomJS](http://phantomjs.org/download.html)
 
- Installing on **OS-X**
-
-* Xcode command line tools (for [Mavericks](http://adcdownload.apple.com/Developer_Tools/Command_Line_Tools_OS_X_10.10_for_Xcode_7.2/Command_Line_Tools_OS_X_10.10_for_Xcode_7.2.dmg), for [El Capitan](http://adcdownload.apple.com/Developer_Tools/Command_Line_Tools_OS_X_10.11_for_Xcode_7.2/Command_Line_Tools_OS_X_10.11_for_Xcode_7.2.dmg). Requires free Apple Developer ID and sign-in to Apple Developer Center.)
-
-💣 Installing on **Windows**
-
-* Has not been tested on Windows
-
-## Installation
-
-* Install veevenflow Node Module
-
-```
-$ npm install git+ssh://bitbucket.org/stevebritton/veevenflow.git#develop --save
-```
 
 ## Setup
 ***
@@ -54,7 +44,7 @@ $ touch configuration.yml
 
 * Create gulp.js file and add one line of code
 ```
-$ echo "require('veevenflow')(require('gulp'));" | sed > gulp.js
+$ echo "require('veeva')(require('gulp'));" | sed > gulp.js
 ```
 
 ## Help
