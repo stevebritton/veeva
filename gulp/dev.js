@@ -67,7 +67,7 @@ module.exports = function(gulp) {
      * Gulp Task: default
      *
      */
-    gulp.task('default', ['assemble', 'sass:dev', 'veeva-module:js-build', 'veeva-module:js-copy', 'images:dev'], function() {
+    gulp.task('default', ['assemble', 'sass:dev', 'scripts:dev', 'veeva-module:js-build', 'veeva-module:js-copy', 'images:dev'], function() {
 
         //Turn on Watcher - used to disable parts of the build process while developing
         global.isWatching = true;
