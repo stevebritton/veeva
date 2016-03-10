@@ -157,7 +157,7 @@ module.exports = function(gulp) {
 
         // Remove the 'global' and 'sitemap' key Messages from array
         global.keyMessages.map(function(item) {
-            if (item.key_message !== 'global' && item.key_message !== global.clm.product + '-sitemap') {
+            if (item.key_message !== 'global' && item.key_message !== global.clm.product.name + global.clm.product.suffix + 'sitemap') {
                 filerKeyMessages.push({
                     'section': item.key_message,
                     'source': item.key_message + '.html',
@@ -167,7 +167,7 @@ module.exports = function(gulp) {
             }
         });
 
-        fs.writeFile(global.paths.dist + '/' + global.clm.product + '-sitemap/sitemap.json', JSON.stringify(filerKeyMessages), function(err, data) {
+        fs.writeFile(global.paths.dist + '/' + global.clm.product.name + global.clm.product.suffix + 'sitemap/sitemap.json', JSON.stringify(filerKeyMessages), function(err, data) {
             if (err) {
                 utils.log.error(err);
                 deferred.reject(err);
