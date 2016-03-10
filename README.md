@@ -5,7 +5,7 @@
 If you're developing and managing several client Veeva CLM projects, then you know it's cumbersome to introduce new functionality (outside of content) 
 when your code-base is spread throughout multiple repositories.
 
-:link: [Veeva CLM Example](https://github.com/stevebritton/veeva/examples/clm)
+:link: [Veeva CLM Example](https://github.com/stevebritton/veeva/tree/master/examples/clm)
 
 ## Features
 
@@ -46,7 +46,7 @@ $ npm install veeva --save
 
 ### Setup
 Once the `npm install` has completed, the following file structure below will need to be placed into your project root directory. 
-For a complete working example, please reference [Veeva CLM Example](https://github.com/stevebritton/veeva/examples/clm)
+For a complete working example, please reference [Veeva CLM Example](https://github.com/stevebritton/veeva/tree/master/examples/clm)
 
 ## File Structure
 
@@ -108,7 +108,7 @@ Template files are located in the `app` > `templates`.
 
 ### Configuration File
 
-[View full configuration.yml example](https://github.com/stevebritton/veeva/examples/clm/configuration.yml)
+[View full configuration.yml example](https://github.com/stevebritton/veeva/tree/master/examples/clm/configuration.yml)
 
 Inside `configuration.yml`, add Key Messages under the clm node.
 
