@@ -17,7 +17,7 @@ module.exports = function(gulp) {
 
         gulp.src(path.join(global.paths.dist, '**', '*-thumb.jpg'))
             .pipe(flatten())
-            .pipe(gulp.dest(path.join(global.paths.dist, global.clm.product + '-sitemap', 'thumbs')))
+            .pipe(gulp.dest(path.join(global.paths.dist, global.clm.product.name + global.clm.product.suffix + 'sitemap', 'thumbs')))
             .on('error', function(err) {
                 deferred.reject(err);
             })
@@ -165,13 +165,13 @@ module.exports = function(gulp) {
                 return utils.executeWhen(true, screenshots, '⤷ Generating Veeva Thumbnails');
             })
             .then(function() {
-                return utils.executeWhen(notSingleKeyMessageMode, copyVeevaThumbsSitemap, '⤷ Copying generated thumbnails to Key Message: ' + global.clm.product + '-sitemap');
+                return utils.executeWhen(notSingleKeyMessageMode, copyVeevaThumbsSitemap, '⤷ Copying generated thumbnails to Key Message: ' + global.clm.product.name + global.clm.product.suffix  + 'sitemap');
             })
             .then(function() {
 
                 if (notSingleKeyMessageMode) {
-                    utils.log.note('⤷ Generating ' + global.clm.product + '-sitemap thumbnails');
-                    return screenshots([global.clm.product + '-sitemap']);
+                    utils.log.note('⤷ Generating ' + global.clm.product.name + global.clm.product.suffix + 'sitemap thumbnails');
+                    return screenshots([global.clm.product.name + global.clm.product.suffix + 'sitemap']);
                 } else {
                     var d = Q.defer();
                     d.resolve('Short circuit');

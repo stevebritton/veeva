@@ -1,0 +1,23 @@
+{
+    "vaultFields":[
+        "document_id__v",
+        "external_id__v",
+        "name__v",
+        "Type",
+        "lifecycle__v",
+        "Presentation Link",
+        "Fields Only",
+        "pres.crm_training__v",
+        "pres.crm_hidden__v",
+        "pres.product__v.name__v",
+        "pres.crm_start_date__v",
+        "pres.crm_end_date__v",
+        "slide.country__v.name__v",
+        "slide.crm_media_type__v",
+        "slide.related_sub_pres__v",
+        "slide.related_shared_resource__v",
+        "slide.crm_disable_actions__v",
+        "slide.product__v.name__v",
+        "slide.filename"
+    ]
+}

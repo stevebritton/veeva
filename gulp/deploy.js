@@ -1,8 +1,10 @@
 'use strict';
 
 
-var fs = require('fs'),
+var ___ = require('lodash'),
+    fs = require('fs'),
     ftp = require('vinyl-ftp'),
+    json2csv = require('json2csv'),
     path = require('path'),
     plumber = require('gulp-plumber'),
     Q = require('q'),
@@ -16,6 +18,54 @@ var fs = require('fs'),
 
 module.exports = function(gulp) {
 
+
+    function handleVaultCSV(keyMessages) {
+
+        var deferred = Q.defer(),
+            vaultFields = require('./helpers/vault_fields').vaultFields,
+            buildArray = [];
+
+
+        // build up arrays with information based on Key Messages
+        ___(keyMessages).forEach(function(item) {
+
+            buildArray.push({
+                'document_id__v': '',
+                'external_id__v': item.key_message,
+                'name__v': item.key_message,
+                'Type': 'slide',
+                'lifecycle__v': 'CRM Content Lifecycle',
+                'Presentation Link': global.clm.primary.name,
+                'Fields Only': false,
+                'pres.crm_training__v': false,
+                'pres.product__v.name__v': global.clm.product.name,
+                'pres.crm_start_date__v': '',
+                'pres.crm_end_date__v': '',
+                'slide.country__v.name__v': 'United States',
+                'slide.crm_media_type__v': 'HTML',
+                'slide.related_sub_pres__v': '',
+                'slide.related_shared_resource__v': '',
+                'slide.crm_disable_actions__v': '',
+                'slide.product__v.name__v': global.clm.product.name,
+                'slide.filename': item.key_message + '.zip'
+            });
+
+        });
+
+        json2csv({ data: buildArray, fields: vaultFields }, function(err, csv) {
+
+            fs.writeFile(global.paths.deploy + '/VAULT_CSV.csv', csv, function(err) {
+                if (err) {
+                    throw err;
+                } else {
+                    deferred.resolve();
+                }
+            });
+        });
+
+
+        return deferred.promise;
+    }
 
     function handleFTPZips() {
 
@@ -207,6 +257,47 @@ module.exports = function(gulp) {
             })
             .done(function() {
                     utils.log.success('Done Deploying Key Messages');
+                    deferred.resolve();
+                },
+                function(err) {
+                    utils.log.error(err);
+                    deferred.reject(err);
+                });
+
+        return deferred.promise;
+
+    });
+
+    gulp.task('veeva-vault-stage', function() {
+
+
+        var deferred = Q.defer(),
+            mergeKeyMessages = global.keyMessages;
+
+        // Should we include hidden Key Messages?
+        if (global.deploy.includeHiddenKeyMessage) {
+            util.log(util.colors.yellow.bold('Including hidden Key Messages.'));
+
+            mergeKeyMessages = mergeKeyMessages.concat(global.hiddenKeyMessages);
+        }
+
+        // Remove the 'global' key Message from array
+        mergeKeyMessages = mergeKeyMessages.filter(function(item) {
+            return (item.key_message !== 'global');
+        });
+
+        // Single Key Message Mode?
+        if (global.deploy.keyMessage) {
+            mergeKeyMessages.splice(0, mergeKeyMessages.length);
+            mergeKeyMessages.push(global.deploy.keyMessage);
+        }
+
+        utils.executeWhen(true, function() {
+                utils.log.note('⤷ Generating Veeva Vault CSV file');
+                return handleVaultCSV(mergeKeyMessages);
+            })
+            .done(function() {
+                    utils.log.success('Veeva Vault CSV file has successfully been generated');
                     deferred.resolve();
                 },
                 function(err) {

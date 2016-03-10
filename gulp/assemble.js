@@ -24,8 +24,8 @@ module.exports = function(gulp) {
 
         app.data(global.module.workflow.assemble.data);
         app.partials(path.join(global.paths.src, 'templates', 'includes', '*.hbs'));
-        app.layouts(path.join(global.paths.src, 'templates', 'layouts', '*.hbs'));
-        app.pages(path.join(global.paths.src, 'templates', 'pages', '**', '*.hbs'));
+        app.layouts(path.join(global.paths.src, global.paths.layouts, '*.hbs'));
+        app.pages(path.join(global.paths.src, global.paths.pages, '**', '*.hbs'));
 
 
         app.preLayout(/\.hbs$/, function(view, next) {
@@ -157,7 +157,7 @@ module.exports = function(gulp) {
 
         // Remove the 'global' and 'sitemap' key Messages from array
         global.keyMessages.map(function(item) {
-            if (item.key_message !== 'global' && item.key_message !== global.clm.product + '-sitemap') {
+            if (item.key_message !== 'global' && item.key_message !== global.clm.product.name + global.clm.product.suffix + 'sitemap') {
                 filerKeyMessages.push({
                     'section': item.key_message,
                     'source': item.key_message + '.html',
@@ -167,7 +167,7 @@ module.exports = function(gulp) {
             }
         });
 
-        fs.writeFile(global.paths.dist + '/' + global.clm.product + '-sitemap/sitemap.json', JSON.stringify(filerKeyMessages), function(err, data) {
+        fs.writeFile(global.paths.dist + '/' + global.clm.product.name + global.clm.product.suffix + 'sitemap/sitemap.json', JSON.stringify(filerKeyMessages), function(err, data) {
             if (err) {
                 utils.log.error(err);
                 deferred.reject(err);

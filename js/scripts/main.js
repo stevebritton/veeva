@@ -78,7 +78,7 @@ var VEEVA = VEEVA || {};
 
             var $this = this;
 
-            $this.log('Product: ', $this.product);
+            $this.log('Product: ', $this.product.name);
             $this.log('Loading: ', $this.appConfigFile);
 
             $.ajax({
@@ -114,6 +114,9 @@ var VEEVA = VEEVA || {};
                 $this.isDeployed = false;
             }
 
+
+            $this.currentSectionName = $this.product.name + $this.product.suffix + $this.currentSectionName;
+
             $this.btnISI.one($this.eventClick, function (e) {
 
                 $this.log('Event: ISI button ', $this.eventClick);
@@ -142,9 +145,9 @@ var VEEVA = VEEVA || {};
 
                 $this.log('Event: Product logo ', $this.eventClick);
                 if ($this.isDeployed) {
-                    veevaGoToSlide($this.product + '-home.zip', $this.presentationPrimary);
+                    veevaGoToSlide($this.product.name + $this.product.suffix + 'home.zip', $this.presentationPrimary);
                 } else {
-                    document.location = '../' + $this.product + '-home/' +$this.product + '-home.html';
+                    document.location = '../' + $this.product.name + $this.product.suffix + 'home/' +$this.product.name + $this.product.suffix + 'home.html';
                 }
             });
 
@@ -196,6 +199,31 @@ var VEEVA = VEEVA || {};
                 }
                 else{
                     document.location = '../' + _keyMessage + '/' +  _keyMessage + '.html';
+                }
+            });
+
+            $this.appBody.on($this.eventClick, '.btn-link', function (event) {
+
+                event.preventDefault();
+
+                $this.log($this, 'Event: btn-link', event);
+
+                var _this = $(this),
+                    _keyMessage = _this.attr('data-key-message') || '',
+                    _slide = _this.attr('data-slide') !== undefined ? _this.attr('data-slide') : '0',
+                    _product = _this.attr('data-product') || $this.product.name,
+                    _presentation = _this.attr('data-veeva-presentation') || $this.presentationPrimary;
+
+                //Only run if deployed, and if it is, then run Veeva scripts
+                if ($this.isDeployed && _keyMessage !=='' && _presentation !== '') {
+
+                    //Update subscence field and then go to slide
+                    veevaUpdateUserObject(_keyMessage, function () {
+                        veevaGoToSlide(_product + _keyMessage + '.zip', _presentation);
+                    });
+                }
+                else{
+                    document.location = '../' + _product + $this.product.suffix  + _keyMessage + '/' +  _product + $this.product.suffix + _keyMessage + '.html';
                 }
             });
 

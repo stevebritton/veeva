@@ -1,66 +1,176 @@
 # Veeva [![NPM version](https://img.shields.io/npm/v/veeva.svg)](https://www.npmjs.com/package/veeva) [![Build Status](https://img.shields.io/travis/stevebritton/veeva.svg)](https://travis-ci.org/stevebritton/veeva)
 
-> veeva is a powerful, extendable and easy to use worklfow for building Veeva iRep CLM Presentations
+> This npm package was developed to help centralize core functionality and worklfow processes for building Veeva iRep CLM Presentations. 
+
+If you're developing and managing several client Veeva CLM projects, then you know it's cumbersome to introduce new functionality (outside of content) 
+when your code-base is spread throughout multiple repositories.
+
+:link: [Veeva CLM Example](https://github.com/stevebritton/veeva/examples/clm)
+
+## Features
+
+* Define Veeva CLM presentations in one central `configuration.yml` file
+* Template and partial system using Assemble.io
+* SASS compilation
+* Relative link conversion to veeva: protocol links
+* Automatic screen shot, thumbnail, and zip file generation
+* iRep control file generator based on `configuration.yml` file
+* Vault Multichannel .CSV generator based on `configuration.yml` file
+* Development Mode: - Watch, rebuild, and reload Key Messages locally in your web browser
+
+
+**In This Documentation**
+
+1. [Getting Started](#getting-started)
+2. [File Structure](#file-structure)
+3. [Working with the Source Files](#working-with-the-source-files)
+4. [Options & Settings](#options-and-settings)
+5. [Gulp Tasks & Workflow](#gulp-tasks-and-workflow)
+6. [Troubleshooting & FAQ](#troubleshooting-and-faq)
+
+
+## Getting Started
+
+### Dependencies
+
+Install the following prerequisites on your development machine.
+
+* [Node.js](http://nodejs.org)
+* [Gulp](http://gulpjs.com) `sudo npm install -g gulp`
+
+### Quick Start
 
 ```
 $ npm install veeva --save
 ```
 
-## Features
-* Define Veeva CLM presentations in one central configuration.yml file
-    * Support for swipe & sub navigation based configuration fields
-    * Custom tracking information (e.g., sub-slide, pop ups, interactive tools) for each Key Message using Veeva's Click Stream Object
-* Template and partial system with Assemble.io
-* SASS compilation
-* Convert relative links to veeva: protocol links (navigation, Click Stream events, etc.) automatically
-* Automatic screenshot, thumbnail, and zip file generation
-* Automatic iRep control file generator based on configuration.yml file
-* Development Mode:
-    * Watch for file changes, re-builds, and reloads Key Messages locally in a web browser
-    * Template file(.hbs) updates
-    * JS file changes 
-    * SASS file changes
-    * New images added
+### Setup
+Once the `npm install` has completed, the following file structure below will need to be placed into your project root directory. 
+For a complete working example, please reference [Veeva CLM Example](https://github.com/stevebritton/veeva/examples/clm)
 
+## File Structure
 
-## Requirements
-* * *
-Install the following prerequisites on your development machine.
+Add your files to the appropriate `app` sub directories. Gulp will process and compile them into `build`.
 
-* Node.js - [Download & Install Node.js](http://www.nodejs.org/download/)
-* Compass [Download & Install Compass](http://compass-style.org/install/)
-* Gulp - You're going to use the [Gulp Task Runner](http://gulpjs.com/)
-* PhantomJS [Download & Install PhantomJS](http://phantomjs.org/download.html)
-
-
-## Setup
-***
-Once npm install has completed, the following files will need to be created in the project root directory:
-
-* Create configuration.yml file and place it in the root
-```
-$ touch configuration.yml
-```
-
-* Create gulp.js file and add one line of code
-```
-$ echo "require('veeva')(require('gulp'));" | sed > gulp.js
-```
-
-## Help
-***
+**Notes**:
+* Key Message naming convention is set as the following: **product name**-**Key Message Name**
 
 ```
+root/
+|—— app/
+|   |—— assets/
+|   |   |—— scss/
+|   |   |—— js/
+|   |—— templates/
+|   |   |—— includes
+|   |   |—— layouts
+|   |   |—— pages
+|   |   |   |—— globals
+|   |   |   |   |—— fonts
+|   |   |   |   |—— images
+|   |   |   |   |—— isi.hbs
+|   |   |   |   |—— terms.hbs
+|   |   |   |—— veeva-home
+|   |   |   |   |—— images
+|   |   |   |   |—— veeva-home.hbs
+|   |   |   |—— veeva-overview
+|   |   |   |   |—— images
+|   |   |   |   |—— veeva-overview.hbs
+|   |   |   |—— veeva-resources
+|   |   |   |   |—— images
+|   |   |   |   |—— veeva-resources.hbs
+|   |   |   |—— veeva-sitemap
+|   |   |   |   |—— images
+|   |   |   |   |—— js
+|   |   |   |   |—— veeva-sitemap.hbs
+|
+|
+|—— configuration.yml
+|—— gulfile.js
+|—— package.json
+```
+
+## Working with the Source Files
+
+### Sass
+
+Sass files are located in `app` > `assets` > `scss`. Gulp watches and generates minified and unminified CSS files.
+
+### JavaScript
+
+JavaScript files are located in the `app` > `assets` > `js` directory.
+
+### Assemble.io Templates
+
+Template files are located in the `app` > `templates`.
+
+## Options and Settings
+
+### Configuration File
+
+[View full configuration.yml example](https://github.com/stevebritton/veeva/examples/clm/configuration.yml)
+
+Inside `configuration.yml`, add Key Messages under the clm node.
+
+```yml
+clm:
+  product:
+  name: 'Product-Name'
+  suffix: '-'
+ primary:
+  name: 'CLM-Presentation-ID'
+  key_messages:
+  - key_message: 'home'
+    description: 'Home'
+    display_order: '0'
+    slides:
+    - slide: 'home'
+      id: '0'
+  - key_message: 'overview'
+    description: 'Veeva Test Overview'
+    display_order: '1'
+    slides:
+    - slide: 'Veeva Test Overview'
+      id: '2-0'
+  - key_message: 'sitemap'
+    description: 'Sitemap'
+    display_order: '2'
+    slides:
+    - slide: 'Sitemap'
+      id: '0-1'
+```
+
+### Changing the Directory Structure
+Inside `configuration.yml` you'll see a variable named `paths`. Adjust the paths to suit your workflow.
+
+``` yml
+"paths": {
+    "src": "app",
+    "dist": "build",
+    "deploy": "deploy",
+    "tmp": "build/.tmp",
+    "pages": "app/templates/pages/**/*.hbs",
+    "layouts": "app/templates/layouts"
+}
+```
+
+
+## Gulp Tasks and Workflow
+
+For a quick reference in your terminal:
+
+```bash
 $ gulp --help
 
 Usage: gulp <task> [options]
 
 TASKS
 _________________________________________________________________________
-$ gulp                 Default task that kicks off development mode
-$ gulp build           Build task
-$ gulp stage           Stage task
-$ gulp veeva-deploy    Deploy task
+$ gulp                      Default task that kicks off development mode
+$ gulp build                Build task
+$ gulp stage                Stage task
+$ gulp veeva-deploy         Deploy task
+$ gulp veeva-vault-stage    Generates a Veeva Vault Multichannel Loader .CSV file
 
 OPTIONS
 _________________________________________________________________________
@@ -74,12 +184,63 @@ _________________________________________________________________________
     -V --verbose           Verbose output
 ```
 
-## Notes
-***
-* Generated thumbnails (screenshots) only process .html files, so static Key Messages (i.e., pdfs) will still need to have Veeva required thubmnails generated
+```bash
+$ gulp
+```
+Runs the following workflow:
+* Assembles template files
+* Compiles Sass files
+* Copies project JS files
+* Copies the Veeva module JS dependencies
+* Copies images
+* Starts browserSync, watches for changes, and reloads browser when file changes are triggered
 
-## Troubleshooting & FAQ
-***
+```bash
+$ gulp build
+```
+Runs the following workflow:
+* Assembles template files
+* Compiles Sass files and minifies CSS
+* Uglfies project JS files
+* Copies the Veeva module JS dependencies
+* Copies images
+* Generates Veeva required thumbnails per Key Message
+* Enables **deploy mode**
+  * Converts relative links to Veeva protocol links (Navigation, Click Stream events, etc.)
+
+```bash
+$ gulp stage
+```
+Runs the following workflow:
+* Runs the **gulp build** process
+* Generates individual Key Message zip files and places them into the `deploy` directory
+* Creates individual Key Message ctl files based on `configuration.yml` file details and places them into the `deploy` directory
+
+```bash
+$ gulp veeva-deploy
+```
+**Note:** this process uses FTP information stored in the `configuration.yml` file
+Runs the following workflow:
+* Uploads all `.zip` files sitting in the `deploy` directory
+* Once all of the `.zip` files have been uploaded, all `.ctl` files sitting in the `deploy` directory are then uploaded
+
+```bash
+$ gulp veeva-vault-stage
+```
+Runs the following workflow:
+* Generates a Veeva Vault Multichannel Loader `.csv` file based on `configuration.yml` details
+
+
+
+## Notes
+
+* Generated thumbnails (screen shots) only process .html files, so static Key Messages (i.e., pdf) will still need to have Veeva required thumbnails generated
+
+## Troubleshooting
+
+If you're having issues with the Veeva Node Package, submit a [submit a GitHub Issue](https://github.com/stevebritton/veeva/issues/new).
+
 * Ensure you're running the correct node and npm versions specified in the package.json file
+* Make sure your configuration.yml file exists and is well formatted
 
 
