@@ -58,7 +58,7 @@
         "dist": "build",
         "deploy": "deploy",
         "tmp": "build/.tmp",
-        "pages": "app/templates/pages/**/*.hbs",
-        "layouts": "app/templates/layouts"
+        "pages": "templates/pages/**/*.hbs",
+        "layouts": "templates/layouts"
     }
 }
