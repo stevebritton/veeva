@@ -1,0 +1,304 @@
+
+
+*{
+  -webkit-tap-highlight-color: transparent;
+}
+
+html{
+   background-color: #282828;
+
+}
+
+
+body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    color: #000;
+    font-family: $font-copy;
+
+    overflow: hidden; /* this is important to prevent the whole page to bounce */
+
+    /* Prevent the callout on tap-hold and text selection */
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+
+    /* Prevent text resize on orientation change, useful for web-apps */
+    -webkit-text-size-adjust: none;
+
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-backface-visibility: hidden;
+
+
+}
+
+a{
+  text-decoration:none;
+  -webkit-user-select: none !important;
+}
+
+sup {line-height:8px; vertical-align:75%; margin-left:1px; font-size:60%; font-family: $font-copy;}
+sub {line-height:8px; vertical-align:-65%; margin-left:1px; font-size:60%; font-family: $font-copy;}
+
+
+
+.teal{color: $gray;}
+.black{color: $gray !important;}
+
+
+h1{
+    font-family: $font-header-one;
+    font-weight: normal;
+    font-size: 2.5em;
+    line-height: 1.125;
+    padding-top: 1em;
+    margin-bottom: 0.3em;
+    color: $red;
+}
+
+p{
+    margin-bottom: .1em;
+    line-height: 1.45em;
+}
+
+.btn{
+    @include box-shadow(0px, 0px, 2px, 0px, rgba(255,255,255,0.9));
+    border-radius: 10px;
+    border: 4px solid #eeeeee;
+    padding: 13px;
+    display: inline-block !important;
+    color: #fff !important;
+    position: relative;
+    text-align: center;
+    cursor: pointer;
+    font-family: $font-copy;
+    font-size: 18px;
+    background: -webkit-gradient(linear, left top, left bottom,from($red),to($red));
+
+}
+
+
+
+/**
+ * Typography
+ */
+.content{
+
+    .head-one{
+        color: $red;
+        font-family: $font-header-one;
+        font-size: 34px;
+        font-weight: normal;
+        padding-bottom: 10px;
+
+        sup{
+            position: relative;
+            top: -4px;
+        }
+        em{
+            font-size: 28px;
+            line-height: 30px;
+        }
+    }
+
+    .head-two{
+        color: $gray;
+        font-family: $font-header-two;
+        font-size: 25px;
+        line-height: 30px;
+        padding-bottom: 10px;
+
+        sup{
+            position: relative;
+            top: -5px;
+        }
+    }
+
+    .head-three{
+        color: $gray;
+        font-family: $font-header-three;
+        font-size: 14px;
+        padding-bottom:10px;
+    }
+
+    p{
+
+        font-family: $font-copy;
+        font-size: 18px;
+        line-height: 20px;
+
+        strong{
+            font-family: $font-copy-bold;
+            color: $gray;
+            &.red{
+                color: $red;
+            }
+        }
+
+        &.terms{
+            font-size: 15px;
+            .asterisk{
+                padding-right: 0px;
+                &:before {top: 0px; left: -12px; }
+            }
+
+            &.popup{
+                .head-one{
+                    font-family: $font-copy;
+                }
+                font-size: 20px;
+                line-height: 24px;
+            }
+        }
+
+        &.foot-note{
+            font-size: 14px;
+        }
+    }
+
+
+    ul{
+        list-style: none;
+        padding: 0;
+        margin: 0px 5px 0px 7px;
+        font-size: 18px;
+        color: $gray;
+        font-family: $font-copy;
+        text-align: left;
+        line-height: 21px;
+
+        li{
+            margin-left: 7px;
+            text-indent: -18px;
+            margin-bottom: 6px;
+            &:before {content: "\002022"; color:$red; padding-right:7px; font-size: 22px;}
+
+            strong{
+                font-family: $font-header-two;
+            }
+
+            ul{
+                position:relative;
+                list-style: none;
+                padding:0;
+                margin: 3px 5px 0px 10px;
+
+                li{
+                    text-indent:0px;
+                    margin-bottom:10px;
+                    padding-left: 0px;
+                    &:before {content: "\2013"; color: $gray; position:absolute; left:-11px;}
+                    &:first-child{padding-top:3px;}
+                    &:last-child{margin-bottom:0px !important;}
+                }
+            }
+        }
+    }
+
+    ul.list-none,
+    ul.btn-list{
+        li{
+            list-style-type: none;
+            &:before{content:''}
+        }
+    }
+
+    @include helper-padding(0);
+    @include helper-padding(10);
+    @include helper-padding(15);
+    @include helper-padding(20);
+    @include helper-padding(25);
+    @include helper-padding(30);
+    @include helper-padding(40);
+    @include helper-padding(60);
+
+}
+
+
+@-webkit-keyframes fadein { /* Safari and Chrome */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#app-body{
+    background: $white;
+    width: 1024px;
+    height: 768px;
+    position: absolute;
+    top:0;
+    left:0;
+    overflow: hidden;
+    z-index:1;
+    &.fade{
+        -webkit-transform: translate3d(0,0,0);
+        -webkit-animation: fadein .4s ease-in;
+    }
+}
+
+@-webkit-keyframes slideinfromright{
+    from{left:0px;}
+    to {left:-1024px;}
+}
+
+
+@-webkit-keyframes slideouttoleft {
+    from{left:0px;}
+    to {left:1024px;}
+}
+
+
+section.main-content{
+    position: relative;
+    top: 0px;
+    height: 768px;
+    display: none;
+    padding-top:30px;
+
+    .left{
+        float: left;
+        height: inherit;
+        width: 47%;
+    }
+
+    .right{
+        float: left;
+        width: 35%;
+        margin-left: 30px;
+    }
+
+    .full{
+        width: 93%;
+    }
+
+
+    #section-holder{
+
+        &.slide-left{
+            transform: translate3d(0,0,0);
+            -webkit-transform: translate3d(0,0,0);
+            -webkit-animation: slideouttoleft .6s ease-in;
+        }
+
+        &.slide-right{
+            transform: translate3d(0,0,0);
+            -webkit-transform: translate3d(0,0,0);
+            -webkit-animation: slideinfromright .6s ease-in;
+        }
+
+        .content{
+            position: relative;
+            margin-left: 75px;
+        }
+
+
+
+    }//#section-holder
+
+}// section.main-content
+
+

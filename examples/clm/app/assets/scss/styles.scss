@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+/**
+ * @fileOverview: 	Global CSS Definitions for Veeva CLM Presentation.
+ * @author:  		Steven Britton
+ * @date:
+ * @client:
+ * @product:
+ * @todo:
+ */
+
+@import "vars";
+@import "fonts";
+
+@import "libs/reset";
+@import "libs/mixins";
+@import "libs/helpers";
+@import "libs/ui-slider";
+
+@import "defaults";
+
+@import "elements/header";
+@import "elements/isi";
+@import "elements/slider";
+@import "elements/footer";
+@import "elements/popups";
+@import "elements/charts";
+@import "elements/video";
+
+
+// Now load individual screens
+@import "screens/home";
+@import "screens/overview";
+@import "screens/resources";
+@import "screens/sitemap";
