@@ -1,0 +1,102 @@
+
+/**
+ * @fileOverview: Global Chart Definitions
+ * @author: Steven Britton
+ * @date:   2016-02-10
+ */
+
+.chart.popup{
+    @include box-shadow(0px, 0px, 14px, 1px, rgba(0,0,0,0.5));
+    height: inherit;
+    padding: 20px 0px 0px 0px;
+    background: #f8f8fb;
+    border-radius: 10px;
+    border: 5px solid #fff;
+
+    &:before{
+        text-align: center;
+        position:absolute;
+        padding: 5px;
+        border: 3px solid #eeeeee;
+        background: -webkit-gradient(linear, left top, left bottom,from($red),to($red));
+        width: 18px;
+        height: 18px;
+        right: -18px;
+        top: -18px;
+        border-radius: 50px;
+        font-family:'FontAwesome';
+        content: '\f067';
+        font-size: 18px;
+        color: #fff;
+        @include box-shadow(0px, 0px, 4px, 1px, rgba(0,0,0,0.5));
+    }
+
+    .title{
+        text-align: center;
+    }
+}
+
+@mixin bar-tip-bottom($width: 100%, $color: #eee) {
+
+    $border-point: ($width/3);
+    $border-sides: ($width/2);
+    &:after {
+      border-top: $border-point solid $color;
+      border-left:  $border-sides solid transparent;
+      border-right:  $border-sides solid transparent;
+      content: "";
+      height: 0;
+      left: 0;
+      position: absolute;
+      bottom: -$border-point;
+      width: 0;
+    }
+}
+
+@mixin callout-tip($border-color: #eee, $tip-direction: left, $background: #fff, $border-radius: 0px) {
+    @include box-shadow(5px, 5px, 15px, 0px, rgba(0,0,0,0.5));
+    position: relative;
+    width: 120px;
+    height: 180px;
+    -webkit-border-radius: $border-radius;
+    border: 4px solid $border-color;
+    &:before {
+        content: '';
+        position: absolute;
+        top: 30%;
+        display: inline-block;
+        border-top: 25px solid transparent;
+        @if $tip-direction == right{
+            border-left: 25px solid $border-color;
+            left: 101%;
+        }
+        @else{
+            border-right: 25px solid $border-color;
+            right: 101%;
+        }
+        border-bottom: 25px solid transparent;
+    }
+    &:after {
+        content: '';
+        position: absolute;
+        top: 30%;
+        display: inline-block;
+        border-top: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+
+        @if $tip-direction == right{
+            border-left: 25px solid $background;
+            left: 99%;
+        }
+        @else{
+            border-right: 25px solid $background;
+            right: 99%;
+        }
+    }
+}
+
+
+
+
+
+

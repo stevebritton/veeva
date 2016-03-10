@@ -1,0 +1,77 @@
+/**
+ * @fileOverview: Global Top ISI Slide Down Specific Definitions
+ */
+
+
+/*************************************************
+** Handles opening/closing of the ISI Dropdown
+**************************************************/
+
+@-webkit-keyframes isiSlideOpen {
+    from {
+        top: -780px;
+    }
+    to {
+        top: 36px;
+    }
+}
+
+@-webkit-keyframes isiSlideClose {
+    from {
+        top: 36px;
+    }
+    to {
+        top: -780px;
+    }
+}
+
+section.main-isi {
+    position: absolute;
+    top: -1000px;
+    left: 0;
+    height: 688px;
+    background: $white;
+    z-index: 999;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: -webkit-box;
+    #scroller {
+        position: relative;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        height: 1400px;
+        width: 1024px;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-text-size-adjust: none;
+        text-size-adjust: none;
+    }
+    .isi-content {
+        z-index: 999;
+        position: relative;
+        height: 980px;
+        -webkit-transform: translate3d(0, 0, 0);
+        padding: 40px 40px 0px 80px;
+        font-family: $font-header-three;
+        font-weight: normal;
+        font-size: 16px;
+
+        a {
+            font-weight: bold;
+            text-decoration: underline;
+            color: $gray;
+        }
+        .black-box {
+            border: 1px solid $gray;
+            padding-right: 10px;
+            padding: 5px;
+        }
+    }
+    &.open {
+        -webkit-animation: isiSlideOpen 0.2s ease;
+        -webkit-animation-fill-mode: forwards;
+    }
+    &.close {
+        -webkit-animation: isiSlideClose 0.2s ease;
+        -webkit-animation-fill-mode: forwards;
+    }
+}

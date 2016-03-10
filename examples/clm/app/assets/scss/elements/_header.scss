@@ -1,0 +1,172 @@
+/**
+ * @fileOverview: Global Top Header Specific Definitions
+ */
+
+header {
+    background: $gray;
+    position: relative;
+    display: block;
+    width: 1024px;
+    height: 154px;
+    .row-one {
+        position: relative;
+        z-index: 9999;
+        background-color: rgba(11, 19, 23, .7);
+        height: 37px;
+        .isi-bar {
+            position: relative;
+            z-index: 300;
+            height: inherit;
+            width: 688px;
+            margin: 0px auto 0px auto;
+            background: $red;
+            .btn-isi {
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                font-family: $font-header-three;
+                font-size: 19px;
+                padding-right: 60px;
+                padding-left: 30px;
+                cursor: pointer;
+                background: $red;
+                border-left: 3px solid rgba(0, 0, 0, .1);
+                height: 28px;
+                &:after {
+                    position: absolute;
+                    right: 30px;
+                    border-radius: 12px;
+                    border: 3px solid rgba(255, 255, 255, .5);
+                    padding: 3px 4px 3px 4px;
+                    top: 5px;
+                    content: '\f067';
+                    font-family: 'FontAwesome';
+                    font-size: .7em;
+                    font-weight: 400;
+                }
+                &.on {
+                    background: #fff;
+                    color: $red;
+                    &:after {
+                        content: '\f00d';
+                        font-family: 'FontAwesome';
+                        font-size: .7em;
+                        font-weight: 400;
+                        border: 3px solid $red;
+                    }
+                }
+            }
+            text-align: center;
+            div {
+                font-family: $font-header-three;
+                font-size: 22px;
+                color: $white;
+                padding-top: 9px;
+            }
+        }
+        .logo-client {
+            position: absolute;
+            right: 10px;
+            top: 3px;
+            background-image: url('../images/logo-client.png');
+            background-size: 95px 30px;
+            background-repeat: no-repeat;
+            display: block;
+            width: 95px;
+            height: 30px;
+        }
+    } //end of row one
+    .row-two {
+        position: relative;
+        background: transparent;
+        .isi-bar-bot {
+            @include border-bottom-radius(13px);
+            @include box-shadow();
+            background: #fff;
+            border: $gray 2px solid;
+            border-top: 0px;
+            width: 670px;
+            margin: 0px auto 0px auto;
+            text-align: center;
+            div {
+                font-family: $font-header-three;
+                font-size: 16px;
+                font-weight: 700;
+                color: $gray;
+                padding: 5px 0px 5px 0px;
+            }
+        }
+        .logo-product {
+            position: absolute;
+            left: 30px;
+            top: 15px;
+            background-image: url('../images/logo-product.png');
+            background-size: 176px 68px;
+            background-repeat: no-repeat;
+            display: block;
+            width: 176px;
+            height: 68px;
+        }
+        .tagline {
+            position: absolute;
+            left: 30px;
+            top: 90px;
+            color: #fff;
+            text-transform: uppercase;
+            strong {
+                font-family: $font-header-three;
+            }
+        }
+        .glob-buttons {
+            @include border-radius(18px);
+            border: 5px solid rgba(255, 255, 255, .2);
+            position: absolute;
+            right: 20px;
+            top: 40px;
+            ul {
+                height: 0px;
+                margin: 0px;
+                display: table;
+                li {
+                    display: inline-block;
+                    vertical-align: middle;
+                    text-align: center;
+                    //width: 100%;
+                    &:first-child a {
+                        border-top-left-radius: 10px;
+                        border-bottom-left-radius: 10px;
+                    }
+                    &:last-child a {
+                        border-top-right-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                        border-right: none;
+                    }
+                    .button-container {
+                        position: relative;
+                        width: 75px;
+                        height: 33px;
+                        margin: 0px;
+                        padding: 5px 8px 5px 8px;
+                        .button {
+                            position: absolute;
+                            width: inherit;
+                            height: inherit;
+                            text-align: center;
+                        }
+                    }
+                    a {
+                        background: $red;
+                        width: inherit;
+                        height: inherit;
+                        text-decoration: none;
+                        color: #fff;
+                        font-family: $font-header-three;
+                        display: block;
+                        font-size: 14px;
+                        border-right: 1px inset #fff;
+                    }
+                }
+            }
+        }
+    } //end of row two
+} //end of header

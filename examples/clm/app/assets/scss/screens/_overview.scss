@@ -1,0 +1,72 @@
+
+/**
+ * @fileOverview: Screen Specific Definitions
+ * @screen: Overview
+ */
+
+
+section.overview{
+    @-webkit-keyframes hide-pill {
+      0%   { opacity: 1; }
+      50%   { opacity: .8; }
+      70%   { opacity:.4; }
+      100% { opacity: 0; }
+    }
+
+    .btn{
+        margin-bottom: 3px;
+        width: 150px;
+        padding: 13px;
+        border-radius: 25px;
+
+        &.gray{
+            font-size: 14px;
+            line-height: 16px;
+            padding: 8px 12px 8px 12px;
+            text-align: center;
+        }
+    }
+
+    .left{
+        float: left;
+        width: 38%;
+        padding-top: 10px;
+    }
+
+    .center{
+        float: left;
+        width: 30%;
+        position: relative;
+
+        .disclaimer{
+            position: relative;
+            font-weight: bold;
+            font-family: $font-header-three;
+            font-size: 16px;
+            left: 130px;
+            top: -40px;
+        }
+
+
+    }
+
+    .right{
+        float: left;
+        width: 28%;
+        padding-top: 10px;
+    }
+
+    .full{
+        position: absolute;
+        top: 350px;
+        width: 90%;
+    }
+}
+
+/**
+ * POPUPS
+ */
+#popup-wrapper{
+
+
+}

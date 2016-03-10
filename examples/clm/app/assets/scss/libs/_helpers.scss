@@ -1,0 +1,67 @@
+%clear {
+  content: ' ';
+  display: table;
+}
+.clear {
+  *zoom: 1;
+  &:before {
+    @extend %clear;
+  }
+  &:after {
+    @extend %clear;
+    clear: both;
+  }
+}
+
+.pull-left{float:left;}
+.text-center{text-align: center;}
+em {
+  font-style: italic;
+  line-height: inherit;
+}
+
+strong {
+  font-weight: 700;
+  line-height: inherit;
+}
+.nowrap{
+	 white-space: nowrap;
+}
+
+small {
+  font-size: 56.4%;
+  line-height: inherit;
+}
+
+.small-cap{font-variant: small-caps;}
+
+.button-gloss{
+  position:absolute;
+  width:inherit;
+  height:20px;
+  z-index:2;
+  background-color:rgba(255,255,255,.10);
+  -webkit-border-top-left-radius:5px;
+  -webkit-border-top-right-radius:5px;
+
+}
+
+/**
+ * Helps with vertically aligning menu items
+ */
+.nav-outer{
+	position:relative;
+	display:table;
+	width:inherit;
+	vertical-align:middle;
+	margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 0px;
+	height:inherit;
+	span{
+		position:relative;
+		display:table-cell;
+		vertical-align:middle;
+		line-height:15px;
+		padding:0px 3px 0px 3px;
+	}
+}

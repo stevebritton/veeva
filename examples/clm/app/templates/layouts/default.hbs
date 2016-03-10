@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="{{root}}global/css/styles.css?v={{version}}">
+    <script src="{{root}}global/js/head.load.min.js"></script>
+</head>
+<body class="scpInhibitScroll {{type}}">
+    <div id="app-body" class="fade">
+        {{>global-top}}
+        <section class="main-content">
+            {% body %}
+        </section>
+        <footer class="{{type}}">
+            <div class="footer-label">Please see Important Safety Information and full Prescribing Information above.</div>
+        </footer>
+    </div>
+
+    <script src="{{root}}global/js/vendor.js?v={{version}}"></script>
+    <script src="{{root}}global/js/main.js?v={{version}}"></script>
+
+
+    <script type="text/javascript">
+
+        // settings passed from Assemble Data
+        var settings = {
+            product:{
+                'name':   '{{product.name}}',
+                'suffix': '{{product.suffix}}'
+            },
+            presentationPrimary:        '{{presentationPrimary}}',
+            presentationPDFs:           '{{presentationPDFs}}',
+            presentationVideos:         '{{presentationVideos}}',
+            section:                    '{{section}}',
+            veevaTrackSubsceneField:    '{{veevaTrackSubsceneField}}',
+            isDeployed:                 {{deploy}}
+        };
+        VeevaPresentaion = new VEEVA.iRep(settings);
+
+        /**
+         * Listen for veeva.app.ready to fire
+         */
+        VeevaPresentaion.appBody.on("veeva.app.ready", function(event){
+
+
+            /**
+             * Load page-specific scripts
+             */
+            {{#is section "sitemap"}}
+                head.load(['js/page.sitemap.js?v={{version}}'], function(){
+                    pageSitemap.init(settings);
+                });
+            {{/is}}
+            /*
+             * Resource pull in js
+             */
+            {{#is section "resources"}}
+                head.load(['js/page.resources.js?v={{version}}'], function(){
+                    pageResources.init(settings);
+                });
+            {{/is}}
+
+
+        });
+
+    </script>
+</body>
+</html>
