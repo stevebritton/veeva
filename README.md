@@ -54,7 +54,6 @@ Add your files to the appropriate `app` sub directories. Gulp will process and c
 
 **Notes**:
 * Key Message naming convention is set as the following: **product name**-**Key Message Name**
-* These
 
 ```
 root/
