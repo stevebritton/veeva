@@ -268,7 +268,7 @@ module.exports = function(gulp) {
 
     });
 
-    gulp.task('vault-deploy', function() {
+    gulp.task('veeva-vault-stage', function() {
 
 
         var deferred = Q.defer(),
@@ -290,9 +290,6 @@ module.exports = function(gulp) {
         if (global.deploy.keyMessage) {
             mergeKeyMessages.splice(0, mergeKeyMessages.length);
             mergeKeyMessages.push(global.deploy.keyMessage);
-
-            // turn on auto-deploy
-            //autoDeploy = true;
         }
 
         utils.executeWhen(true, function() {
