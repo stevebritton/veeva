@@ -24,8 +24,8 @@ module.exports = function(gulp) {
 
         app.data(global.module.workflow.assemble.data);
         app.partials(path.join(global.paths.src, 'templates', 'includes', '*.hbs'));
-        app.layouts(path.join(global.paths.src, 'templates', 'layouts', '*.hbs'));
-        app.pages(path.join(global.paths.src, 'templates', 'pages', '**', '*.hbs'));
+        app.layouts(path.join(global.paths.src, global.paths.layouts, '*.hbs'));
+        app.pages(path.join(global.paths.src, global.paths.pages, '**', '*.hbs'));
 
 
         app.preLayout(/\.hbs$/, function(view, next) {
