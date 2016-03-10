@@ -219,7 +219,7 @@ var VEEVA = VEEVA || {};
 
                     //Update subscence field and then go to slide
                     veevaUpdateUserObject(_keyMessage, function () {
-                        veevaGoToSlide(_product + _keyMessage + '.zip', _presentation);
+                        veevaGoToSlide(_product + $this.product.suffix + _keyMessage + '.zip', _presentation);
                     });
                 }
                 else{
