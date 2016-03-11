@@ -432,9 +432,9 @@ var VEEVA = VEEVA || {};
             if ($element.attr('id') === 'popup') {
 
                 $element.clearQueue().show('scale', {
-                    percent: 50,
+                    percent: 80,
                     direction: 'both'
-                }, 100, function () {
+                }, 30, function () {
 
                     $element.trigger('popup.Ready');
 
