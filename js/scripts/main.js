@@ -557,11 +557,7 @@ var VEEVA = VEEVA || {};
 
                 $that.closePopup();
 
-                //$('#section-holder').fadeIn();
-
-                //Fadeout chart builds
-                //@todo: handle this by swapping out classes
-                $('.chart.reload').fadeOut();
+                $('.chart.reload').hide();
 
                 var $trackSlide = $('ul.slideObj li.slideObj:eq(' + slideIndex + ')'),
                     hasTracking = $trackSlide.attr('track-id') !== undefined ? $trackSlide.attr('track-id') : '';
@@ -583,8 +579,10 @@ var VEEVA = VEEVA || {};
                 var slides          = slider.find('ul.slideObj li.slideObj'),
                     activeSlide     = slides[index];
 
+                $(slides).removeClass('active');
+
                 /** reload chart, if any */
-                $(activeSlide).find('.chart.reload').fadeIn();
+                $(activeSlide).addClass('active').find('.chart.reload').fadeIn();
 
             },
             onSectionChange: function (dir) {
