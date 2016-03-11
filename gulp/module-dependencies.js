@@ -2,9 +2,9 @@
 
 var browserSync = require('browser-sync'),
     concat = require('gulp-concat'),
-    filter = require('gulp-filter'),
     path = require('path'),
     plumber = require('gulp-plumber'),
+    Q = require('q'),
     size = require('gulp-size'),
     uglify = require('gulp-uglify'),
     utils = require('../lib/utils');
@@ -14,21 +14,30 @@ var browserSync = require('browser-sync'),
 module.exports = function(gulp) {
 
 
-    gulp.task('singles:copy', function() {
-        return gulp.src(path.join(global.module.paths.src, global.module.paths.js.standalone, '**', '*.js'))
+    function processJSSingles() {
+
+        var deferred = Q.defer();
+
+        gulp.src(path.join(global.module.paths.src, global.module.paths.js.standalone, '**', '*.js'))
             .pipe(plumber())
             .pipe(size({
                 showFiles: true
             }))
             .pipe(gulp.dest(path.join(global.module.paths.src, global.module.paths.dest, 'js')))
-            .pipe(browserSync.reload({
-                stream: true
-            }));
-    });
+            .on('error', function(err) {
+                deferred.reject(err);
+            })
+            .on('end', function() {
+                deferred.resolve();
+            });
+        return deferred.promise;
+    }
 
+    function processJSMain() {
 
-    gulp.task('scripts:custom', function() {
-        return gulp.src(path.join(global.module.paths.src, global.module.paths.js.scripts, '**', '*.js'))
+        var deferred = Q.defer();
+
+        gulp.src(path.join(global.module.paths.src, global.module.paths.js.scripts, '**', '*.js'))
             .pipe(plumber())
             .pipe(concat('main.js'))
             .pipe(uglify({
@@ -39,77 +48,115 @@ module.exports = function(gulp) {
             }))
             .pipe(gulp.dest(path.join(global.module.paths.src, global.module.paths.dest, 'js')))
             .on('error', function(err) {
-                utils.log.error(err);
+                deferred.reject(err);
+            })
+            .on('end', function() {
+                deferred.resolve();
             });
-    });
+        return deferred.promise;
+    }
 
-    gulp.task('scripts:vendor', function() {
-        return gulp.src([
+    function processJSVendor() {
+
+        var deferred = Q.defer();
+
+        gulp.src([
                 path.join(global.module.paths.src, global.module.paths.js.vendor, '**/*.js'),
                 path.join('!' + global.module.paths.src, global.module.paths.js.vendor, 'zepto.min.js'),
                 path.join('!' + global.module.paths.src, global.module.paths.js.vendor, 'zepto.ghostclick.js')
             ])
             .pipe(plumber())
             .pipe(concat('vendor.js'))
-                .pipe(uglify({
-                    mangle: false
-                }))
-                .pipe(size({
-                    showFiles: true
-                }))
-                .pipe(gulp.dest(path.join(global.module.paths.src, global.module.paths.dest, 'js')));
-    });
+            .pipe(uglify())
+            .pipe(size({
+                showFiles: true
+            }))
+            .pipe(gulp.dest(path.join(global.module.paths.src, global.module.paths.dest, 'js')))
+            .on('error', function(err) {
+                deferred.reject(err);
+            })
+            .on('end', function() {
+                deferred.resolve();
+            });
 
+        return deferred.promise;
+    }
 
-    gulp.task('scripts:vendor-deploy', function() {
-        return gulp.src([
-                path.join(global.module.paths.src, global.module.paths.js.vendor, 'zepto.min.js'),
-                path.join(global.module.paths.src, global.module.paths.js.vendor, 'zepto.ghostclick.js')
-            ])
+    function processJSVendorBuild() {
+
+        var deferred = Q.defer();
+
+        gulp.src(path.join(global.module.paths.src, global.module.paths.js.vendor, '**/*.js'))
             .pipe(plumber())
-            .pipe(concat('vendor-veeva-deploy-only.js'))
+            .pipe(concat('vendor.js'))
             .pipe(uglify({
-                mangle: false
+                mangle: true
             }))
             .pipe(size({
                 showFiles: true
             }))
-            .pipe(gulp.dest(path.join(global.module.paths.src, global.module.paths.dest, 'js')));
-    });
+            .pipe(gulp.dest(path.join(global.module.paths.src, global.module.paths.dest, 'js')))
+            .on('error', function(err) {
+                deferred.reject(err);
+            })
+            .on('end', function() {
+                deferred.resolve();
+            });
 
-    gulp.task('veeva-module:js-copy', function() {
+        return deferred.promise;
+    }
 
-        if (global.verbose) {
-            utils.log.note('    ⤷ Copying Veeva JS dependencies');
-        }
+    function processCopyScripts() {
 
-        // Filter for JS dependencies that should only be added when deploying
-        var vendorFilter = filter(['vendor.js', 'vendor-veeva-deploy-only.js'], {
-            restore: true
-        });
+        var deferred = Q.defer();
 
-        gulp.src(path.join(global.module.paths.src, 'dist', 'js', '**', '*.js'))
+        gulp.src(path.join(global.module.paths.src, global.module.paths.dest, '**/*.js'))
             .pipe(plumber())
-            .pipe(vendorFilter)
-            .pipe(concat('vendor.js'))
-            .pipe(vendorFilter.restore)
             .pipe(size({
-                showFiles: global.verbose
+                showFiles: true
             }))
-            .pipe(gulp.dest(path.join(global.paths.dist, 'global', 'js')));
+            .pipe(gulp.dest(path.join(global.paths.dist, 'global')))
+            .on('error', function(err) {
+                deferred.reject(err);
+            })
+            .on('end', function() {
+                deferred.resolve();
+            });
 
+        return deferred.promise;
+    }
+
+
+    gulp.task('veeva-module:js-build', function() {
+
+        var deferred = Q.defer();
+
+        utils.executeWhen(true, processJSSingles, '⤷ Processing Veeva JS dependencies.')
+            .then(function() {
+                return utils.executeWhen(true, processJSMain, '⤷ Main Scripts');
+            })
+            .then(function() {
+                return utils.executeWhen(!global.module.workflow.assemble.data.deploy, processJSVendor, '⤷ Vendor Scripts - Dev Mode');
+            })
+            .then(function() {
+                return utils.executeWhen(global.module.workflow.assemble.data.deploy, processJSVendorBuild, '⤷ Vendor Scripts - Build Mode');
+            })
+            .then(function() {
+                return utils.executeWhen(true, processCopyScripts, '⤷ Copying Veeva JS dependencies to project');
+            })
+            .done(function() {
+                    utils.log.success(' Done Processing Veeva JS dependencies.');
+                    deferred.resolve();
+                },
+                function(err) {
+                    utils.log.error(err);
+                    deferred.reject(err);
+                });
+
+        return deferred.promise;
     });
 
-    gulp.task('veeva-module:js-build', ['scripts:custom', 'scripts:vendor', 'scripts:vendor-deploy', 'singles:copy'], function(cb) {
-        cb.call();
-    });
 
-    /**
-     * Veeva JS Scripts
-     * @author Steven Britton
-     * @date   2016-02-24
-     * @return {function}   Returns Stream
-     */
     gulp.task('veeva-module:js-dev', function() {
         return gulp.src(path.join(global.module.paths.src, global.module.paths.js.scripts, '**', '*.js'))
             .pipe(plumber())
@@ -119,5 +166,6 @@ module.exports = function(gulp) {
                 stream: true
             }));
     });
+
 
 };
