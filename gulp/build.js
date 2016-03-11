@@ -87,11 +87,10 @@ module.exports = function(gulp) {
                 global.module.workflow.assemble.data.deploy = true;
                 global.module.workflow.assemble.data.root = '';
 
-                runSequence(['veeva-module:js-build'], ['veeva-module:js-copy'], ['assemble'], ['veeva-thumbs'], done);
+                runSequence(['veeva-module:js-build'], ['assemble'], ['veeva-thumbs'], done);
             });
         });
     }
-
 
 
     /**
