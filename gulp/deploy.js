@@ -217,7 +217,7 @@ module.exports = function(gulp) {
             mergeKeyMessages.push(global.deploy.keyMessage);
 
             // turn on auto-deploy
-            //autoDeploy = true;
+            autoDeploy = true;
         }
 
 
