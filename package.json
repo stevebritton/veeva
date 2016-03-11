@@ -1,7 +1,7 @@
 {
   "name": "veeva",
   "description": "Veeva CLM generator and workflow",
-  "version": "0.23.2",
+  "version": "0.23.3",
   "bin": {
     "veeva": "bin/veeva.js"
   },
@@ -24,7 +24,7 @@
   "author": "Steve Britton",
   "license": "MIT",
   "dependencies": {
-    "assemble": "^0.9.1",
+    "assemble": "^0.9.2",
     "browser-sync": "^2.8.2",
     "chalk": "^1.1.1",
     "del": "^2.2.0",
