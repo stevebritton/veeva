@@ -1,5 +1,5 @@
 /*! iScroll v5.1.2 ~ (c) 2008-2014 Matteo Spinelli ~ http://cubiq.org/license */
-(function (window, document, Math) {
+; (function (window, document, Math) {
 	var rAF = window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
 		window.mozRequestAnimationFrame ||
@@ -266,7 +266,7 @@
 
 			snapThreshold: 0.334,
 
-			// INSERT POINT: OPTIONS 
+			// INSERT POINT: OPTIONS
 
 			startX: 0,
 			startY: 0,
@@ -325,7 +325,7 @@
 
 		// INSERT POINT: NORMALIZATION
 
-		// Some defaults	
+		// Some defaults
 		this.x = 0;
 		this.y = 0;
 		this.directionX = 0;
