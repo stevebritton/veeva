@@ -1,4 +1,7 @@
-# Veeva [![NPM version](https://img.shields.io/npm/v/veeva.svg)](https://www.npmjs.com/package/veeva) [![Build Status](https://img.shields.io/travis/stevebritton/veeva.svg)](https://travis-ci.org/stevebritton/veeva)
+# Veeva 
+[![NPM version](https://img.shields.io/npm/v/veeva.svg)](https://www.npmjs.com/package/veeva) [![Build Status](https://img.shields.io/travis/stevebritton/veeva.svg)](https://travis-ci.org/stevebritton/veeva)
+[![dependencies](https://david-dm.org/stevebritton/veeva.svg)](https://david-dm.org/stevebritton/veeva#info=dependencies&view=tables)
+
 
 > This npm package was developed to help centralize core functionality and worklfow processes for building Veeva iRep CLM Presentations. 
 
