@@ -19,6 +19,11 @@ describe('acceptance tests for Veeva Module', function() {
 
     it('gulp assemble passes without error', function(done) {
         gulp('assemble', function(error, stdout, stderr) {
+
+            console.log('ERROR: ', error);
+            console.log('stdout: ', stdout);
+            console.log('stderr: ', stderr);
+
             assert.ok(error === null);
             done();
         });
