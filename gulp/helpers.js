@@ -4,17 +4,17 @@ var util = require('gulp-util');
 
 
 
-module.exports = function(gulp) {
+module.exports = function(gulp, options) {
     /**
      * List Key Messages in gulp.js config file
      */
     gulp.task('info', function() {
 
-        var primaryKeyMessages = global.keyMessages.map(function(keyMessage) {
+        var primaryKeyMessages = options.keyMessages.map(function(keyMessage) {
             return keyMessage.key_message;
         });
 
-        var hiddenKeyMessages = global.hiddenKeyMessages.map(function(keyMessage) {
+        var hiddenKeyMessages = options.hiddenKeyMessages.map(function(keyMessage) {
             return keyMessage.key_message;
         });
 

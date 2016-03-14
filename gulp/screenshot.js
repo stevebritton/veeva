@@ -8,16 +8,22 @@ var ___ = require('lodash'),
 
 
 
-module.exports = function(gulp) {
+module.exports = function(gulp, options) {
 
 
     function copyVeevaThumbsSitemap() {
 
         var deferred = Q.defer();
 
-        gulp.src(path.join(global.paths.dist, '**', '*-thumb.jpg'))
+        if (!options.sitemap) {
+            utils.log.warn('⤷ Skipping copyVeevaThumbsSitemap: Key Message Sitemap does not exist');
+            deferred.resolve();
+            return deferred.promise;
+        }
+
+        gulp.src(path.join(options.paths.dist, '**', '*-thumb.jpg'))
             .pipe(flatten())
-            .pipe(gulp.dest(path.join(global.paths.dist, global.clm.product.name + global.clm.product.suffix + 'sitemap', 'thumbs')))
+            .pipe(gulp.dest(path.join(options.paths.dist, options.clm.product.name + options.clm.product.suffix + 'sitemap', 'thumbs')))
             .on('error', function(err) {
                 deferred.reject(err);
             })
@@ -159,19 +165,19 @@ module.exports = function(gulp) {
     gulp.task('veeva-thumbs', function() {
 
         var deferred = Q.defer(),
-            notSingleKeyMessageMode = global.deploy.keyMessage === false ? true : false;
+            notSingleKeyMessageMode = options.deploy.keyMessage === false ? true : false;
 
         utils.executeWhen(true, function() {
                 return utils.executeWhen(true, screenshots, '⤷ Generating Veeva Thumbnails');
             })
             .then(function() {
-                return utils.executeWhen(notSingleKeyMessageMode, copyVeevaThumbsSitemap, '⤷ Copying generated thumbnails to Key Message: ' + global.clm.product.name + global.clm.product.suffix  + 'sitemap');
+                return utils.executeWhen(notSingleKeyMessageMode, copyVeevaThumbsSitemap, '⤷ Copying generated thumbnails to Key Message: ' + options.clm.product.name + options.clm.product.suffix  + 'sitemap');
             })
             .then(function() {
 
-                if (notSingleKeyMessageMode) {
-                    utils.log.note('⤷ Generating ' + global.clm.product.name + global.clm.product.suffix + 'sitemap thumbnails');
-                    return screenshots([global.clm.product.name + global.clm.product.suffix + 'sitemap']);
+                if (notSingleKeyMessageMode && !options.sitemap) {
+                    utils.log.note('⤷ Generating ' + options.clm.product.name + options.clm.product.suffix + 'sitemap thumbnails');
+                    return screenshots([options.clm.product.name + options.clm.product.suffix + 'sitemap']);
                 } else {
                     var d = Q.defer();
                     d.resolve('Short circuit');

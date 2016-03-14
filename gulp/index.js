@@ -1,17 +1,17 @@
 'use strict';
 
-module.exports = function(gulp) {
+module.exports = function(gulp, options) {
 
     try {
 
-        require('./assemble')(gulp);
-        require('./build')(gulp);
-        require('./clean')(gulp);
-        require('./deploy')(gulp);
-        require('./dev')(gulp);
-        require('./helpers')(gulp);
-        require('./screenshot')(gulp);
-        require('./module-dependencies')(gulp);
+        require('./assemble')(gulp, options);
+        require('./build')(gulp, options);
+        require('./clean')(gulp, options);
+        require('./deploy')(gulp, options);
+        require('./dev')(gulp, options);
+        require('./helpers')(gulp, options);
+        require('./screenshot')(gulp, options);
+        require('./module-dependencies')(gulp, options);
 
     } catch (error) {
         throw new Error(__dirname + '\n' + error);

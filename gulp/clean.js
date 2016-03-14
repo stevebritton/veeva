@@ -3,14 +3,14 @@
 var del = require('del');
 
 
-module.exports = function(gulp) {
+module.exports = function(gulp, options) {
     gulp.task('clean', function() {
-        return del([global.paths.dist + '**/*', '!' + global.paths.dist + '/readme.md']);
+        return del([options.paths.dist + '**/*', '!' + options.paths.dist + '/readme.md']);
     });
 
 
 
     gulp.task('clean:deploy', function() {
-        return del([global.paths.deploy + '**/*', '!' + global.paths.deploy + '/readme.md']);
+        return del([options.paths.deploy + '**/*', '!' + options.paths.deploy + '/readme.md']);
     });
 };
