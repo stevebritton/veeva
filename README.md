@@ -152,7 +152,7 @@ Inside `configuration.yml` you'll see a variable named `paths`. Adjust the paths
     "dist": "build",
     "deploy": "deploy",
     "tmp": "build/.tmp",
-    "pages": "app/templates/pages/**/*.hbs",
+    "pages": "app/templates/pages",
     "layouts": "app/templates/layouts"
 }
 ```

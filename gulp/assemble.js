@@ -3,30 +3,63 @@
 
 var ___ = require('lodash'),
     assemble = require('assemble'),
-    app = assemble(),
     browserSync = require('browser-sync'),
     extname = require('gulp-extname'),
     fs = require('fs'),
     path = require('path'),
     plumber = require('gulp-plumber'),
     Q = require('q'),
+    singlKeyMessageMode = false,
     utils = require('../lib/utils');
+
 
 module.exports = function(gulp) {
 
 
+    function assembleSingleTemplate(keyMessage) {
 
-
-    function assembleTemplates() {
-
-        var deferred = Q.defer();
-
+        var deferred = Q.defer(),
+            app = assemble();
 
         app.data(global.module.workflow.assemble.data);
         app.partials(path.join(global.paths.src, 'templates', 'includes', '*.hbs'));
         app.layouts(path.join(global.paths.src, global.paths.layouts, '*.hbs'));
-        app.pages(path.join(global.paths.src, global.paths.pages));
+        app.pages(path.join(global.paths.src, global.paths.pages, keyMessage.key_message, '*.hbs'));
 
+        app.preLayout(/\.hbs$/, function(view, next) {
+            // only set the layout if it's not already defined
+            if (view.data.layout === undefined) {
+                view.data.layout = global.module.workflow.assemble.defaultLayout;
+            }
+            next();
+        });
+
+        // register helper
+        app.helpers('is', require('./helpers/is.js'));
+
+        app.toStream('pages')
+            .pipe(app.renderFile('hbs'))
+            .on('error', function(err) {
+                utils.log.error(err);
+                deferred.reject(err);
+            })
+            .pipe(extname())
+            .pipe(app.dest(path.join(global.paths.dist, keyMessage.key_message)))
+            .on('end', function() {
+                deferred.resolve();
+            });
+        return deferred.promise;
+    }
+
+    function assembleTemplates() {
+
+        var deferred = Q.defer(),
+             app = assemble();
+
+        app.data(global.module.workflow.assemble.data);
+        app.partials(path.join(global.paths.src, 'templates', 'includes', '*.hbs'));
+        app.layouts(path.join(global.paths.src, global.paths.layouts, '*.hbs'));
+        app.pages(path.join(global.paths.src, global.paths.pages, '**', '*.hbs'));
 
         app.preLayout(/\.hbs$/, function(view, next) {
             // only set the layout if it's not already defined
@@ -53,15 +86,20 @@ module.exports = function(gulp) {
         return deferred.promise;
     }
 
-    function copyTemplateAssets() {
+    function copyTemplateAssets(keyMessage) {
 
-        var deferred = Q.defer();
+        var deferred = Q.defer(),
+        template = keyMessage ? keyMessage.key_message : '';
 
         gulp.src(['**/*', '!**/*.hbs'], {
-                cwd: path.join(process.cwd(), global.paths.src, 'templates', 'pages')
+                cwd: path.join(process.cwd(), global.paths.src, 'templates', 'pages', template)
             })
             .pipe(plumber())
-            .pipe(gulp.dest(path.join(global.paths.dist)))
+            .pipe(gulp.dest(path.join(global.paths.dist, template)))
+            .on('error', function(err) {
+                utils.log.error(err);
+                deferred.reject(err);
+            })
             .on('end', function() {
                 deferred.resolve();
             });
@@ -198,18 +236,47 @@ module.exports = function(gulp) {
         if (global.deploy.keyMessage) {
             arrKeyMessages.splice(0, arrKeyMessages.length);
             arrKeyMessages.push(global.deploy.keyMessage);
+
+            singlKeyMessageMode = true;
         }
 
 
-        utils.executeWhen(true, assembleTemplates, '⤷ Assembling Key Messages')
+
+        utils.executeWhen(!singlKeyMessageMode, assembleTemplates, '⤷ Assembling Key Messages')
+
+            // single Key Message Mode
             .then(function() {
-                return utils.executeWhen(true, copyTemplateAssets, '⤷ Copying Key Message Assets');
+                return utils.executeWhen(singlKeyMessageMode, function() {
+                    return assembleSingleTemplate(global.deploy.keyMessage);
+                }, '⤷ Assembling Single Key Message: ' + global.deploy.keyMessage.key_message);
+            })
+
+            .then(function() {
+                return utils.executeWhen(singlKeyMessageMode, function() {
+                    return assembleSingleTemplate({ 'key_message': 'global' });
+                }, '⤷ Assembling Global Key Message');
+            })
+
+            .then(function() {
+                return utils.executeWhen(singlKeyMessageMode, function() {
+                    return copyTemplateAssets({ 'key_message': 'global' });
+                }, '⤷ Copying Global Key Message Assets');
+            })
+
+            .then(function() {
+                return utils.executeWhen(singlKeyMessageMode, function() {
+                    return copyTemplateAssets(global.deploy.keyMessage);
+                }, '⤷ Copying Single Key Message Assets');
+            })
+
+            .then(function() {
+                return utils.executeWhen(!singlKeyMessageMode, copyTemplateAssets, '⤷ Copying Key Message Assets');
             })
             .then(function() {
                 return utils.executeWhen(true, generateGlobalAppConfig, '⤷ Generating Global app.json file');
             })
             .then(function() {
-                return utils.executeWhen(true, generateSitemapFile, '⤷ Generating sitemap.json file');
+                return utils.executeWhen(!singlKeyMessageMode, generateSitemapFile, '⤷ Generating sitemap.json file');
             })
             .then(function() {
                 utils.log.note('⤷ Copying Global Assets to Key Messages');
@@ -219,6 +286,37 @@ module.exports = function(gulp) {
                     utils.log.success('Done Assembling Key Messages');
 
                     browserSync.reload();
+
+                    deferred.resolve();
+                },
+                function(err) {
+                    utils.log.error(err);
+                    deferred.reject(err);
+                });
+
+        return deferred.promise;
+    });
+
+
+    gulp.task('assemble:test', function() {
+
+        var deferred = Q.defer();
+
+
+        singlKeyMessageMode = true;
+
+
+
+
+        utils.executeWhen(!singlKeyMessageMode, assembleTemplates, '⤷ Assembling Key Messages')
+
+            // single Key Message Mode
+            .then(function() {
+                return utils.executeWhen(singlKeyMessageMode, function() {
+                    return assembleSingleTemplate(global.deploy.keyMessage);
+                }, '⤷ Assembling Single Key Message: ' + global.deploy.keyMessage.key_message);
+            }).done(function() {
+                    utils.log.success('Done Assembling Key Messages');
 
                     deferred.resolve();
                 },

@@ -56,5 +56,5 @@ paths:
     dist: 'build'
     deploy: 'deploy'
     tmp: 'build/.tmp'
-    pages: 'templates/pages/**/*.hbs'
+    pages: 'templates/pages'
     layouts: 'templates/layouts'
