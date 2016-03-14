@@ -17,7 +17,7 @@ var browserSync = require('browser-sync'),
 
 
 
-module.exports = function(gulp) {
+module.exports = function(gulp, options) {
 
     var runSequence = require('run-sequence').use(gulp);
 
@@ -30,12 +30,12 @@ module.exports = function(gulp) {
     function styles() {
         return new promise(function(done) {
 
-            if (global.verbose) {
+            if (options.verbose) {
                 utils.log.note('    ⤷ Compile & Minify CSS');
             }
 
             rubySass(
-                    path.join(global.paths.src, 'assets', 'scss'), {
+                    path.join(options.paths.src, 'assets', 'scss'), {
                         style: 'expanded',
                         precision: 10
                     }
@@ -43,10 +43,10 @@ module.exports = function(gulp) {
                 // Compile & Minify CSS
                 .pipe(cleanCSS())
                 .pipe(size({
-                    showFiles: global.verbose,
-                    gzip: global.verbose
+                    showFiles: options.verbose,
+                    gzip: options.verbose
                 }))
-                .pipe(gulp.dest(path.join(global.paths.dist, 'global', 'css')))
+                .pipe(gulp.dest(path.join(options.paths.dist, 'global', 'css')))
                 .on('end', done)
                 .pipe(browserSync.reload({
                     stream: true
@@ -64,17 +64,17 @@ module.exports = function(gulp) {
     function handleJSScripts() {
         return new promise(function(done) {
 
-            if (global.verbose) {
+            if (options.verbose) {
                 utils.log.note('    ⤷ Processing presentation specific JavaScripts');
             }
 
-            gulp.src(path.join(global.paths.src, 'assets', 'js', 'scripts', '**', '*.js'))
+            gulp.src(path.join(options.paths.src, 'assets', 'js', 'scripts', '**', '*.js'))
                 .pipe(plumber())
                 .pipe(uglify())
                 .pipe(size({
-                    showFiles: global.verbose
+                    showFiles: options.verbose
                 }))
-                .pipe(gulp.dest(path.join(global.paths.dist, 'global', 'js')))
+                .pipe(gulp.dest(path.join(options.paths.dist, 'global', 'js')))
                 .on('end', done);
         });
     }
@@ -84,8 +84,8 @@ module.exports = function(gulp) {
             styles().then(handleJSScripts).then(function() {
 
                 // set Assemble Data Deploy to true
-                global.module.workflow.assemble.data.deploy = true;
-                global.module.workflow.assemble.data.root = '';
+                options.module.workflow.assemble.data.deploy = true;
+                options.module.workflow.assemble.data.root = '';
 
                 runSequence(['veeva-module:js-build'], ['assemble'], ['veeva-thumbs'], done);
             });

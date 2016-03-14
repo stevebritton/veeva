@@ -16,7 +16,7 @@ var ___ = require('lodash'),
 
 
 
-module.exports = function(gulp) {
+module.exports = function(gulp, options) {
 
 
     function handleVaultCSV(keyMessages) {
@@ -35,10 +35,10 @@ module.exports = function(gulp) {
                 'name__v': item.key_message,
                 'Type': 'slide',
                 'lifecycle__v': 'CRM Content Lifecycle',
-                'Presentation Link': global.clm.primary.name,
+                'Presentation Link': options.clm.primary.name,
                 'Fields Only': false,
                 'pres.crm_training__v': false,
-                'pres.product__v.name__v': global.clm.product.name,
+                'pres.product__v.name__v': options.clm.product.name,
                 'pres.crm_start_date__v': '',
                 'pres.crm_end_date__v': '',
                 'slide.country__v.name__v': 'United States',
@@ -46,7 +46,7 @@ module.exports = function(gulp) {
                 'slide.related_sub_pres__v': '',
                 'slide.related_shared_resource__v': '',
                 'slide.crm_disable_actions__v': '',
-                'slide.product__v.name__v': global.clm.product.name,
+                'slide.product__v.name__v': options.clm.product.name,
                 'slide.filename': item.key_message + '.zip'
             });
 
@@ -54,7 +54,7 @@ module.exports = function(gulp) {
 
         json2csv({ data: buildArray, fields: vaultFields }, function(err, csv) {
 
-            fs.writeFile(global.paths.deploy + '/VAULT_CSV.csv', csv, function(err) {
+            fs.writeFile(options.paths.deploy + '/VAULT_CSV.csv', csv, function(err) {
                 if (err) {
                     throw err;
                 } else {
@@ -73,15 +73,15 @@ module.exports = function(gulp) {
 
 
         var conn = ftp.create({
-            host: global.clm.ftp.host,
-            user: global.clm.ftp.user,
-            password: global.clm.ftp.pass,
+            host: options.clm.ftp.host,
+            user: options.clm.ftp.user,
+            password: options.clm.ftp.pass,
             parallel: 10,
             log: utils.log.verbose,
             debug: utils.log.debug
         });
 
-        gulp.src(path.join(global.paths.deploy, '**', '*.zip'), {
+        gulp.src(path.join(options.paths.deploy, '**', '*.zip'), {
                 buffer: false
             })
             .pipe(plumber())
@@ -104,20 +104,20 @@ module.exports = function(gulp) {
         var deferred = Q.defer();
 
         var conn = ftp.create({
-            host: global.clm.ftp.host,
-            user: global.clm.ftp.user,
-            password: global.clm.ftp.pass,
+            host: options.clm.ftp.host,
+            user: options.clm.ftp.user,
+            password: options.clm.ftp.pass,
             parallel: 10,
             log: utils.log.verbose,
             debug: utils.log.debug
         });
 
 
-        gulp.src(path.join(global.paths.deploy, '**', '*.ctl'), {
+        gulp.src(path.join(options.paths.deploy, '**', '*.ctl'), {
                 buffer: false
             })
             .pipe(plumber())
-            .pipe(conn.dest(global.clm.ftp.remotePath))
+            .pipe(conn.dest(options.clm.ftp.remotePath))
             .on('error', function(err) {
                 console.log(err);
                 deferred.reject(err);
@@ -144,30 +144,30 @@ module.exports = function(gulp) {
             var deferred = Q.defer();
 
             gulp.src('**/*', {
-                    cwd: path.join(process.cwd(), global.paths.dist, keyMessage['key_message']),
-                    base: global.paths.dist
+                    cwd: path.join(process.cwd(), options.paths.dist, keyMessage['key_message']),
+                    base: options.paths.dist
                 })
                 .pipe(plumber())
                 .pipe(zip(keyMessage['key_message'] + '.zip'))
                 .pipe(size({
                     title: util.colors.green.bold('⤷ Zipping Key Message: ') + util.colors.yellow.bold(keyMessage['key_message']),
-                    showFiles: global.verbose
+                    showFiles: options.verbose
                 }))
-                .pipe(gulp.dest(global.paths.deploy))
+                .pipe(gulp.dest(options.paths.deploy))
                 .on('error', function(err) {
                     console.log(err);
                     deferred.reject(err);
                 })
                 .on('end', function() {
                     // create Veeva required control file
-                    controlFile = 'USER=' + global.clm.ftp.user + '\n' +
-                        'PASSWORD=' + global.clm.ftp.pass + '\n' +
-                        'EMAIL=' + global.clm.ftp.email + '\n' +
+                    controlFile = 'USER=' + options.clm.ftp.user + '\n' +
+                        'PASSWORD=' + options.clm.ftp.pass + '\n' +
+                        'EMAIL=' + options.clm.ftp.email + '\n' +
                         'NAME=' + keyMessage['key_message'] + '\n' +
                         'Description_vod__c=' + keyMessage['description'] + '\n' +
                         'FILENAME=' + keyMessage['key_message'] + '.zip';
 
-                    fs.writeFile(global.paths.deploy + '/' + keyMessage['key_message'] + '.ctl', controlFile);
+                    fs.writeFile(options.paths.deploy + '/' + keyMessage['key_message'] + '.ctl', controlFile);
 
                     deferred.resolve();
                 });
@@ -196,15 +196,9 @@ module.exports = function(gulp) {
     gulp.task('stage', ['clean:deploy', 'build'], function() {
 
         var deferred = Q.defer(),
-            mergeKeyMessages = global.keyMessages,
+            mergeKeyMessages = options.keyMessages,
             autoDeploy = false;
 
-        // Should we include hidden Key Messages?
-        if (global.deploy.includeHiddenKeyMessage) {
-            util.log(util.colors.yellow.bold('Including hidden Key Messages.'));
-
-            mergeKeyMessages = mergeKeyMessages.concat(global.hiddenKeyMessages);
-        }
 
         // Remove the 'global' key Message from array
         mergeKeyMessages = mergeKeyMessages.filter(function(item) {
@@ -212,9 +206,9 @@ module.exports = function(gulp) {
         });
 
         // Single Key Message Mode?
-        if (global.deploy.keyMessage) {
+        if (options.deploy.keyMessage) {
             mergeKeyMessages.splice(0, mergeKeyMessages.length);
-            mergeKeyMessages.push(global.deploy.keyMessage);
+            mergeKeyMessages.push(options.deploy.keyMessage);
 
             // turn on auto-deploy
             autoDeploy = true;
@@ -272,14 +266,8 @@ module.exports = function(gulp) {
 
 
         var deferred = Q.defer(),
-            mergeKeyMessages = global.keyMessages;
+            mergeKeyMessages = options.keyMessages;
 
-        // Should we include hidden Key Messages?
-        if (global.deploy.includeHiddenKeyMessage) {
-            util.log(util.colors.yellow.bold('Including hidden Key Messages.'));
-
-            mergeKeyMessages = mergeKeyMessages.concat(global.hiddenKeyMessages);
-        }
 
         // Remove the 'global' key Message from array
         mergeKeyMessages = mergeKeyMessages.filter(function(item) {
@@ -287,9 +275,9 @@ module.exports = function(gulp) {
         });
 
         // Single Key Message Mode?
-        if (global.deploy.keyMessage) {
+        if (options.deploy.keyMessage) {
             mergeKeyMessages.splice(0, mergeKeyMessages.length);
-            mergeKeyMessages.push(global.deploy.keyMessage);
+            mergeKeyMessages.push(options.deploy.keyMessage);
         }
 
         utils.executeWhen(true, function() {

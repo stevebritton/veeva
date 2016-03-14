@@ -145,7 +145,7 @@ var VEEVA = VEEVA || {};
 
                 $this.log('Event: Product logo ', $this.eventClick);
                 if ($this.isDeployed) {
-                    veevaGoToSlide($this.product.name + $this.product.suffix + 'home.zip', $this.presentationPrimary);
+                    $this.goToSlide($this.product.name + $this.product.suffix + 'home.zip', $this.presentationPrimary);
                 } else {
                     document.location = '../' + $this.product.name + $this.product.suffix + 'home/' +$this.product.name + $this.product.suffix + 'home.html';
                 }
@@ -168,7 +168,7 @@ var VEEVA = VEEVA || {};
 
                     //Update subscence field and then go to slide
                     veevaUpdateUserObject(_slide, function () {
-                        veevaGoToSlide(_section + '.zip', $this.presentationPrimary);
+                         $this.goToSlide(_section + '.zip', $this.presentationPrimary);
                     });
                 }
 
@@ -194,7 +194,7 @@ var VEEVA = VEEVA || {};
 
                     //Update subscence field and then go to slide
                     veevaUpdateUserObject(_keyMessage, function () {
-                        veevaGoToSlide(_keyMessage + '.zip', _presentation);
+                         $this.goToSlide(_keyMessage + '.zip', _presentation);
                     });
                 }
                 else{
@@ -219,7 +219,7 @@ var VEEVA = VEEVA || {};
 
                     //Update subscence field and then go to slide
                     veevaUpdateUserObject(_keyMessage, function () {
-                        veevaGoToSlide(_product + $this.product.suffix + _keyMessage + '.zip', _presentation);
+                         $this.goToSlide(_product + $this.product.suffix + _keyMessage + '.zip', _presentation);
                     });
                 }
                 else{
@@ -479,6 +479,12 @@ var VEEVA = VEEVA || {};
     };
 
 
+    VEEVA.iRep.prototype.goToSlide = function (slide, presentation) {
+
+        document.location = 'veeva:gotoSlide(' + slide + ', ' + presentation + ')';
+    };
+
+
 
     /**********************************************************
      ** SECTION
@@ -606,7 +612,7 @@ var VEEVA = VEEVA || {};
                         }
 
                         setTimeout(function () {
-                            veevaGoToSlide(setURL, $that.presentationPrimary);
+                             $this.goToSlide(setURL, $that.presentationPrimary);
                         }, 200);
                     } else {
 

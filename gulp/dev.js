@@ -9,7 +9,7 @@ var browserSync = require('browser-sync'),
 
 
 
-module.exports = function(gulp) {
+module.exports = function(gulp, options) {
 
     // Reload all Browsers
     gulp.task('bs-reload', function() {
@@ -24,8 +24,8 @@ module.exports = function(gulp) {
      * @return {function}   Returns Stream
      */
     gulp.task('scripts:dev', function() {
-        return gulp.src(path.join(global.paths.src, 'assets', 'js', 'scripts', '**', '*.js'))
-            .pipe(gulp.dest(path.join(global.paths.dist, 'global', 'js')))
+        return gulp.src(path.join(options.paths.src, 'assets', 'js', 'scripts', '**', '*.js'))
+            .pipe(gulp.dest(path.join(options.paths.dist, 'global', 'js')))
             .pipe(filter('**/*.js'))
             .pipe(browserSync.reload({
                 stream: true
@@ -39,12 +39,12 @@ module.exports = function(gulp) {
      * @return {function}   Returns callback function
      */
     gulp.task('sass:dev', function() {
-        return rubySass(path.join(global.paths.src, 'assets', 'scss'), {
+        return rubySass(path.join(options.paths.src, 'assets', 'scss'), {
                 style: 'expanded',
                 precision: 10
             })
             .pipe(replace('../../images', '/.tmp/images'))
-            .pipe(gulp.dest(path.join(global.paths.dist, 'global', 'css')))
+            .pipe(gulp.dest(path.join(options.paths.dist, 'global', 'css')))
             .pipe(filter('**/*.css')) // Filtering stream to only css files
             .pipe(browserSync.reload({
                 stream: true
@@ -58,9 +58,9 @@ module.exports = function(gulp) {
      * @return {function}   Returns callback function
      */
     gulp.task('images:dev', function() {
-        return gulp.src(path.join(global.paths.src, 'templates', 'pages', '**', '*.{png,jpg}'))
+        return gulp.src(path.join(options.paths.src, 'templates', 'pages', '**', '*.{png,jpg}'))
             .pipe(flatten())
-            .pipe(gulp.dest(path.join(global.paths.tmp, 'images')));
+            .pipe(gulp.dest(path.join(options.paths.tmp, 'images')));
     });
 
     /**
@@ -70,11 +70,11 @@ module.exports = function(gulp) {
     gulp.task('default', ['assemble', 'sass:dev', 'scripts:dev', 'veeva-module:js-build', 'images:dev'], function() {
 
         //Turn on Watcher - used to disable parts of the build process while developing
-        global.isWatching = true;
+        options.isWatching = true;
 
         browserSync({
             server: {
-                baseDir: global.paths.dist,
+                baseDir: options.paths.dist,
                 directory: true,
                 routes: {
                     '/bower_components': 'bower_components',
@@ -83,13 +83,13 @@ module.exports = function(gulp) {
         });
 
 
-        gulp.watch(path.join(global.module.paths.src, global.module.paths.js.scripts, '**', '*.js'), ['veeva-module:js-dev']);
+        gulp.watch(path.join(options.module.paths.src, options.module.paths.js.scripts, '**', '*.js'), ['veeva-module:js-dev']);
 
-        gulp.watch(path.join(global.paths.src, 'assets', 'js', '**', '*.js'), ['scripts:dev']);
-        gulp.watch(path.join(global.paths.src, 'assets', 'scss', '**', '*.scss'), ['sass:dev']);
+        gulp.watch(path.join(options.paths.src, 'assets', 'js', '**', '*.js'), ['scripts:dev']);
+        gulp.watch(path.join(options.paths.src, 'assets', 'scss', '**', '*.scss'), ['sass:dev']);
 
-        gulp.watch(path.join(global.paths.src, 'templates', '**', '*.hbs'), ['assemble']);
-        gulp.watch(path.join(global.paths.src, 'templates', '**', '*.{png,jpg}'), ['images:dev', 'bs-reload']);
+        gulp.watch(path.join(options.paths.src, 'templates', '**', '*.hbs'), ['assemble']);
+        gulp.watch(path.join(options.paths.src, 'templates', '**', '*.{png,jpg}'), ['images:dev', 'bs-reload']);
 
 
     });

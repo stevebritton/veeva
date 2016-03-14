@@ -18,6 +18,7 @@ describe('acceptance tests for Veeva Module', function() {
 
     it('module can be imported without blowing up', function() {
         veeva = require('../index');
+
         assert(veeva !== undefined);
     });
 
@@ -25,7 +26,7 @@ describe('acceptance tests for Veeva Module', function() {
         gulp('--help', function(error, stdout, stderr) {
             assert.ok(error === null);
             done();
-            console.log(stdout);
+            //console.log(stdout);
         });
     });
 
@@ -33,7 +34,7 @@ describe('acceptance tests for Veeva Module', function() {
         gulp('--config', function(error, stdout, stderr) {
             assert.ok(error === null);
             done();
-            console.log(stdout);
+            //console.log(stdout);
         });
     });
 

@@ -9,11 +9,10 @@ var ___ = require('lodash'),
     path = require('path'),
     plumber = require('gulp-plumber'),
     Q = require('q'),
-    singlKeyMessageMode = false,
     utils = require('../lib/utils');
 
 
-module.exports = function(gulp) {
+module.exports = function(gulp, options) {
 
 
     function assembleSingleTemplate(keyMessage) {
@@ -21,15 +20,15 @@ module.exports = function(gulp) {
         var deferred = Q.defer(),
             app = assemble();
 
-        app.data(global.module.workflow.assemble.data);
-        app.partials(path.join(global.paths.src, 'templates', 'includes', '*.hbs'));
-        app.layouts(path.join(global.paths.src, global.paths.layouts, '*.hbs'));
-        app.pages(path.join(global.paths.src, global.paths.pages, keyMessage.key_message, '*.hbs'));
+        app.data(options.module.workflow.assemble.data);
+        app.partials(path.join(options.paths.src, 'templates', 'includes', '*.hbs'));
+        app.layouts(path.join(options.paths.src, options.paths.layouts, '*.hbs'));
+        app.pages(path.join(options.paths.src, options.paths.pages, keyMessage.key_message, '*.hbs'));
 
         app.preLayout(/\.hbs$/, function(view, next) {
             // only set the layout if it's not already defined
             if (view.data.layout === undefined) {
-                view.data.layout = global.module.workflow.assemble.defaultLayout;
+                view.data.layout = options.module.workflow.assemble.defaultLayout;
             }
             next();
         });
@@ -39,13 +38,13 @@ module.exports = function(gulp) {
 
         app.toStream('pages')
             .pipe(app.renderFile('hbs'))
-            .on('error', function(err) {
+            .once('error', function(err) {
                 utils.log.error(err);
                 deferred.reject(err);
             })
             .pipe(extname())
-            .pipe(app.dest(path.join(global.paths.dist, keyMessage.key_message)))
-            .on('end', function() {
+            .pipe(app.dest(path.join(options.paths.dist, keyMessage.key_message)))
+            .once('end', function() {
                 deferred.resolve();
             });
         return deferred.promise;
@@ -56,15 +55,15 @@ module.exports = function(gulp) {
         var deferred = Q.defer(),
              app = assemble();
 
-        app.data(global.module.workflow.assemble.data);
-        app.partials(path.join(global.paths.src, 'templates', 'includes', '*.hbs'));
-        app.layouts(path.join(global.paths.src, global.paths.layouts, '*.hbs'));
-        app.pages(path.join(global.paths.src, global.paths.pages, '**', '*.hbs'));
+        app.data(options.module.workflow.assemble.data);
+        app.partials(path.join(options.paths.src, 'templates', 'includes', '*.hbs'));
+        app.layouts(path.join(options.paths.src, options.paths.layouts, '*.hbs'));
+        app.pages(path.join(options.paths.src, options.paths.pages, '**', '*.hbs'));
 
         app.preLayout(/\.hbs$/, function(view, next) {
             // only set the layout if it's not already defined
             if (view.data.layout === undefined) {
-                view.data.layout = global.module.workflow.assemble.defaultLayout;
+                view.data.layout = options.module.workflow.assemble.defaultLayout;
             }
             next();
         });
@@ -79,7 +78,7 @@ module.exports = function(gulp) {
                 deferred.reject(err);
             })
             .pipe(extname())
-            .pipe(app.dest(path.join(global.paths.dist)))
+            .pipe(app.dest(path.join(options.paths.dist)))
             .on('end', function() {
                 deferred.resolve();
             });
@@ -92,15 +91,15 @@ module.exports = function(gulp) {
         template = keyMessage ? keyMessage.key_message : '';
 
         gulp.src(['**/*', '!**/*.hbs'], {
-                cwd: path.join(process.cwd(), global.paths.src, 'templates', 'pages', template)
+                cwd: path.join(process.cwd(), options.paths.src, 'templates', 'pages', template)
             })
             .pipe(plumber())
-            .pipe(gulp.dest(path.join(global.paths.dist, template)))
-            .on('error', function(err) {
+            .pipe(gulp.dest(path.join(options.paths.dist, template)))
+            .once('error', function(err) {
                 utils.log.error(err);
                 deferred.reject(err);
             })
-            .on('end', function() {
+            .once('end', function() {
                 deferred.resolve();
             });
         return deferred.promise;
@@ -110,7 +109,7 @@ module.exports = function(gulp) {
     function handleGlobalAssets() {
 
         var d = Q.defer(),
-            basePath = path.join(process.cwd(), global.paths.dist),
+            basePath = path.join(process.cwd(), options.paths.dist),
             dirs = utils.getDirectories(basePath);
 
 
@@ -124,11 +123,11 @@ module.exports = function(gulp) {
             } else {
 
                 gulp.src('**/*', {
-                        cwd: path.join(process.cwd(), global.paths.dist, 'global'),
-                        base: global.paths.dist
+                        cwd: path.join(process.cwd(), options.paths.dist, 'global'),
+                        base: options.paths.dist
                     })
                     .pipe(plumber())
-                    .pipe(gulp.dest(path.join(global.paths.dist, directory)))
+                    .pipe(gulp.dest(path.join(options.paths.dist, directory)))
                     .on('end', function() {
                         deferred.resolve();
                     });
@@ -173,11 +172,11 @@ module.exports = function(gulp) {
             filerKeyMessages;
 
         // Remove the 'global' key Message from array
-        filerKeyMessages = global.keyMessages.filter(function(item) {
+        filerKeyMessages = options.keyMessages.filter(function(item) {
             return (item.key_message !== 'global');
         });
 
-        fs.writeFile(global.paths.dist + '/global/app.json', JSON.stringify(filerKeyMessages), function(err, data) {
+        fs.writeFile(options.paths.dist + '/global/app.json', JSON.stringify(filerKeyMessages), function(err, data) {
             if (err) {
                 utils.log.error(err);
                 deferred.reject(err);
@@ -193,9 +192,17 @@ module.exports = function(gulp) {
         var deferred = Q.defer(),
             filerKeyMessages = [];
 
+
+        if (!options.sitemap) {
+            utils.log.warn('⤷ Skipping generateSitemapFile: Key Message Sitemap does not exist');
+            deferred.resolve();
+            return deferred.promise;
+        }
+
+
         // Remove the 'global' and 'sitemap' key Messages from array
-        global.keyMessages.map(function(item) {
-            if (item.key_message !== 'global' && item.key_message !== global.clm.product.name + global.clm.product.suffix + 'sitemap') {
+        options.keyMessages.map(function(item) {
+            if (item.key_message !== 'global' && item.key_message !== options.clm.product.name + options.clm.product.suffix + 'sitemap') {
                 filerKeyMessages.push({
                     'section': item.key_message,
                     'source': item.key_message + '.html',
@@ -205,7 +212,7 @@ module.exports = function(gulp) {
             }
         });
 
-        fs.writeFile(global.paths.dist + '/' + global.clm.product.name + global.clm.product.suffix + 'sitemap/sitemap.json', JSON.stringify(filerKeyMessages), function(err, data) {
+        fs.writeFile(options.paths.dist + '/' + options.clm.product.name + options.clm.product.suffix + 'sitemap/sitemap.json', JSON.stringify(filerKeyMessages), function(err, data) {
             if (err) {
                 utils.log.error(err);
                 deferred.reject(err);
@@ -219,13 +226,8 @@ module.exports = function(gulp) {
     gulp.task('assemble', function() {
 
         var deferred = Q.defer(),
-            arrKeyMessages = global.keyMessages;
+            arrKeyMessages = options.keyMessages;
 
-
-        // Should we include hidden Key Messages?
-        if (global.deploy.includeHiddenKeyMessage) {
-            arrKeyMessages = arrKeyMessages.concat(global.hiddenKeyMessages);
-        }
 
         // Remove the 'global' key Message from array
         arrKeyMessages = arrKeyMessages.filter(function(item) {
@@ -233,50 +235,50 @@ module.exports = function(gulp) {
         });
 
         // Single Key Message Mode?
-        if (global.deploy.keyMessage) {
+        if (options.deploy.keyMessage) {
             arrKeyMessages.splice(0, arrKeyMessages.length);
-            arrKeyMessages.push(global.deploy.keyMessage);
+            arrKeyMessages.push(options.deploy.keyMessage);
 
-            singlKeyMessageMode = true;
+
         }
 
 
 
-        utils.executeWhen(!singlKeyMessageMode, assembleTemplates, '⤷ Assembling Key Messages')
+        utils.executeWhen(!options.modeSingleKeyMessage, assembleTemplates, '⤷ Assembling Key Messages')
 
             // single Key Message Mode
             .then(function() {
-                return utils.executeWhen(singlKeyMessageMode, function() {
-                    return assembleSingleTemplate(global.deploy.keyMessage);
-                }, '⤷ Assembling Single Key Message: ' + global.deploy.keyMessage.key_message);
+                return utils.executeWhen(options.modeSingleKeyMessage, function() {
+                    return assembleSingleTemplate(options.deploy.keyMessage);
+                }, '⤷ Assembling Single Key Message: ' + options.deploy.keyMessage.key_message);
             })
 
             .then(function() {
-                return utils.executeWhen(singlKeyMessageMode, function() {
+                return utils.executeWhen(options.modeSingleKeyMessage, function() {
                     return assembleSingleTemplate({ 'key_message': 'global' });
                 }, '⤷ Assembling Global Key Message');
             })
 
             .then(function() {
-                return utils.executeWhen(singlKeyMessageMode, function() {
+                return utils.executeWhen(options.modeSingleKeyMessage, function() {
                     return copyTemplateAssets({ 'key_message': 'global' });
                 }, '⤷ Copying Global Key Message Assets');
             })
 
             .then(function() {
-                return utils.executeWhen(singlKeyMessageMode, function() {
-                    return copyTemplateAssets(global.deploy.keyMessage);
+                return utils.executeWhen(options.modeSingleKeyMessage, function() {
+                    return copyTemplateAssets(options.deploy.keyMessage);
                 }, '⤷ Copying Single Key Message Assets');
             })
 
             .then(function() {
-                return utils.executeWhen(!singlKeyMessageMode, copyTemplateAssets, '⤷ Copying Key Message Assets');
+                return utils.executeWhen(!options.modeSingleKeyMessage, copyTemplateAssets, '⤷ Copying Key Message Assets');
             })
             .then(function() {
                 return utils.executeWhen(true, generateGlobalAppConfig, '⤷ Generating Global app.json file');
             })
             .then(function() {
-                return utils.executeWhen(!singlKeyMessageMode, generateSitemapFile, '⤷ Generating sitemap.json file');
+                return utils.executeWhen(!options.modeSingleKeyMessage, generateSitemapFile, '⤷ Generating sitemap.json file');
             })
             .then(function() {
                 utils.log.note('⤷ Copying Global Assets to Key Messages');
@@ -302,19 +304,16 @@ module.exports = function(gulp) {
 
         var deferred = Q.defer();
 
-
-        singlKeyMessageMode = true;
-
+        options.modeSingleKeyMessage = true;
 
 
-
-        utils.executeWhen(!singlKeyMessageMode, assembleTemplates, '⤷ Assembling Key Messages')
+        utils.executeWhen(!options.modeSingleKeyMessage, assembleTemplates, '⤷ Assembling Key Messages')
 
             // single Key Message Mode
             .then(function() {
-                return utils.executeWhen(singlKeyMessageMode, function() {
-                    return assembleSingleTemplate(global.deploy.keyMessage);
-                }, '⤷ Assembling Single Key Message: ' + global.deploy.keyMessage.key_message);
+                return utils.executeWhen(options.modeSingleKeyMessage, function() {
+                    return assembleSingleTemplate(options.deploy.keyMessage);
+                }, '⤷ Assembling Single Key Message: ' + options.deploy.keyMessage.key_message);
             }).done(function() {
                     utils.log.success('Done Assembling Key Messages');
 

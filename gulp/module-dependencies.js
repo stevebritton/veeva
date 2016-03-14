@@ -11,19 +11,19 @@ var browserSync = require('browser-sync'),
 
 
 
-module.exports = function(gulp) {
+module.exports = function(gulp, options) {
 
 
     function processJSSingles() {
 
         var deferred = Q.defer();
 
-        gulp.src(path.join(global.module.paths.src, global.module.paths.js.standalone, '**', '*.js'))
+        gulp.src(path.join(options.module.paths.src, options.module.paths.js.standalone, '**', '*.js'))
             .pipe(plumber())
             .pipe(size({
                 showFiles: true
             }))
-            .pipe(gulp.dest(path.join(global.module.paths.src, global.module.paths.dest, 'js')))
+            .pipe(gulp.dest(path.join(options.module.paths.src, options.module.paths.dest, 'js')))
             .on('error', function(err) {
                 deferred.reject(err);
             })
@@ -37,7 +37,7 @@ module.exports = function(gulp) {
 
         var deferred = Q.defer();
 
-        gulp.src(path.join(global.module.paths.src, global.module.paths.js.scripts, '**', '*.js'))
+        gulp.src(path.join(options.module.paths.src, options.module.paths.js.scripts, '**', '*.js'))
             .pipe(plumber())
             .pipe(concat('main.js'))
             .pipe(uglify({
@@ -46,7 +46,7 @@ module.exports = function(gulp) {
             .pipe(size({
                 showFiles: true
             }))
-            .pipe(gulp.dest(path.join(global.module.paths.src, global.module.paths.dest, 'js')))
+            .pipe(gulp.dest(path.join(options.module.paths.src, options.module.paths.dest, 'js')))
             .on('error', function(err) {
                 deferred.reject(err);
             })
@@ -61,9 +61,9 @@ module.exports = function(gulp) {
         var deferred = Q.defer();
 
         gulp.src([
-                path.join(global.module.paths.src, global.module.paths.js.vendor, '**/*.js'),
-                path.join('!' + global.module.paths.src, global.module.paths.js.vendor, 'zepto.min.js'),
-                path.join('!' + global.module.paths.src, global.module.paths.js.vendor, 'zepto.ghostclick.js')
+                path.join(options.module.paths.src, options.module.paths.js.vendor, '**/*.js'),
+                path.join('!' + options.module.paths.src, options.module.paths.js.vendor, 'zepto.min.js'),
+                path.join('!' + options.module.paths.src, options.module.paths.js.vendor, 'zepto.ghostclick.js')
             ])
             .pipe(plumber())
             .pipe(concat('vendor.js'))
@@ -71,7 +71,7 @@ module.exports = function(gulp) {
             .pipe(size({
                 showFiles: true
             }))
-            .pipe(gulp.dest(path.join(global.module.paths.src, global.module.paths.dest, 'js')))
+            .pipe(gulp.dest(path.join(options.module.paths.src, options.module.paths.dest, 'js')))
             .on('error', function(err) {
                 deferred.reject(err);
             })
@@ -86,7 +86,7 @@ module.exports = function(gulp) {
 
         var deferred = Q.defer();
 
-        gulp.src(path.join(global.module.paths.src, global.module.paths.js.vendor, '**/*.js'))
+        gulp.src(path.join(options.module.paths.src, options.module.paths.js.vendor, '**/*.js'))
             .pipe(plumber())
             .pipe(concat('vendor.js'))
             .pipe(uglify({
@@ -95,7 +95,7 @@ module.exports = function(gulp) {
             .pipe(size({
                 showFiles: true
             }))
-            .pipe(gulp.dest(path.join(global.module.paths.src, global.module.paths.dest, 'js')))
+            .pipe(gulp.dest(path.join(options.module.paths.src, options.module.paths.dest, 'js')))
             .on('error', function(err) {
                 deferred.reject(err);
             })
@@ -110,12 +110,12 @@ module.exports = function(gulp) {
 
         var deferred = Q.defer();
 
-        gulp.src(path.join(global.module.paths.src, global.module.paths.dest, '**/*.js'))
+        gulp.src(path.join(options.module.paths.src, options.module.paths.dest, '**/*.js'))
             .pipe(plumber())
             .pipe(size({
                 showFiles: true
             }))
-            .pipe(gulp.dest(path.join(global.paths.dist, 'global')))
+            .pipe(gulp.dest(path.join(options.paths.dist, 'global')))
             .on('error', function(err) {
                 deferred.reject(err);
             })
@@ -136,10 +136,10 @@ module.exports = function(gulp) {
                 return utils.executeWhen(true, processJSMain, '⤷ Main Scripts');
             })
             .then(function() {
-                return utils.executeWhen(!global.module.workflow.assemble.data.deploy, processJSVendor, '⤷ Vendor Scripts - Dev Mode');
+                return utils.executeWhen(!options.module.workflow.assemble.data.deploy, processJSVendor, '⤷ Vendor Scripts - Dev Mode');
             })
             .then(function() {
-                return utils.executeWhen(global.module.workflow.assemble.data.deploy, processJSVendorBuild, '⤷ Vendor Scripts - Build Mode');
+                return utils.executeWhen(options.module.workflow.assemble.data.deploy, processJSVendorBuild, '⤷ Vendor Scripts - Build Mode');
             })
             .then(function() {
                 return utils.executeWhen(true, processCopyScripts, '⤷ Copying Veeva JS dependencies to project');
@@ -158,10 +158,10 @@ module.exports = function(gulp) {
 
 
     gulp.task('veeva-module:js-dev', function() {
-        return gulp.src(path.join(global.module.paths.src, global.module.paths.js.scripts, '**', '*.js'))
+        return gulp.src(path.join(options.module.paths.src, options.module.paths.js.scripts, '**', '*.js'))
             .pipe(plumber())
             .pipe(concat('main.js'))
-            .pipe(gulp.dest(path.join(global.paths.dist, 'global', 'js')))
+            .pipe(gulp.dest(path.join(options.paths.dist, 'global', 'js')))
             .pipe(browserSync.reload({
                 stream: true
             }));
