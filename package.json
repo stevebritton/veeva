@@ -6,7 +6,8 @@
     "veeva": "bin/veeva.js"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "change": "scripts/changelog.js"
   },
   "main": "./index.js",
   "repository": "https://github.com/stevebritton/veeva",
