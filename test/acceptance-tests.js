@@ -7,7 +7,11 @@ var assert = require('assert'),
     veeva;
 
 function gulp(task, done) {
-    exec(GULP + ' ' + task + ' --gulpfile examples/clm/test-gulpfile.js', done);
+    exec(GULP + ' ' + task + ' --gulpfile examples/clm/test-gulpfile.js --silent', done);
+}
+
+function veeva(task, done) {
+    exec('index.js ' + ' ' + task, done);
 }
 
 describe('acceptance tests for Veeva Module', function() {
@@ -17,13 +21,24 @@ describe('acceptance tests for Veeva Module', function() {
         assert(veeva !== undefined);
     });
 
+    it('show help passes without error', function(done) {
+        gulp('--help', function(error, stdout, stderr) {
+            assert.ok(error === null);
+            done();
+            console.log(stdout);
+        });
+    });
+
+     it('show configuration passes without error', function(done) {
+        gulp('--config', function(error, stdout, stderr) {
+            assert.ok(error === null);
+            done();
+            console.log(stdout);
+        });
+    });
+
     it('gulp assemble passes without error', function(done) {
-        gulp(' -k home assemble', function(error, stdout, stderr) {
-
-            console.log('ERROR: ', error);
-            console.log('stdout: ', stdout);
-            console.log('stderr: ', stderr);
-
+        gulp(' -k home assemble:test', function(error, stdout, stderr) {
             assert.ok(error === null);
             done();
         });

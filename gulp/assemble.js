@@ -297,4 +297,35 @@ module.exports = function(gulp) {
         return deferred.promise;
     });
 
+
+    gulp.task('assemble:test', function() {
+
+        var deferred = Q.defer();
+
+
+        singlKeyMessageMode = true;
+
+
+
+
+        utils.executeWhen(!singlKeyMessageMode, assembleTemplates, '⤷ Assembling Key Messages')
+
+            // single Key Message Mode
+            .then(function() {
+                return utils.executeWhen(singlKeyMessageMode, function() {
+                    return assembleSingleTemplate(global.deploy.keyMessage);
+                }, '⤷ Assembling Single Key Message: ' + global.deploy.keyMessage.key_message);
+            }).done(function() {
+                    utils.log.success('Done Assembling Key Messages');
+
+                    deferred.resolve();
+                },
+                function(err) {
+                    utils.log.error(err);
+                    deferred.reject(err);
+                });
+
+        return deferred.promise;
+    });
+
 };
