@@ -21,7 +21,7 @@ clm:
     description: 'Home'
     display_order: '0'
     slides:
-    - slide: 'home'
+    - slide: 'Home Veeva CLM Example'
       id: '0'
   - key_message: 'overview'
     description: 'Veeva Test Overview'
@@ -29,6 +29,10 @@ clm:
     slides:
     - slide: 'Veeva Test Overview'
       id: '2-0'
+    - slide: 'Sub Slide 1'
+      id: '2-1'
+    - slide: 'Sub Slide 2'
+      id: '2-2'
   - key_message: 'sitemap'
     description: 'Sitemap'
     display_order: '2'

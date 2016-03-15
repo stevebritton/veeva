@@ -276,28 +276,13 @@ section.main-content{
     }
 
 
-    #section-holder{
-
-        &.slide-left{
-            transform: translate3d(0,0,0);
-            -webkit-transform: translate3d(0,0,0);
-            -webkit-animation: slideouttoleft .6s ease-in;
-        }
-
-        &.slide-right{
-            transform: translate3d(0,0,0);
-            -webkit-transform: translate3d(0,0,0);
-            -webkit-animation: slideinfromright .6s ease-in;
-        }
-
-        .content{
-            position: relative;
-            margin-left: 75px;
-        }
 
 
+    .content{
+        position: relative;
+        margin-left: 75px;
+    }
 
-    }//#section-holder
 
 }// section.main-content
 

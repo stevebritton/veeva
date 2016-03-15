@@ -51,7 +51,7 @@
              */
             {{#is section "sitemap"}}
                 head.load(['js/page.sitemap.js?v={{version}}'], function(){
-                    pageSitemap.init(settings);
+                    pageSitemap.init({parent: VeevaPresentaion});
                 });
             {{/is}}
             /*
@@ -59,7 +59,7 @@
              */
             {{#is section "resources"}}
                 head.load(['js/page.resources.js?v={{version}}'], function(){
-                    pageResources.init(settings);
+                    pageResources.init({parent: VeevaPresentaion});
                 });
             {{/is}}
 
