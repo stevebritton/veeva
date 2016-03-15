@@ -175,7 +175,7 @@ module.exports = function(gulp, options) {
             })
             .then(function() {
 
-                if (notSingleKeyMessageMode && !options.sitemap) {
+                if (notSingleKeyMessageMode && options.sitemap) {
                     utils.log.note('⤷ Generating ' + options.clm.product.name + options.clm.product.suffix + 'sitemap thumbnails');
                     return screenshots([options.clm.product.name + options.clm.product.suffix + 'sitemap']);
                 } else {
