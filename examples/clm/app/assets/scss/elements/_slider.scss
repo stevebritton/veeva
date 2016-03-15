@@ -4,110 +4,110 @@
 
 
 /***************************/
+
+
 /*         SLIDER          */
+
+
 /***************************/
-div.slider {
+
+section.main-content {
     position: absolute;
     top: 0px;
     left: 0px;
     margin-left: 0;
     overflow: hidden;
     position: relative;
-
-
-    ul.slideObj,
-    li.slideObj {
+    section.page,
+    ,
+    slide {
         margin: 0;
         padding: 0;
         list-style: none;
     }
-
-    li.slideObj {
+    slide {
         height: 585px;
         width: 1024px;
         float: left;
         overflow: hidden;
         position: relative;
-        -webkit-transition:all .2s ease-out;
-        transform: translate3d(0,0,0);
-        -webkit-transform: translate3d(0,0,0);
+        -webkit-transition: all .2s ease-out;
     }
+}
 
-    .subnav{
-        @include box-shadow(0px, 5px, 20px, 8px, rgba(0, 0, 0, 0.6));
-        margin:0px !important;
-        position:absolute;
-        bottom:0;
-        left:0;
-        width:100%;
-        background: $red;
-        height: 45px;
-        ul{
-            margin:15px 0px 0px 90px;
-            width:100%;
-
-            li{
-                float:left;
-                padding-right:95px;
-                position:relative;
-                line-height:15px;
-                a{
-                    color:$white;
-                    white-space: nowrap;
-                    font-family: $font-copy-bold;
-                    font-size:13px;
-                    display:block;
-                    .nav-outer:before{
-                        @include border-radius(20px);
-                        width: 10px;
-                        height: 10px;
-                        position:absolute;
-                        left:-20px;
-                        display:inline-block;
-                        content: '';
-                        cursor:pointer;
-                        border:1px solid $white;
-                        z-index: 9999;
-                    }
-
-                    &.active .nav-outer:before{background: $white;}
-                }
-            }
-        }
-    }
-
-
-    .ctrl-pre-slide{
-        position:absolute;
+#app-body {
+    .ctrl-pre-slide {
+        position: absolute;
         top: 210px !important;
         left: 8px !important;
         cursor: pointer;
-        &:before{
+        &:before {
             content: "\f104";
-            font-family:'FontAwesome';
+            font-family: 'FontAwesome';
             font-size: 6em;
             color: #e8e8e8;
-            position:absolute;
+            position: absolute;
             top: 0;
-            left:0px;
+            left: 0px;
         }
     }
-
-    .ctrl-next-slide{
-        position:absolute;
+    .ctrl-next-slide {
+        position: absolute;
         top: 210px;
-        right:8px !important;
+        right: 8px !important;
         cursor: pointer;
-        z-index:9999;
-        &:before{
+        z-index: 9;
+        &:before {
             content: '\f105';
-            font-family:'FontAwesome';
+            font-family: 'FontAwesome';
             font-size: 6em;
             color: #e8e8e8;
-            position:absolute;
+            position: absolute;
             top: 0;
-            right:0px;
-            z-index:9999;
+            right: 0px;
+            z-index: 9999;
+        }
+    }
+    .subnav {
+        @include box-shadow(0px, 5px, 20px, 8px, rgba(0, 0, 0, 0.6));
+        margin: 0px !important;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: $red;
+        height: 45px;
+        ul {
+            margin: 15px 0px 0px 90px;
+            width: 100%;
+            li {
+                float: left;
+                padding-right: 95px;
+                position: relative;
+                line-height: 15px;
+                a {
+                    color: $white;
+                    white-space: nowrap;
+                    font-family: $font-copy-bold;
+                    font-size: 13px;
+                    display: block;
+                    .nav-outer:before {
+                        @include border-radius(20px);
+                        width: 10px;
+                        height: 10px;
+                        position: absolute;
+                        left: -20px;
+                        display: inline-block;
+                        content: '';
+                        cursor: pointer;
+                        border: 1px solid $white;
+                        z-index: 9999;
+                    }
+                    &.active .nav-outer:before {
+                        background: $white;
+                    }
+                }
+            }
         }
     }
 }
