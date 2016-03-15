@@ -24,7 +24,7 @@ if (typeof jQuery === 'undefined') {
     })();
 
 
-    $.fn.swipeSlider = function(options){
+    $.fn.veevaSwipeSlider = function(options){
 
         /**
          * Some defults
@@ -54,9 +54,10 @@ if (typeof jQuery === 'undefined') {
             pause:              2000,
             continuous:         false,
             blnSwiping:         true,
-            noSwipeZone:        false,
+            slideNoSwipeZones:  false,
             startIndex:         0,
             slideIndex:         0,
+            subNav:             false,
             stateID:            'page',
             stateManager:       false,
             sliderClass:        'ul.slideObj',
@@ -79,8 +80,10 @@ if (typeof jQuery === 'undefined') {
          * Set plugin to this object and extend defualts and utils
          * @type {[type]}
          */
-        plugin          = this;
-        plugin.options  = $.extend(defaults, options, utils);
+        plugin                  = this;
+        plugin.options          = $.extend(defaults, options, utils);
+
+        plugin.options.slides   = [];
 
 
         plugin.each(function(){
@@ -95,6 +98,7 @@ if (typeof jQuery === 'undefined') {
 
             plugin.options.log('Init: swipeSlider: ', plugin.options, plugin.options.slideIndex);
 
+            plugin.options.slides = $element.find(plugin.options.sliderClass).find(plugin.options.slideClass);
 
             function handleStateManager(){
                 if (plugin.options.stateManager) {
@@ -108,12 +112,19 @@ if (typeof jQuery === 'undefined') {
 
             }
 
+            function handleSubNav(){
+                $(plugin.options.subNav).find('a').removeClass('active');
+                $(plugin.options.subNav[plugin.options.slideIndex]).find('a').addClass('active');
+            }
+
             function skipTo(index){
 
                 var p       = (index*w*-1),
                     $slide  = $(plugin.options.sliderClass, $element);
 
                 plugin.options.slideIndex = index;
+
+                $(plugin.options.subNav[index]).find('a').addClass('active');
 
                 $slide.find('.content').hide();
                 $slide.css({ marginLeft: p });
@@ -163,6 +174,8 @@ if (typeof jQuery === 'undefined') {
                 var speed = diff*plugin.options.speed;
                 var position = (plugin.options.slideIndex*w*-1);
 
+
+
                 /**
                  * Handle Slide Event before movement
                  * Animate slide
@@ -173,7 +186,14 @@ if (typeof jQuery === 'undefined') {
 
                 handleSlideEvent();
 
+
                 $(plugin.options.sliderClass, $element).animate({ marginLeft: position}, speed, function(){
+
+                    handleSubNav();
+
+                    $(plugin.options.slides).removeClass('active');
+
+                    $(plugin.options.slides[plugin.options.slideIndex]).addClass('active');
 
                     plugin.options.onSlideAfterChange($element, plugin.options.slideIndex);
 
@@ -195,44 +215,45 @@ if (typeof jQuery === 'undefined') {
 
             if(plugin.options.controlsShow){
                 var html = plugin.options.controlsBefore;
-                if(plugin.options.firstShow){
-                    html += '<span id="'+ plugin.options.firstId +'"><a href=\"javascript:void(0);\">'+ plugin.options.firstText +'</a></span>';
-                }
-                html += ' <span id="'+ plugin.options.prevId +'"><a href=\"javascript:void(0);\">'+ plugin.options.prevText +'</a></span>';
-                html += ' <span id="'+ plugin.options.nextId +'"><a href=\"javascript:void(0);\">'+ plugin.options.nextText +'</a></span>';
-                if(plugin.options.lastShow){
-                    html += ' <span id="'+ plugin.options.lastId +'"><a href=\"javascript:void(0);\">'+ plugin.options.lastText +'</a></span>';
-                }
+
+                html += '<div class="ctrl-next-slide" id="'+ plugin.options.nextId +'"></div><div class="ctrl-pre-slide" id="'+ plugin.options.prevId +'"></div>';
                 html += plugin.options.controlsAfter;
 
-                $($element).after(html);
+                $($element).append(html);
             }
 
-            $('a','#'+plugin.options.nextId).on(plugin.options.eventClick, function(e){
+            $($element).find('#'+plugin.options.nextId).on(plugin.options.eventClick, function(e){
                 e.preventDefault();
 
                 animate('next',true);
             });
 
-            $('a','#' + plugin.options.prevId).on(plugin.options.eventClick, function(e){
+            $($element).find('#' + plugin.options.prevId).on(plugin.options.eventClick, function(e){
                 e.preventDefault();
 
                 animate('prev',true);
             });
 
-
-            $element.on(plugin.options.eventClick, '.' + plugin.options.triggerSlideClass, function(e){
+            // handle sub-nav links
+            $(plugin.options.subNav).find('a').on(plugin.options.eventClick, function(e){
 
                 e.preventDefault();
 
                 var islideIndex = parseInt($(this).attr('slideindex'));
 
+
                 skipTo(islideIndex);
 
                 handleStateManager();
 
+                handleSubNav();
+
                 //trigger slide event
                 handleSlideEvent();
+
+                $(plugin.options.slides).removeClass('active');
+
+                $(plugin.options.slides[plugin.options.slideIndex]).addClass('active');
 
                 plugin.options.onSlideAfterChange($element, plugin.options.slideIndex);
 
@@ -240,6 +261,9 @@ if (typeof jQuery === 'undefined') {
 
             if(plugin.options.startIndex > 0) {
                 skipTo(plugin.options.startIndex-1);
+            }
+            else{
+                $(plugin.options.subNav[plugin.options.startIndex]).find('a').addClass('active');
             }
 
             /**
@@ -274,8 +298,12 @@ if (typeof jQuery === 'undefined') {
 
                         var changeX = originalCoord.x - finalCoord.x;
 
+                        var noSwipeZone = plugin.options.slideNoSwipeZones[plugin.options.slideIndex] || false,
+                            noSwipeZoneYtop = parseInt(noSwipeZone.yTop) || 0,
+                            noSwipeZoneYbottom = parseInt(noSwipeZone.yBottom) || 0;
+
                         if(changeX > plugin.options.threshold.x) {
-                            if (originalCoord.y > plugin.options.noSwipeZone[plugin.options.slideIndex].yTop && originalCoord.y < plugin.options.noSwipeZone[plugin.options.slideIndex].yBottom){
+                            if (originalCoord.y > noSwipeZoneYtop && originalCoord.y < noSwipeZoneYbottom){
                                 plugin.options.log('in the noSwipeZone');
                             }
                             else {
@@ -284,7 +312,7 @@ if (typeof jQuery === 'undefined') {
                             }
                         }
                         if(changeX < (plugin.options.threshold.x*-1)) {
-                            if (originalCoord.y > plugin.options.noSwipeZone[plugin.options.slideIndex].yTop && originalCoord.y <plugin.options.noSwipeZone[plugin.options.slideIndex].yBottom){
+                            if (originalCoord.y > noSwipeZoneYtop && originalCoord.y < noSwipeZoneYbottom){
                                 plugin.options.log('in the noSwipeZone');
                             }
                             else {

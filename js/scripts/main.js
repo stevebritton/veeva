@@ -1,62 +1,62 @@
-
 /*global $, window, document, jQuery, utilKeyMessages, IScroll, com */
 
 /**
- * VEEVA Module JS Library
+ * VEEVA.iRep JS Library
  *
- * @version 0.0.2
+ * @version 1.0.0
  *
  *
  * @author Steven Britton    <stvnbritton@gmail.com>
 
  * @uses utilKeyMessages
  * @uses jQuery 1.7.2
- * @uses IScroll
+ * @uses IScroll v5.1.2
  * @uses com Veeva Library for CLM v2.0
  */
 
 
 var VEEVA = VEEVA || {};
 
-;(function( window, document, $, undefined ) {
+;
+(function(window, document, $, undefined) {
 
 
 
     VEEVA.iRep = function iRep(settings) {
 
-        var name                        = 'VEEVA Module JS Library';
+        var name = 'VEEVA Module JS Library';
 
-        this.veevaTrackSubsceneField    = settings.veevaTrackSubsceneField;
-        this.product                    = settings.product;
-        this.presentationPrimary        = settings.presentationPrimary;
-        this.presentationPDFs           = settings.presentationPDFs;
-        this.presentationVideos         = settings.presentationVideos;
+        this.veevaTrackSubsceneField = settings.veevaTrackSubsceneField;
+        this.product = settings.product;
+        this.presentationPrimary = settings.presentationPrimary;
+        this.presentationPDFs = settings.presentationPDFs;
+        this.presentationVideos = settings.presentationVideos;
 
-        this.currentSectionName         = settings.section;
-        this.currentSection             = '';
+        this.currentSectionName = settings.section;
+        this.currentSection = '';
 
-        this.currentKeyMessage          = '';
+        this.currentKeyMessage = '';
 
-        this.rootURL                    = '';
-        this.isDeployed                 = settings.isDeployed === true ? true : false;
-        this.debug                      = settings.isDeployed ? false : true;
-        this.appConfigFile              = 'global/app.json';
+        this.rootURL = '';
+        this.isDeployed = settings.isDeployed === true ? true : false;
+        this.debug = settings.isDeployed ? false : true;
+        this.appConfigFile = 'global/app.json';
 
-        this.eventClick                 = settings.isDeployed ? 'touchend' : 'click';
+        this.eventClick = settings.isDeployed ? 'touchend' : 'click';
 
-        this.appBody                    = $('#app-body');
-        this.containerMainISI           = '#main-isi';
-        this.btnISI                     = $('.isi-bar');
-        this.fileISI                    = 'global/isi.html';
+        this.appBody = $('#app-body');
+        this.containerMainISI = '#main-isi';
+        this.btnISI = $('.isi-bar');
+        this.fileISI = 'global/isi.html';
 
-        this.startTimeout               = '';
-        this.mainISI                    = '';
-        this.popup                      = '';
+        this.startTimeout = '';
+        this.mainISI = '';
+        this.popup = '';
 
-        this.sectionNumber              = 0;
-        this.slideNumber                = 0;
-        this.state                      = {};
-        this.bottomAdded                = false;
+        this.sectionNumber = 0;
+        this.slideNumber = 0;
+        this.state = {};
+        this.bottomAdded = false;
 
         this._init();
     };
@@ -66,7 +66,7 @@ var VEEVA = VEEVA || {};
         constructor: VEEVA.iRep,
 
         /* Debug logging (if enabled). */
-        log: function () {
+        log: function() {
 
             if (this.debug) {
                 window.top.console.log('', arguments);
@@ -74,7 +74,7 @@ var VEEVA = VEEVA || {};
             return this;
         },
 
-        _init: function () {
+        _init: function() {
 
             var $this = this;
 
@@ -85,14 +85,14 @@ var VEEVA = VEEVA || {};
                 type: 'GET',
                 url: $this.appConfigFile,
                 dataType: 'json',
-                success: function (data) {
+                success: function(data) {
                     utilKeyMessages.loadKeymessages(data);
 
                     $this.log('Loading app.json', utilKeyMessages);
 
                     $this.start();
                 },
-                error: function () {
+                error: function() {
                     $this.log('Error: issue loading file ', $this.appConfigFile);
                 }
 
@@ -101,7 +101,7 @@ var VEEVA = VEEVA || {};
         },
 
 
-        start: function () {
+        start: function() {
 
             var $this = this;
 
@@ -110,14 +110,14 @@ var VEEVA = VEEVA || {};
 
             var hash = location.hash.substr(1);
 
-            if(hash === 'screenshot'){
+            if (hash === 'screenshot') {
                 $this.isDeployed = false;
             }
 
 
             $this.currentSectionName = $this.product.name + $this.product.suffix + $this.currentSectionName;
 
-            $this.btnISI.one($this.eventClick, function (e) {
+            $this.btnISI.one($this.eventClick, function(e) {
 
                 $this.log('Event: ISI button ', $this.eventClick);
 
@@ -141,18 +141,18 @@ var VEEVA = VEEVA || {};
              * @date   2015-03-26
              * @todo Remove hard-coded product name with property passed down from global settings.
              */
-            $this.appBody.find('.logo-product').on($this.eventClick, function () {
+            $this.appBody.find('.logo-product').on($this.eventClick, function() {
 
                 $this.log('Event: Product logo ', $this.eventClick);
                 if ($this.isDeployed) {
                     $this.goToSlide($this.product.name + $this.product.suffix + 'home.zip', $this.presentationPrimary);
                 } else {
-                    document.location = '../' + $this.product.name + $this.product.suffix + 'home/' +$this.product.name + $this.product.suffix + 'home.html';
+                    document.location = '../' + $this.product.name + $this.product.suffix + 'home/' + $this.product.name + $this.product.suffix + 'home.html';
                 }
             });
 
 
-            $this.appBody.on($this.eventClick, '.btn-goto', function (event) {
+            $this.appBody.on($this.eventClick, '.btn-goto', function(event) {
 
                 event.preventDefault();
 
@@ -167,8 +167,8 @@ var VEEVA = VEEVA || {};
                 if ($this.isDeployed) {
 
                     //Update subscence field and then go to slide
-                    veevaUpdateUserObject(_slide, function () {
-                         $this.goToSlide(_section + '.zip', $this.presentationPrimary);
+                    $this.veevaUpdateUserObject(_slide, function() {
+                        $this.goToSlide(_section + '.zip', $this.presentationPrimary);
                     });
                 }
 
@@ -179,7 +179,7 @@ var VEEVA = VEEVA || {};
              * @author Steven Britton
              * @date   2015-04-20
              */
-            $this.appBody.on($this.eventClick, '.btn-external', function (event) {
+            $this.appBody.on($this.eventClick, '.btn-external', function(event) {
 
                 event.preventDefault();
 
@@ -190,19 +190,18 @@ var VEEVA = VEEVA || {};
                     _presentation = _this.attr('data-veeva-presentation') || $this.presentationPrimary;
 
                 //Only run if deployed, and if it is, then run Veeva scripts
-                if ($this.isDeployed && _keyMessage !=='' && _presentation !== '') {
+                if ($this.isDeployed && _keyMessage !== '' && _presentation !== '') {
 
                     //Update subscence field and then go to slide
-                    veevaUpdateUserObject(_keyMessage, function () {
-                         $this.goToSlide(_keyMessage + '.zip', _presentation);
+                    $this.veevaUpdateUserObject(_keyMessage, function() {
+                        $this.goToSlide(_keyMessage + '.zip', _presentation);
                     });
-                }
-                else{
-                    document.location = '../' + _keyMessage + '/' +  _keyMessage + '.html';
+                } else {
+                    document.location = '../' + _keyMessage + '/' + _keyMessage + '.html';
                 }
             });
 
-            $this.appBody.on($this.eventClick, '.btn-link', function (event) {
+            $this.appBody.on($this.eventClick, '.btn-link', function(event) {
 
                 event.preventDefault();
 
@@ -215,20 +214,19 @@ var VEEVA = VEEVA || {};
                     _presentation = _this.attr('data-veeva-presentation') || $this.presentationPrimary;
 
                 //Only run if deployed, and if it is, then run Veeva scripts
-                if ($this.isDeployed && _keyMessage !=='' && _presentation !== '') {
+                if ($this.isDeployed && _keyMessage !== '' && _presentation !== '') {
 
                     //Update subscence field and then go to slide
-                    veevaUpdateUserObject(_keyMessage, function () {
-                         $this.goToSlide(_product + $this.product.suffix + _keyMessage + '.zip', _presentation);
+                    $this.veevaUpdateUserObject(_keyMessage, function() {
+                        $this.goToSlide(_product + $this.product.suffix + _keyMessage + '.zip', _presentation);
                     });
-                }
-                else{
-                    document.location = '../' + _product + $this.product.suffix  + _keyMessage + '/' +  _product + $this.product.suffix + _keyMessage + '.html';
+                } else {
+                    document.location = '../' + _product + $this.product.suffix + _keyMessage + '/' + _product + $this.product.suffix + _keyMessage + '.html';
                 }
             });
 
 
-            $(window).on('hashchange', function (e) {
+            $(window).on('hashchange', function(e) {
                 $this.pageChanged(e);
             });
 
@@ -236,19 +234,18 @@ var VEEVA = VEEVA || {};
             window.addEventListener('hashchange', function(e){
                 $this.pageChanged(e);
             }, false);
-            */
 
-            document.addEventListener('touchmove', function (e) {
+             */
+            document.addEventListener('touchmove', function(e) {
                 e.preventDefault();
             });
 
-            $this.appBody.on('show.popup.MD', function (event) {
+
+            $this.appBody.on('show.popup.MD', function(event) {
 
                 $this.log('Event: ', 'triggered', 'show.popup.MD', event);
 
-                $this.closePopup();
-
-                if(event.url){
+                if (event.url) {
                     $this.openPopup(event);
                 }
 
@@ -256,21 +253,20 @@ var VEEVA = VEEVA || {};
                 if (event.trackID && $this.isDeployed) {
 
                     //Add Veeva Click stream tracking
-                    addCallClickstream(event);
+                    $this.addCallClickstream(event);
                 }
 
             });
 
             //Check to see if SubScene should be loaded using Veeva custom field
             if ($this.isDeployed) {
-                veevaCheckForSubScene(function (blnSceneChanged) {
+                $this.veevaCheckForSubScene(function(blnSceneChanged) {
                     if (!blnSceneChanged) {
                         //Trigger function
                         $(window).trigger('hashchange');
                     }
                 });
-            }
-            else{
+            } else {
                 $(window).trigger('hashchange');
             }
 
@@ -280,7 +276,7 @@ var VEEVA = VEEVA || {};
 
     };
 
-    VEEVA.iRep.prototype.pageChanged = function (event) {
+    VEEVA.iRep.prototype.pageChanged = function(event) {
 
         var $this = this;
 
@@ -290,11 +286,6 @@ var VEEVA = VEEVA || {};
         // Get the State Object
         $this.state = event.getState();
 
-        var hasState = false;
-        for (var key in $this.state) {
-            hasState = true;
-        }
-
         //Set current section
         $this.state['section'] = $this.currentSectionName;
 
@@ -303,22 +294,14 @@ var VEEVA = VEEVA || {};
 
         if (!$this.state['pageChange']) {
 
-            // Stop the start view timer if someone clicks on a link while it is open
-            window.clearTimeout($this.startTimeout);
-
-            $('#section-holder').detach();
-            $('#content-main').detach();
-
-            $this.closePopup();
-
             if ($this.state['section']) {
 
-                $this.appBody.find('section.main-content section.page-load').append('<div id="section-holder" />');
+                $this.appBody.find('section.main-content section.page-load');
 
                 $this.currentKeyMessage = utilKeyMessages.getKeyMessageByName($this.currentSectionName);
 
-                var nextSection =  utilKeyMessages.getKeyMessageByIndex($this.currentKeyMessage.index+1),
-                    prevSection =  utilKeyMessages.getKeyMessageByIndex($this.currentKeyMessage.index-1);
+                var nextSection = utilKeyMessages.getKeyMessageByIndex($this.currentKeyMessage.index + 1),
+                    prevSection = utilKeyMessages.getKeyMessageByIndex($this.currentKeyMessage.index - 1);
 
 
                 var sectionDetails = {
@@ -337,7 +320,7 @@ var VEEVA = VEEVA || {};
                     prevSectionnNumSlides: prevSection.slides.length,
                 };
 
-                $this.currentSection = new Section($this, $('#section-holder'), sectionDetails, function () {
+                $this.currentSection = new Section($this, sectionDetails, function() {
 
                     var appReadyEvent = $.Event('veeva.app.ready');
 
@@ -367,122 +350,12 @@ var VEEVA = VEEVA || {};
                 });
 
             }
-        } else {
-
-            $this.closePopup();
-
         }
+
         return $this;
     };
 
-    VEEVA.iRep.prototype.closePopup = function () {
 
-        /*
-        if (this.popup) {
-            $('#popup', this.appBody).detach();
-            this.popup = null;
-        }
-        */
-        return this;
-    };
-
-    VEEVA.iRep.prototype.openPopup = function (event) {
-
-        var $that       = this,
-            $element    = '',
-            url         = event.url;
-
-
-        /**
-         * Only build popup once and then reuse it
-         * @author Steven Britton
-         * @date   2015-08-04
-         */
-        if($that.popup === ''){
-
-            var buildPopup = '<div id="popup-wrapper"><div id="' + event.popupType + '" class="popup-inner">';
-                buildPopup += '<a href="javascript:void(0)" class="close-button" ></a></div></div>';
-
-            $(buildPopup).appendTo($that.appBody);
-
-            $that.popup = $('#popup-wrapper');
-        }
-
-        $that.popup.addClass('on');
-
-        $element = $that.popup.find('#popup');
-
-        $element.load(url,
-            function (response, status, xhr) {
-                $element.append( $('<a href="javascript:void(0)" class="close-button" />'));
-                if (status === 'error') {
-                    var loadError = xhr.status + ' ' + xhr.statusText;
-
-                    $element.append('<h1 class="error">' + loadError + '</h1>');
-                }
-                if (status === 'success') {
-                    sectionLoaded();
-                }
-            }
-        );
-
-
-        var sectionLoaded = function () {
-
-            if ($element.attr('id') === 'popup') {
-
-                $element.clearQueue().show('scale', {
-                    percent: 80,
-                    direction: 'both'
-                }, 30, function () {
-
-                    $element.trigger('popup.Ready');
-
-                    $element.veevaLink({
-                        'eventClick':           $that.eventClick,
-                        'primaryPresentation':  $that.presentationPrimary,
-                        'videoPresentation':    $that.presentationVideos,
-                        'pdfPresentation':      $that.presentationPDFs
-                    });
-
-                });
-
-            } else {
-                $element.show().animate({
-                    opacity: 1
-                }, function () {
-                    $element.trigger('popup.Ready');
-                });
-            }
-
-        };
-
-        $that.popup.off().on($that.eventClick, '.close-button', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            $element.animate({
-                top: 0,
-                opacity: 0
-            }, 400, function () {
-
-                $(this).removeAttr('style');
-
-                $element.find('.content').detach();
-
-                $that.popup.removeClass('on');
-
-            });
-        });
-
-        return  $that;
-    };
-
-
-    VEEVA.iRep.prototype.goToSlide = function (slide, presentation) {
-
-        document.location = 'veeva:gotoSlide(' + slide + ', ' + presentation + ')';
-    };
 
 
 
@@ -490,7 +363,7 @@ var VEEVA = VEEVA || {};
      ** SECTION
      ** Note: loads section based on app.json
      ***********************************************************/
-    var Section = function (_that, _element, _options, callback) {
+    var Section = function(_that, _options, callback) {
 
         var $that = _that,
             $this = this,
@@ -498,182 +371,65 @@ var VEEVA = VEEVA || {};
                 page: 0
             };
 
-        var $element = _element,
+        var $container = $that.appBody.find('.main-content'),
+            $sectionSlides = $container.find('section slide'),
             options = $.extend(defaults, _options);
 
-        var $Section = $('<div class="slider section-' + options.sectionKey + '">').append('<ul class="slideObj">').appendTo($element);
-        var $subnav = $('<div><ul class="nostyle">');
-        var $Slides = $(options.section.slides);
-        var numSlides = $Slides.length;
+        var htmlSubNav = '<div class="subnav"><ul>';
 
+        var slideNoSwipeZones = [];
+        var $slidesConfigured = $(options.section.slides);
 
-        //build sub nav
-        $Slides.each(function (i, slide) {
-            $('<li><a href="#" class="page-button trigger-swipe" id="' + slide.id + '" slideindex="' + i + '"><span class="nav-outer"><span>' + slide.slide + '</span></span></div></div></a></li>').appendTo($('ul', $subnav));
-        });
+        var noSwipeZone,
+            noSwipeZoneYtop,
+            noSwipeZoneYbottom;
 
-        $this.name          = options.sectionKey;
-        $this.activeSlide   = options.page !== 0 ? (options.page -1) : options.page;
-        $this.noSwipeZones  = [];
+        // these are used after event listeners fire
+        $this.name = options.sectionKey;
+        $this.activeSlide = options.page !== 0 ? (options.page - 1) : options.page;
 
-        //build slides
-        $Slides.each(function (i, obj) {
-            var $slide              = $(obj),
-                slideID             = obj.id;
+        /**
+         * Loop through section slides
+         * * Build sub navigation
+         * * Add Veeva tracking tags as defined in configuration.yml
+         * * Create no swipe zones as defined in configuration.yml
+         * @date   2016-03-15
+         */
+        $sectionSlides.each(function(i, slide) {
 
-            var list = $('<li class="slide slideObj" id="slide' + slideID + '"></li>').prepend($('<div class="content"></div>').prepend($('.page-load slide#' + slideID)));
+            // check for no swipe zones
+            noSwipeZone = $slidesConfigured[i].noSwipeZone || false;
+            noSwipeZoneYtop = parseInt(noSwipeZone.yTop) || 0;
+            noSwipeZoneYbottom = parseInt(noSwipeZone.yBottom) || 0;
 
-            var noSwipeZone             = obj.noSwipeZone || false,
-                noSwipeZoneYtop         = noSwipeZone.yTop !== '' ? parseInt(noSwipeZone.yTop) : 0,
-                noSwipeZoneYbottom      = noSwipeZone.yBottom !== '' ? parseInt(noSwipeZone.yBottom) : 0;
-
-            $this.Slide(list, $slide, {
-                subnav: $subnav,
-                slides: numSlides
-            }, $that);
-
-            /**
-             * Add no swipe zones to the Section object
-             */
-            $this.noSwipeZones.push({'slide': i, 'yTop': noSwipeZoneYtop, 'yBottom':noSwipeZoneYbottom});
-
-            $Section.find('ul.slideObj').append(list);
-
-        });
-
-
-        $Section.swipeSlider({
-            debug: $that.debug,
-            eventClick: $that.eventClick,
-            speed: 500,
-            startIndex: options.page,
-            stateManager: false,
-            blnSwiping: true,
-            noSwipeZone: $this.noSwipeZones ? $this.noSwipeZones :  false,
-            controlsShow: true,
-            onSlideChange: function(element, index){
-
-                var slideIndex                  = index,
-                    slideEvent                  = $.Event('change.slider.MD');
-                    slideEvent.slide            = index;
-
-                element.trigger(slideEvent);
-
-                $that.log('Event: change.slider.MD', element, index);
-
-                $that.closePopup();
-
-                $('.chart.reload').hide();
-
-                var $trackSlide = $('ul.slideObj li.slideObj:eq(' + slideIndex + ')'),
-                    hasTracking = $trackSlide.attr('track-id') !== undefined ? $trackSlide.attr('track-id') : '';
-
-                //If this is a sub-key-message then
-                //Get Tracking info and call addCallClickstream function
-                if (hasTracking.length > 0 && $that.isDeployed) {
-                    event.trackID = hasTracking;
-                    event.trackType = $trackSlide.attr('track-type');
-                    event.trackDescription = $trackSlide.attr('track-description');
-
-                    //Add Veeva Click stream tracking
-                    addCallClickstream(event);
-                }
-
-            },
-            onSlideAfterChange: function(slider, index){
-
-                var slides          = slider.find('ul.slideObj li.slideObj'),
-                    activeSlide     = slides[index];
-
-                $(slides).removeClass('active');
-
-                /** reload chart, if any */
-                $(activeSlide).addClass('active').find('.chart.reload').fadeIn();
-
-            },
-            onSectionChange: function (dir) {
-
-                var prevSectionLastSlide = $that.isDeployed ? options.prevSectionURL.replace('.html', '.zip') : '../' + options.prevSectionURL.slice(0, -5) + '/' + options.prevSectionURL + '#page=' + options.prevSectionnNumSlides,
-                    nextSectionFirstSlide = $that.isDeployed ? options.nextSectionURL.replace('.html', '.zip') : '../' + options.nextSectionURL.slice(0, -5) + '/' + options.nextSectionURL,
-                    setClass = dir === 'prev' ? 'slide-left' : 'slide-right',
-                    setURL = dir === 'prev' ? prevSectionLastSlide : nextSectionFirstSlide;
-
-                $('#section-holder').addClass(setClass);
-
-                if ((options.prevSectionKey !== undefined && dir === 'prev') || (options.nextSectionKey !== undefined && dir === 'next')) {
-
-                    if ($that.isDeployed) {
-
-                        //Set custom field to load last slide of previous section
-                        if (dir === 'prev' && options.prevSectionnNumSlides !== '0') {
-
-                            veevaUpdateUserObject(options.prevSectionnNumSlides, function () {});
-
-                        }
-
-                        setTimeout(function () {
-                             $this.goToSlide(setURL, $that.presentationPrimary);
-                        }, 200);
-                    } else {
-
-                        $('section.main-content').fadeOut(300, function () {
-                            window.location = setURL;
-                        });
-                    }
-                }
-
-                return this;
+            if (noSwipeZone) {
+                slideNoSwipeZones.push({ 'slide': i, 'yTop': noSwipeZoneYtop, 'yBottom': noSwipeZoneYbottom });
             }
 
+            // add veeva tracking attributes
+            if ($slidesConfigured[i].track) {
+                $(slide).attr('track-id', $slidesConfigured[i].id).attr('track-type', $slidesConfigured[i].track).attr('track-description', $slidesConfigured[i].slide);
+            }
+
+            // build sub nav
+            htmlSubNav += '<li><a href="#" class="page-button trigger-swipe" id="' + $slidesConfigured[i].id + '" slideindex="' + i + '"><span class="nav-outer"><span>' + $slidesConfigured[i].slide + '</span></span></a></li>';
+
         });
 
-        $('#section-holder').fadeIn();
+        htmlSubNav += '</ul></div>';
+
+        // append sub nav
+        $that.appBody.append(htmlSubNav);
 
 
-        callback();
-    };
+        // wrap each slide with content.
+        $sectionSlides.wrapInner('<div class="content"></div>');
 
-
-    Section.prototype.Slide = function (_element, _slide, _options, _that) {
-
-        var $that = _that;
-        var $this = this;
-        var defaults = {
-            subnav: '',
-            slides: ''
-        };
-        var options = $.extend(defaults, _options);
-
-        var slide = _slide[0];
-        var $element = $(_element[0]);
-
-
-        //Add tracking to sub-key messages
-        if (slide.track) {
-            $element.attr('track-id', slide.id).attr('track-type', slide.track).attr('track-description', slide.slide);
-        }
-
-        $('<div class="subnav">').append(options.subnav.html()).appendTo($element);
-
-        $('<div class="ctrl-next-slide"></div><div class="ctrl-pre-slide"></div>').appendTo($element);
-
-        $element.find('a#' + slide.id).addClass('active');
-
-        $($element, '#slide' + slide.id).find('.ctrl-next-slide').on($that.eventClick, function (e) {
-            e.preventDefault();
-            $('a', '#nextBtn').trigger($that.eventClick);
-        });
-
-        $($element, '#slide' + slide.id).find('.ctrl-pre-slide').on($that.eventClick, function (e) {
-            e.preventDefault();
-            $('a', '#prevBtn').trigger($that.eventClick);
-        });
 
         // Plugins to override popups
-        $element.popupLinks({'eventClick': $that.eventClick});
+        $container.popupLinks({ 'eventClick': $that.eventClick });
 
-
-        $element.veevaLink({
+        $container.veevaLink({
             'eventClick': $that.eventClick,
             'primaryPresentation': $that.presentationPrimary,
             'videoPresentation': $that.presentationVideos,
@@ -681,7 +437,7 @@ var VEEVA = VEEVA || {};
         });
 
 
-        $element.on($that.eventClick, '.open-chart', function (e) {
+        $container.on($that.eventClick, '.open-chart', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -705,30 +461,107 @@ var VEEVA = VEEVA || {};
             return false;
         });
 
-        $element.bind('stateChange', function (event) {
-            if ($('.' + event.targetClass, $this).length > 0) {
-                $('.state:not(.hidden)', $this).addClass('hidden');
-                $('.' + event.targetClass, $this).removeClass('hidden');
+
+        // setup Key Message slides
+        $container.veevaSwipeSlider({
+            sliderClass: 'section.page',
+            slideClass: 'slide',
+            debug: $that.debug,
+            eventClick: $that.eventClick,
+            speed: 400,
+            startIndex: options.page,
+            subNav: $('.subnav ul li'),
+            stateManager: false,
+            blnSwiping: true,
+            slideNoSwipeZones: slideNoSwipeZones || false,
+            controlsShow: true,
+            onSlideChange: function(slider, index) {
+
+                var slideEvent = $.Event('change.slider.MD');
+                slideEvent.slide = index;
+
+                slider.trigger(slideEvent);
+
+                $that.log('Event: change.slider.MD', slider, index);
+
+                $('.chart.reload').hide();
+
+                var $activeSlide = $(this.slides[index]),
+                    hasTracking = $activeSlide.attr('track-id') !== undefined ? $activeSlide.attr('track-id') : '';
+
+                //If this is a sub-key-message then
+                //Get Tracking info and call addCallClickstream function
+                if (hasTracking.length > 0 && $that.isDeployed) {
+                    event.trackID = hasTracking;
+                    event.trackType = $activeSlide.attr('track-type');
+                    event.trackDescription = $activeSlide.attr('track-description');
+
+                    //Add Veeva Click stream tracking
+                    $that.addCallClickstream(event);
+                }
+
+            },
+            onSlideAfterChange: function(slider, index) {
+
+                var activeSlide = this.slides[index];
+
+
+                /** reload chart, if any */
+                $(activeSlide).find('.chart.reload').fadeIn();
+
+            },
+            onSectionChange: function(dir) {
+
+                var prevSectionLastSlide = $that.isDeployed ? options.prevSectionURL.replace('.html', '.zip') : '../' + options.prevSectionURL.slice(0, -5) + '/' + options.prevSectionURL + '#page=' + options.prevSectionnNumSlides,
+                    nextSectionFirstSlide = $that.isDeployed ? options.nextSectionURL.replace('.html', '.zip') : '../' + options.nextSectionURL.slice(0, -5) + '/' + options.nextSectionURL,
+                    setClass = dir === 'prev' ? 'slide-left' : 'slide-right',
+                    setURL = dir === 'prev' ? prevSectionLastSlide : nextSectionFirstSlide;
+
+
+                $container.fadeOut();
+
+                if ((options.prevSectionKey !== undefined && dir === 'prev') || (options.nextSectionKey !== undefined && dir === 'next')) {
+
+                    if ($that.isDeployed) {
+
+                        //Set custom field to load last slide of previous section
+                        if (dir === 'prev' && options.prevSectionnNumSlides !== '0') {
+
+                            $that.veevaUpdateUserObject(options.prevSectionnNumSlides, function() {});
+
+                        }
+
+                        setTimeout(function() {
+                            $that.goToSlide(setURL, $that.presentationPrimary);
+                        }, 200);
+                    } else {
+
+                        $('section.main-content').fadeOut(300, function() {
+                            window.location = setURL;
+                        });
+                    }
+                }
+
+                return this;
             }
+
         });
 
-        return $this;
-
-    }; //end of Slide
-
+        callback();
+    };
 
 
-    var MainISI = function (_this) {
+    var MainISI = function(_this) {
 
-        var $that       = _this,
-            $mainISI    = $($that.containerMainISI),
-            isiOpen     = false,
-            isiSlider   = null;
+        var $that = _this,
+            $mainISI = $($that.containerMainISI),
+            isiOpen = false,
+            isiSlider = null;
 
         $that.log('Function load: MainISI');
 
         $mainISI.append().load($that.fileISI,
-            function (response, status, xhr) {
+            function(response, status, xhr) {
                 if (status === 'error') {
                     var loadError = xhr.status + ' ' + xhr.statusText;
                     $(this).append('<h1 class="error">' + loadError + '</h1>');
@@ -739,14 +572,14 @@ var VEEVA = VEEVA || {};
             }
         );
 
-        var sectionLoaded = function () {
+        var sectionLoaded = function() {
 
-            $that.btnISI.on($that.eventClick, function (e) {
+            $that.btnISI.on($that.eventClick, function(e) {
                 eventHandlerToggleISI(e);
                 e.stopPropagation();
             });
 
-            var eventHandlerToggleISI = function (e) {
+            var eventHandlerToggleISI = function(e) {
 
                 if (e.preventDefault) {
                     e.preventDefault();
@@ -769,7 +602,7 @@ var VEEVA = VEEVA || {};
                         mouseWheel: true,
                         momentum: true,
                         checkDOMChanges: true,
-                        onDestroy: function () {
+                        onDestroy: function() {
                             $mainISI.css({
                                 'overflow-y': 'auto'
                             }).removeClass('open').addClass('close');
@@ -780,15 +613,6 @@ var VEEVA = VEEVA || {};
                         'overflow-y': 'auto'
                     });
 
-                    /**
-                     * Handles ebent click for embedded PDFs in ISI Drop Down
-                     * @author Steven Britton
-                     * @date   2015-03-26
-                     * @todo update hard-coded product names with property passed throguh global settings.
-                     */
-                    $mainISI.find('.pi-link').on('touchstart', function () {
-                        document.location = 'veeva:gotoSlide(Prescribing-Information.zip, ' + $that.presentationPDFs +')';
-                    });
                 }
             };
 
@@ -801,84 +625,183 @@ var VEEVA = VEEVA || {};
 
 
 
+    VEEVA.iRep.prototype.openPopup = function(event) {
+
+        var $that = this,
+            $element = '',
+            url = event.url;
+
+
+        /**
+         * Only build popup once and then reuse it
+         * @author Steven Britton
+         * @date   2015-08-04
+         */
+        if ($that.popup === '') {
+
+            var buildPopup = '<div id="popup-wrapper"><div id="' + event.popupType + '" class="popup-inner">';
+            buildPopup += '<a href="javascript:void(0)" class="close-button" ></a></div></div>';
+
+            $(buildPopup).appendTo($that.appBody);
+
+            $that.popup = $('#popup-wrapper');
+        }
+
+        $that.popup.addClass('on');
+
+        $element = $that.popup.find('#popup');
+
+        $element.load(url,
+            function(response, status, xhr) {
+                $element.append($('<a href="javascript:void(0)" class="close-button" />'));
+                if (status === 'error') {
+                    var loadError = xhr.status + ' ' + xhr.statusText;
+
+                    $element.append('<h1 class="error">' + loadError + '</h1>');
+                }
+                if (status === 'success') {
+                    sectionLoaded();
+                }
+            }
+        );
+
+
+        var sectionLoaded = function() {
+
+            if ($element.attr('id') === 'popup') {
+
+                $element.clearQueue().show('scale', {
+                    percent: 70,
+                    direction: 'both'
+                }, 30, function() {
+
+                    $element.trigger('popup.Ready');
+
+                    $element.veevaLink({
+                        'eventClick': $that.eventClick,
+                        'primaryPresentation': $that.presentationPrimary,
+                        'videoPresentation': $that.presentationVideos,
+                        'pdfPresentation': $that.presentationPDFs
+                    });
+
+                });
+
+            } else {
+                $element.show().animate({
+                    opacity: 1
+                }, function() {
+                    $element.trigger('popup.Ready');
+                });
+            }
+
+        };
+
+        $that.popup.off().on($that.eventClick, '.close-button', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            $element.animate({
+                top: 0,
+                opacity: 0
+            }, 300, function() {
+
+                $(this).removeAttr('style');
+
+                $element.find('.content').detach();
+
+                $that.popup.removeClass('on');
+
+            });
+        });
+
+        return $that;
+    };
+
+
+    VEEVA.iRep.prototype.changeState = function(page) {
+
+        var state = {};
+
+        state['page'] = page;
+
+        $.bbq.pushState(state);
+
+    };
+
+
+    VEEVA.iRep.prototype.goToSlide = function(slide, presentation) {
+
+        document.location = 'veeva:gotoSlide(' + slide + ', ' + presentation + ')';
+    };
+
+    VEEVA.iRep.prototype.addCallClickstream = function(event) {
+
+        var clickStream = {};
+
+        clickStream.Track_Element_Id_vod__c = event.trackID;
+        clickStream.Track_Element_Type_vod__c = event.trackType;
+        clickStream.Track_Element_Description_vod__c = event.trackDescription;
+
+        //Save the tracking data to Veeva Object
+        com.veeva.clm.createRecord('Call_Clickstream_vod__c', clickStream, function() {
+
+        });
+
+    };
+
+    VEEVA.iRep.prototype.veevaCheckForSubScene = function(cb) {
+
+        var $this = this,
+            customUserObject = $this.veevaTrackSubsceneField;
+
+        if(customUserObject === ''){
+            cb(false);
+        }
+        com.veeva.clm.getDataForCurrentObject('User', customUserObject, function(result) {
+            if (result.success) {
+
+                var subscene = result.User[customUserObject.toString()];
+
+                //Jump to the scene specified in subscene above
+                if (subscene !== '0') {
+
+                    $this.changeState(subscene);
+
+                    //Clear subscene field
+                    $this.veevaUpdateUserObject('0', cb, true);
+
+                    return;
+                } else {
+                    cb(false);
+                }
+
+            }
+        });
+    };
+
+    VEEVA.iRep.prototype.veevaUpdateUserObject = function(subscene, cb) {
+
+        var $this = this,
+            dataString = {},
+            customUserObject = $this.veevaTrackSubsceneField;
+
+        if(customUserObject === ''){
+            cb(false);
+        }
+
+        dataString[customUserObject.toString()] = subscene;
+
+        com.veeva.clm.getDataForCurrentObject('User', 'ID', function(result) {
+            com.veeva.clm.updateRecord('User', result.User.ID, dataString, cb);
+        });
+    };
+
+
+
+
 
 
 })(window, document, jQuery, undefined);
 
 
-
-//Handle going to sub-slides
-function changeState(page) {
-
-    var state = {};
-
-    state['page'] = page;
-
-    $.bbq.pushState(state);
-
-}
-
-
-function addCallClickstream(event) {
-    var clickStream = {};
-
-    clickStream.Track_Element_Id_vod__c = event.trackID;
-    clickStream.Track_Element_Type_vod__c = event.trackType;
-    clickStream.Track_Element_Description_vod__c = event.trackDescription;
-
-    //Save the tracking data to Veeva Object
-    com.veeva.clm.createRecord('Call_Clickstream_vod__c', clickStream, function(){
-
-    });
-}
-
-
-/**
- * [veevaUpdateUserObject description]
- * @used sitemap
- * @used resources
- */
-function veevaGoToSlide(slide, presentation) {
-
-    document.location = 'veeva:gotoSlide(' + slide + ', ' + presentation + ')';
-}
-
-function veevaCheckForSubScene(cb) {
-
-
-    com.veeva.clm.getDataForCurrentObject('User', 'Stored_GoToSlide_HZN__c', function(result) {
-        if (result.success) {
-
-            var subscene = result.User.Stored_GoToSlide_HZN__c;
-
-            //Jump to the scene specified in subscene above
-            if (subscene !== '0') {
-
-                changeState(subscene);
-
-                //Clear subscene field
-                veevaUpdateUserObject('0', cb, true);
-
-                return;
-            } else {
-                cb(false);
-            }
-
-        }
-    });
-}
-
-
-/**
- * [veevaUpdateUserObject description]
- * @used sitemap
- */
-function veevaUpdateUserObject(subscene, cb) {
-    var dataString = {};
-
-    dataString.Stored_GoToSlide_HZN__c = subscene;
-    com.veeva.clm.getDataForCurrentObject('User', 'ID', function (result) {
-        com.veeva.clm.updateRecord('User', result.User.ID, dataString, cb);
-    });
-}
 
