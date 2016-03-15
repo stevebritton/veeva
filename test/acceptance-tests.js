@@ -26,7 +26,7 @@ describe('acceptance tests for Veeva Module', function() {
         gulp('--help', function(error, stdout, stderr) {
             assert.ok(error === null);
             done();
-            //console.log(stdout);
+            console.log(stdout);
         });
     });
 
@@ -34,14 +34,16 @@ describe('acceptance tests for Veeva Module', function() {
         gulp('--config', function(error, stdout, stderr) {
             assert.ok(error === null);
             done();
-            //console.log(stdout);
+            console.log(stdout);
         });
     });
 
+    /*
     it('gulp assemble passes without error', function(done) {
         gulp(' -k home assemble:test', function(error, stdout, stderr) {
             assert.ok(error === null);
             done();
         });
     });
+    */
 });
