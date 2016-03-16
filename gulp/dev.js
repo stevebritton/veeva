@@ -39,7 +39,7 @@ module.exports = function(gulp, options) {
      * @return {function}   Returns callback function
      */
     gulp.task('sass:dev', function() {
-        return rubySass(path.join(options.paths.src, 'assets', 'scss'), {
+        return rubySass(path.join(options.paths.src, 'assets', 'scss', '**', '*.scss'), {
                 style: 'expanded',
                 precision: 10
             })
