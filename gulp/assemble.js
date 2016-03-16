@@ -171,9 +171,11 @@ module.exports = function(gulp, options) {
         var deferred = Q.defer(),
             filerKeyMessages;
 
-        // Remove the 'global' key Message from array
+        // Filter array for:
+        // 'global' key Message
+        // All Key Messages stored in hiddenKeyMessages presentation
         filerKeyMessages = options.keyMessages.filter(function(item) {
-            return (item.key_message !== 'global');
+            return (item.key_message !== 'global' && options.hiddenKeyMessages.indexOf(item) === -1);
         });
 
         fs.writeFile(options.paths.dist + '/global/app.json', JSON.stringify(filerKeyMessages), function(err, data) {
@@ -190,7 +192,8 @@ module.exports = function(gulp, options) {
     function generateSitemapFile() {
 
         var deferred = Q.defer(),
-            filerKeyMessages = [];
+            filerKeyMessages = [],
+            sitemapKeyMessages = [];
 
 
         if (!options.sitemap) {
@@ -199,20 +202,27 @@ module.exports = function(gulp, options) {
             return deferred.promise;
         }
 
-
-        // Remove the 'global' and 'sitemap' key Messages from array
-        options.keyMessages.map(function(item) {
-            if (item.key_message !== 'global' && item.key_message !== options.clm.product.name + options.clm.product.suffix + 'sitemap') {
-                filerKeyMessages.push({
-                    'section': item.key_message,
-                    'source': item.key_message + '.html',
-                    'title': item.description,
-                    'slide': 1
-                });
-            }
+        // Filter array for:
+        // 'global' key Message
+        // 'sitemap'
+        // All Key Messages stored in hiddenKeyMessages presentation
+        filerKeyMessages = options.keyMessages.filter(function(item) {
+            return (item.key_message !== 'global' && item.key_message !== options.clm.product.name + options.clm.product.suffix + 'sitemap'  && options.hiddenKeyMessages.indexOf(item) === -1);
         });
 
-        fs.writeFile(options.paths.dist + '/' + options.clm.product.name + options.clm.product.suffix + 'sitemap/sitemap.json', JSON.stringify(filerKeyMessages), function(err, data) {
+
+        filerKeyMessages.map(function(item) {
+
+            sitemapKeyMessages.push({
+                'section': item.key_message,
+                'source': item.key_message + '.html',
+                'title': item.description,
+                'slide': 1
+            });
+
+        });
+
+        fs.writeFile(options.paths.dist + '/' + options.clm.product.name + options.clm.product.suffix + 'sitemap/sitemap.json', JSON.stringify(sitemapKeyMessages), function(err, data) {
             if (err) {
                 utils.log.error(err);
                 deferred.reject(err);
