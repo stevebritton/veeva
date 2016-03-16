@@ -35,7 +35,7 @@ module.exports = function(gulp, options) {
             }
 
             rubySass(
-                    path.join(options.paths.src, 'assets', 'scss'), {
+                    path.join(options.paths.src, 'assets', 'scss', '**', '*.scss'), {
                         style: 'expanded',
                         precision: 10
                     }
