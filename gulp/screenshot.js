@@ -38,8 +38,7 @@ module.exports = function(gulp, options) {
     function screenshots(keyMessage) {
         var d = Q.defer();
 
-        var baseDir = './build',
-            basePath = path.join(process.cwd(), baseDir),
+        var basePath = path.join(process.cwd(), options.paths.dist),
             dirs = keyMessage || utils.getDirectories(basePath),
             sizes = {
                 delay: 800,
@@ -103,7 +102,7 @@ module.exports = function(gulp, options) {
                 full = dir;
 
             var completePath = 'file://' + path.join(basePath, dir, matchingFile),
-                outputFile = path.join(basePath, dir, full);
+                outputFile = path.join(options.paths.dist, dir, full);
 
             renderPage(completePath, outputFile)
                 .then(function() { // convert to jpg
@@ -131,10 +130,8 @@ module.exports = function(gulp, options) {
 
                 var files = utils.getFiles(path.join(basePath, dir));
 
-
-
                 return ___(files).filter(function(file) {
-                        var regex = new RegExp(dir + '.html', 'g');
+                        var regex = dir + '.html';
                         return file.match(regex);
                     })
                     .map(function(matchingFile) {
