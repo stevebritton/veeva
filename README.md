@@ -40,6 +40,11 @@ Install the following prerequisites on your development machine.
 
 * [Node.js](http://nodejs.org)
 * [Gulp](http://gulpjs.com) `sudo npm install -g gulp`
+* [imagemagick](http://www.imagemagick.org/script/binary-releases.php) 
+  * OSX: `brew install imagemagick`
+  * Ubuntu: `apt-get install imagemagick`
+  * Windows or other: [http://www.imagemagick.org/script/binary-releases.php](http://www.imagemagick.org/script/binary-releases.php) 
+
 
 ### Quick Start
 
