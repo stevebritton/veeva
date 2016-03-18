@@ -1,7 +1,7 @@
 {
   "name": "veeva",
   "description": "Veeva CLM generator and workflow",
-  "version": "0.25.2",
+  "version": "0.25.3",
   "bin": {
     "veeva": "bin/veeva.js"
   },
