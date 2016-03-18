@@ -1,7 +1,7 @@
 {
   "name": "veeva",
   "description": "Veeva CLM generator and workflow",
-  "version": "0.25.1",
+  "version": "0.25.2",
   "bin": {
     "veeva": "bin/veeva.js"
   },
@@ -61,7 +61,7 @@
     "mocha": "^2.4.5"
   },
   "engines": {
-    "node": "4.3.1",
-    "npm": "2.14.12"
+    "node": ">=4.3.1",
+    "npm": ">=2.14.12"
   }
 }
