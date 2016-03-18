@@ -29,3 +29,7 @@ module.exports = function(gulp) {
     });
 
 };
+
+process.on('exit', function() {
+    process.exit(exitCode);
+});
