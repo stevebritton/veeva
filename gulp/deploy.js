@@ -58,9 +58,14 @@ module.exports = function(gulp, options) {
 
         json2csv({ data: buildArray, fields: vaultFields }, function(err, csv) {
 
+            // create directory if it doesn't exist
+            if (!fs.existsSync(options.paths.deploy)) {
+                fs.mkdirSync(options.paths.deploy);
+            }
+
             fs.writeFile(options.paths.deploy + '/VAULT_CSV.csv', csv, function(err) {
                 if (err) {
-                    throw err;
+                    deferred.reject(err);
                 } else {
                     deferred.resolve();
                 }
@@ -91,7 +96,6 @@ module.exports = function(gulp, options) {
             .pipe(plumber())
             .pipe(conn.dest('/'))
             .on('error', function(err) {
-                console.log(err);
                 deferred.reject(err);
             })
             .on('end', function() {
