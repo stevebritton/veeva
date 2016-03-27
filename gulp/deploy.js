@@ -127,7 +127,6 @@ module.exports = function(gulp, options) {
             .pipe(plumber())
             .pipe(conn.dest(options.clm.ftp.remotePath))
             .on('error', function(err) {
-                console.log(err);
                 deferred.reject(err);
             })
             .on('end', function() {
@@ -163,7 +162,6 @@ module.exports = function(gulp, options) {
                 }))
                 .pipe(gulp.dest(options.paths.deploy))
                 .on('error', function(err) {
-                    console.log(err);
                     deferred.reject(err);
                 })
                 .on('end', function() {
@@ -293,7 +291,7 @@ module.exports = function(gulp, options) {
                 return handleVaultCSV(mergeKeyMessages);
             })
             .done(function() {
-                    utils.log.success('Veeva Vault CSV file has successfully been generated');
+                    utils.log.success('Veeva Vault CSV file has been successfully generated');
                     deferred.resolve();
                 },
                 function(err) {
