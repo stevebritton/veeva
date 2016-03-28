@@ -47,6 +47,9 @@ module.exports = function(gulp, options) {
                     gzip: options.verbose
                 }))
                 .pipe(gulp.dest(path.join(options.paths.dist, 'global', 'css')))
+                .once('error', function(err) {
+                    utils.log.error(err);
+                })
                 .on('end', done)
                 .pipe(browserSync.reload({
                     stream: true
@@ -75,6 +78,9 @@ module.exports = function(gulp, options) {
                     showFiles: options.verbose
                 }))
                 .pipe(gulp.dest(path.join(options.paths.dist, 'global', 'js')))
+                .once('error', function(err) {
+                    utils.log.error(err);
+                })
                 .on('end', done);
         });
     }

@@ -9,7 +9,6 @@ module.exports = function(gulp, options) {
         require('./clean')(gulp, options);
         require('./deploy')(gulp, options);
         require('./dev')(gulp, options);
-        require('./helpers')(gulp, options);
         require('./screenshot')(gulp, options);
         require('./module-dependencies')(gulp, options);
 
