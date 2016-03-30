@@ -3,13 +3,17 @@ software:
   name: Veeva CLM Builder
 
 clm:
+ customFields:
+  veevaTrackSubsceneField:
  ftp:
   email:
   host:
   user:
   pass:
   remotePath: /ctlfile
- product: must-match-salesforce
+ product:
+  name: 'must-match-salesforce'
+  suffix: '-'
  primary:
   name: primary-clm-id-or-name-v1
   key_messages:
