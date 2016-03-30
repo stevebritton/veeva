@@ -3,6 +3,8 @@ software:
   name: Veeva CLM Builder
 
 clm:
+ customFields:
+  veevaTrackSubsceneField:
  ftp:
   email:
   host:
