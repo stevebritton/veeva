@@ -3,10 +3,10 @@
 [![dependencies](https://david-dm.org/stevebritton/veeva.svg)](https://david-dm.org/stevebritton/veeva#info=dependencies&view=tables)
 
 
-> This npm package was developed to help centralize core functionality and worklfow processes for building Veeva iRep CLM Presentations. 
+> This npm package was developed to centralize core functionality and worklfow processes for building Veeva iRep CLM Presentations. 
 
 If you're developing and managing several client Veeva CLM projects, then you know it's cumbersome to introduce new functionality (outside of content) 
-when your code-base is spread throughout multiple repositories.
+when your code-base is inconsistent across multiple repositories.
 
 :link: [Veeva CLM Example](https://github.com/stevebritton/veeva/tree/master/examples/clm)
 
