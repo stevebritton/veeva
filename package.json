@@ -10,9 +10,9 @@
     "change": "scripts/changelog.js"
   },
   "main": "./index.js",
-  "repository": "https://github.com/stevebritton/veeva",
+  "repository": "https://github.com/devopsgroup-io/veeva",
   "bugs": {
-    "url": "https://github.com/stevebritton/veeva/issues"
+    "url": "https://github.com/devopsgroup-io/veeva/issues"
   },
   "keywords": [
     "veeva",

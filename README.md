@@ -1,6 +1,6 @@
 # Veeva 
-[![NPM version](https://img.shields.io/npm/v/veeva.svg)](https://www.npmjs.com/package/veeva) [![Build Status](https://img.shields.io/travis/stevebritton/veeva.svg?branch=master)](https://travis-ci.org/stevebritton/veeva)
-[![dependencies](https://david-dm.org/stevebritton/veeva.svg)](https://david-dm.org/stevebritton/veeva#info=dependencies&view=tables)
+[![NPM version](https://img.shields.io/npm/v/veeva.svg)](https://www.npmjs.com/package/veeva) [![Build Status](https://img.shields.io/travis/devopsgroup-io/veeva.svg?branch=master)](https://travis-ci.org/devopsgroup-io/veeva)
+[![dependencies](https://david-dm.org/devopsgroup-io/veeva.svg)](https://david-dm.org/devopsgroup-io/veeva#info=dependencies&view=tables)
 
 
 > This npm package was developed to centralize core functionality and worklfow processes for building Veeva iRep CLM Presentations. 
@@ -8,7 +8,7 @@
 If you're developing and managing several client Veeva CLM projects, then you know it's cumbersome to introduce new functionality (outside of content) 
 when your code-base is inconsistent across multiple repositories.
 
-:link: [Veeva CLM Example](https://github.com/stevebritton/veeva/tree/master/examples/clm)
+:link: [Veeva CLM Example](https://github.com/devopsgroup-io/veeva/tree/master/examples/clm)
 
 ## Features
 
@@ -54,7 +54,7 @@ $ npm install veeva --save
 
 ### Setup
 Once the `npm install` has completed, the following file structure below will need to be placed into your project root directory. 
-For a complete working example, please reference [Veeva CLM Example](https://github.com/stevebritton/veeva/tree/master/examples/clm)
+For a complete working example, please reference [Veeva CLM Example](https://github.com/devopsgroup-io/veeva/tree/master/examples/clm)
 
 ## File Structure
 
@@ -116,7 +116,7 @@ Template files are located in the `app` > `templates`.
 
 ### Configuration File
 
-[View full configuration.yml example](https://github.com/stevebritton/veeva/tree/master/examples/clm/configuration.yml)
+[View full configuration.yml example](https://github.com/devopsgroup-io/veeva/tree/master/examples/clm/configuration.yml)
 
 Inside `configuration.yml`, add Key Messages under the clm node.
 
@@ -246,7 +246,7 @@ Runs the following workflow:
 
 ## Troubleshooting
 
-If you're having issues with the Veeva Node Package, submit a [submit a GitHub Issue](https://github.com/stevebritton/veeva/issues/new).
+If you're having issues with the Veeva Node Package, submit a [submit a GitHub Issue](https://github.com/devopsgroup-io/veeva/issues/new).
 
 * Ensure you're running the correct node and npm versions specified in the package.json file
 * Make sure your configuration.yml file exists and is well formatted
