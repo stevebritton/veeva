@@ -23,7 +23,9 @@
     "assemble",
     "builder"
   ],
-  "author": "Steve Britton",
+  "author": {
+    "name": "Steve Britton"
+  },
   "license": "MIT",
   "dependencies": {
     "assemble": "^0.12.0",
