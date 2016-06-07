@@ -33,8 +33,9 @@ module.exports = function(gulp, options) {
             next();
         });
 
-        // register helper
+        // register helpers
         app.helpers('is', require('./helpers/is.js'));
+        app.helpers('isnt', require('./helpers/isnt.js'));
 
         app.toStream('pages')
             .pipe(app.renderFile('hbs'))
@@ -68,8 +69,9 @@ module.exports = function(gulp, options) {
             next();
         });
 
-        // register helper
+        // register helpers
         app.helpers('is', require('./helpers/is.js'));
+        app.helpers('isnt', require('./helpers/isnt.js'));
 
         app.toStream('pages')
             .pipe(app.renderFile('hbs'))
