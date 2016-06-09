@@ -1,6 +1,6 @@
 {
   "name": "veeva",
-  "description": "Veeva CLM generator and workflow",
+  "description": "Veeva CLM Generator & Workflow for building iRep Presentations.",
   "version": "0.27.0",
   "bin": {
     "veeva": "bin/veeva.js"
@@ -24,7 +24,9 @@
     "builder"
   ],
   "author": {
-    "name": "Steve Britton"
+    "name": "Steve Britton",
+    "email": "steve.britton@devopsgroup.io",
+    "url": "https://devopsgroup.io"
   },
   "license": "MIT",
   "dependencies": {
