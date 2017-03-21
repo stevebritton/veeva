@@ -38,7 +38,7 @@
     "gulp-clean-css": "^3.0.4",
     "gulp-concat": "^2.6.1",
     "gulp-extname": "^0.2.0",
-    "gulp-filter": "^4.0.0",
+    "gulp-filter": "^5.0.0",
     "gulp-flatten": "^0.2.0",
     "gulp-plumber": "^1.1.0",
     "gulp-replace": "^0.5.4",
