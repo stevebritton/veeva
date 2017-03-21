@@ -35,7 +35,7 @@
     "del": "^2.2.2",
     "graceful-fs": "^4.1.11",
     "gulp": "^3.9.1",
-    "gulp-clean-css": "^2.0.10",
+    "gulp-clean-css": "^3.0.4",
     "gulp-concat": "^2.6.0",
     "gulp-extname": "^0.2.0",
     "gulp-filter": "^4.0.0",
