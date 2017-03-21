@@ -58,7 +58,7 @@
     "run-sequence": "^1.0.1",
     "vinyl-ftp": "^0.4.4",
     "when": "^3.7.7",
-    "yamljs": "^0.2.7"
+    "yamljs": "^0.2.8"
   },
   "devDependencies": {
     "mocha": "^2.5.3"
