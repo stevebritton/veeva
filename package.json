@@ -30,7 +30,7 @@
   "license": "MIT",
   "dependencies": {
     "assemble": "^0.12.0",
-    "browser-sync": "^2.13.0",
+    "browser-sync": "^2.18.8",
     "chalk": "^1.1.3",
     "del": "^2.2.0",
     "graceful-fs": "^4.1.3",
