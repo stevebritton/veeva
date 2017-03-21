@@ -3,6 +3,10 @@
         "name": "Veeva CLM Builder"
     },
     "clm": {
+        "assets":{
+            "name":"",
+            "key_messages":[]
+        },
         "customFields":{
             "veevaTrackSubsceneField": "custom sales force field for ClickStream tracking"
         }
