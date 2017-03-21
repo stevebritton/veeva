@@ -36,7 +36,7 @@
     "graceful-fs": "^4.1.11",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^3.0.4",
-    "gulp-concat": "^2.6.0",
+    "gulp-concat": "^2.6.1",
     "gulp-extname": "^0.2.0",
     "gulp-filter": "^4.0.0",
     "gulp-flatten": "^0.2.0",
