@@ -1,4 +1,19 @@
 'use strict';
+var chalk = require('chalk'),
+    pkg = require('./package.json');
+
+var nodeVersion = process.version.replace('v',''),
+    nodeVersionRequired = pkg.engines.node.replace('>=','');
+
+// check node version compatibility
+if(nodeVersion <= nodeVersionRequired){
+
+    console.log();
+    console.error(chalk.red.bold('✗ '), chalk.red.bold('Veeva requires node version ' + pkg.engines.node));
+    console.log();
+
+    process.exit(1);
+}
 
 var veeva = require('./lib/veeva'),
     args = [].slice.call(process.argv, 2),

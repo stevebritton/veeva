@@ -26,6 +26,7 @@ module.exports = function(gulp, options) {
             buildArray = [];
 
 
+
         // build up arrays with information based on Key Messages
         ___(keyMessages).forEach(function(item) {
 
@@ -33,25 +34,23 @@ module.exports = function(gulp, options) {
                 'document_id__v': '',
                 'external_id__v': item.key_message,
                 'name__v': item.key_message,
-                'Type': 'slide',
+                'Type': 'Slide',
                 'lifecycle__v': 'CRM Content Lifecycle',
                 'Presentation Link': options.clm.primary.name,
                 'Fields Only': false,
-                'pres.crm_presentation_id__v': options.clm.primary.name,
-                'pres.crm_training__v': false,
-                'pres.product__v.name__v': options.clm.product.name,
-                'pres.crm_start_date__v': '',
                 'pres.crm_end_date__v': '',
-                'slide.title__v': item.description,
-                'slide.name__v': item.key_message,
-                'slide.country__v.name__v': 'United States',
-                'slide.crm_media_type__v': 'HTML',
-                'slide.related_sub_pres__v': '',
-                'slide.related_shared_resource__v': '',
+                'pres.crm_start_date__v': '',
+                'pres.crm_training__v': true,
+                'pres.product__v.name__v': options.clm.product.name,
                 'slide.clm_content__v': true,
+                'slide.country__v.name__v': 'United States',
                 'slide.crm_disable_actions__v': '',
+                'slide.crm_media_type__v': 'HTML',
+                'slide.filename': item.key_message + '.zip',
                 'slide.product__v.name__v': options.clm.product.name,
-                'slide.filename': item.key_message + '.zip'
+                'slide.related_shared_resource__v': '',
+                'slide.related_sub_pres__v': '',
+                'slide.title__v': item.description,
             });
 
         });
