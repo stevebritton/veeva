@@ -6,6 +6,7 @@ var ___ = require('lodash'),
     browserSync = require('browser-sync'),
     extname = require('gulp-extname'),
     fs = require('fs'),
+    handlebarsHelpers = require('handlebars-helpers')(),
     path = require('path'),
     plumber = require('gulp-plumber'),
     Q = require('q'),
@@ -36,6 +37,7 @@ module.exports = function(gulp, options) {
         // register helpers
         app.helpers('is', require('./helpers/is.js'));
         app.helpers('isnt', require('./helpers/isnt.js'));
+        app.helper(handlebarsHelpers);
 
         app.toStream('pages')
             .pipe(app.renderFile('hbs'))
@@ -72,6 +74,8 @@ module.exports = function(gulp, options) {
         // register helpers
         app.helpers('is', require('./helpers/is.js'));
         app.helpers('isnt', require('./helpers/isnt.js'));
+        app.helper(handlebarsHelpers);
+
 
         app.toStream('pages')
             .pipe(app.renderFile('hbs'))
