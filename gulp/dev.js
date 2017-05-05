@@ -83,11 +83,13 @@ module.exports = function(gulp, options) {
         });
 
 
+
         gulp.watch(path.join(options.module.paths.src, options.module.paths.js.scripts, '**', '*.js'), ['veeva-module:js-dev']);
 
         gulp.watch(path.join(options.paths.src, 'assets', 'js', '**', '*.js'), ['scripts:dev']);
         gulp.watch(path.join(options.paths.src, 'assets', 'scss', '**', '*.scss'), ['sass:dev']);
 
+        gulp.watch(path.resolve(process.cwd(), 'configuration.yml'), ['assemble']);
         gulp.watch(path.join(options.paths.src, 'templates', '**', '*.hbs'), ['assemble']);
         gulp.watch(path.join(options.paths.src, 'templates', '**', '*.{png,jpg}'), ['images:dev', 'bs-reload']);
 
