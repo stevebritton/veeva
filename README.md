@@ -28,7 +28,7 @@ when your code-base is inconsistent across multiple repositories.
 2. [File Structure](#file-structure)
 3. [Working with the Source Files](#working-with-the-source-files)
 4. [Options & Settings](#options-and-settings)
-5. [Gulp Tasks & Workflow](#gulp-tasks-and-workflow)
+5. [Veeva Tasks & Workflow](#veeva-tasks-and-workflow)
 6. [Troubleshooting & FAQ](#troubleshooting-and-faq)
 
 
@@ -39,7 +39,6 @@ when your code-base is inconsistent across multiple repositories.
 Install the following prerequisites on your development machine.
 
 * [Node.js](http://nodejs.org)
-* [Gulp](http://gulpjs.com) `sudo npm install -g gulp`
 * [imagemagick](http://www.imagemagick.org/script/binary-releases.php) 
   * OSX: `brew install imagemagick`
   * Ubuntu: `apt-get install imagemagick`
@@ -58,7 +57,7 @@ For a complete working example, please reference [Veeva CLM Example](https://git
 
 ## File Structure
 
-Add your files to the appropriate `app` sub directories. Gulp will process and compile them into `build`.
+Add your files to the appropriate `app` sub directories. Veeva module will process and compile them into `build`.
 
 **Notes**:
 * Key Message naming convention is set as the following: **product name**-**Key Message Name**
@@ -102,7 +101,7 @@ root/
 
 ### Sass
 
-Sass files are located in `app` > `assets` > `scss`. Gulp watches and generates minified and unminified CSS files.
+Sass files are located in `app` > `assets` > `scss`. Veeva module watches and generates minified and unminified CSS files.
 
 ### JavaScript
 
@@ -163,22 +162,22 @@ Inside `configuration.yml` you'll see a variable named `paths`. Adjust the paths
 ```
 
 
-## Gulp Tasks and Workflow
+## Veeva Tasks and Workflow
 
 For a quick reference in your terminal:
 
 ```bash
-$ gulp --help
+$ veeva --help
 
-Usage: gulp <task> [options]
+Usage: veeva <task> [options]
 
 TASKS
 _________________________________________________________________________
-$ gulp                      Default task that kicks off development mode
-$ gulp build                Build task
-$ gulp stage                Stage task
-$ gulp veeva-deploy         Deploy task
-$ gulp veeva-vault-stage    Generates a Veeva Vault Multichannel Loader .CSV file
+$ veeva                     Default task that kicks off development mode
+$ veeva build               Build task
+$ veeva stage               Stage task
+$ veeva deploy              Deploy task
+$ veeva vault-stage         Generates a Veeva Vault Multichannel Loader .CSV file
 
 OPTIONS
 _________________________________________________________________________
@@ -193,7 +192,7 @@ _________________________________________________________________________
 ```
 
 ```bash
-$ gulp
+$ veeva
 ```
 Runs the following workflow:
 * Assembles template files
@@ -204,7 +203,7 @@ Runs the following workflow:
 * Starts browserSync, watches for changes, and reloads browser when file changes are triggered
 
 ```bash
-$ gulp build
+$ veeva build
 ```
 Runs the following workflow:
 * Assembles template files
@@ -217,15 +216,15 @@ Runs the following workflow:
   * Converts relative links to Veeva protocol links (Navigation, Click Stream events, etc.)
 
 ```bash
-$ gulp stage
+$ veeva stage
 ```
 Runs the following workflow:
-* Runs the **gulp build** process
+* Runs the **veeva build** process
 * Generates individual Key Message zip files and places them into the `deploy` directory
 * Creates individual Key Message ctl files based on `configuration.yml` file details and places them into the `deploy` directory
 
 ```bash
-$ gulp veeva-deploy
+$ veeva deploy
 ```
 **Note:** this process uses FTP information stored in the `configuration.yml` file
 Runs the following workflow:
@@ -233,7 +232,7 @@ Runs the following workflow:
 * Once all of the `.zip` files have been uploaded, all `.ctl` files sitting in the `deploy` directory are then uploaded
 
 ```bash
-$ gulp veeva-vault-stage
+$ veeva vault-stage
 ```
 Runs the following workflow:
 * Generates a Veeva Vault Multichannel Loader `.csv` file based on `configuration.yml` details
