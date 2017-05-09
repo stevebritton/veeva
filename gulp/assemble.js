@@ -10,7 +10,8 @@ var ___ = require('lodash'),
     path = require('path'),
     plumber = require('gulp-plumber'),
     Q = require('q'),
-    utils = require('../lib/utils');
+    utils = require('../lib/utils'),
+    YAML = require('yamljs');
 
 
 module.exports = function(gulp, options) {
@@ -19,9 +20,14 @@ module.exports = function(gulp, options) {
     function assembleSingleTemplate(keyMessage) {
 
         var deferred = Q.defer(),
-            app = assemble();
+            app = assemble(),
+            veevaConfig = YAML.load(path.join(process.cwd(),'configuration.yml')),
+            veevaData;
+
+        veevaData = JSON.parse(JSON.stringify(veevaConfig));
 
         app.data(options.module.workflow.assemble.data);
+        app.data('config', veevaData);
         app.partials(path.join(options.paths.src, 'templates', 'includes', '*.hbs'));
         app.layouts(path.join(options.paths.src, options.paths.layouts, '*.hbs'));
         app.pages(path.join(options.paths.src, options.paths.pages, keyMessage.key_message, '*.hbs'));
@@ -37,6 +43,7 @@ module.exports = function(gulp, options) {
         // register helpers
         app.helpers('is', require('./helpers/is.js'));
         app.helpers('isnt', require('./helpers/isnt.js'));
+        app.helpers('withIndex', require('./helpers/withIndex.js'));
         app.helper(handlebarsHelpers);
 
         app.toStream('pages')
@@ -56,9 +63,15 @@ module.exports = function(gulp, options) {
     function assembleTemplates() {
 
         var deferred = Q.defer(),
-             app = assemble();
+            app = assemble(),
+            veevaConfig = YAML.load(path.join(process.cwd(),'configuration.yml')),
+            veevaData;
+
+
+        veevaData = JSON.parse(JSON.stringify(veevaConfig));
 
         app.data(options.module.workflow.assemble.data);
+        app.data('config', veevaData);
         app.partials(path.join(options.paths.src, 'templates', 'includes', '*.hbs'));
         app.layouts(path.join(options.paths.src, options.paths.layouts, '*.hbs'));
         app.pages(path.join(options.paths.src, options.paths.pages, '**', '*.hbs'));
@@ -74,6 +87,7 @@ module.exports = function(gulp, options) {
         // register helpers
         app.helpers('is', require('./helpers/is.js'));
         app.helpers('isnt', require('./helpers/isnt.js'));
+        app.helpers('withIndex', require('./helpers/withIndex.js'));
         app.helper(handlebarsHelpers);
 
 
