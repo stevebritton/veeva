@@ -44,6 +44,7 @@ module.exports = function(gulp, options) {
                 precision: 10
             })
             .pipe(replace('../../images', '/.tmp/images'))
+            .pipe(replace('../img', '/.tmp/images'))
             .pipe(gulp.dest(path.join(options.paths.dist, 'global', 'css')))
             .pipe(filter('**/*.css')) // Filtering stream to only css files
             .pipe(browserSync.reload({
