@@ -3,7 +3,7 @@
   "description": "Veeva CLM Generator & Workflow for building iRep Presentations.",
   "version": "1.0.0",
   "bin": {
-    "veeva": "bin/veeva.js",
+    "veeva": "bin/veeva.js"
   },
   "scripts": {
     "release": "standard-version",
