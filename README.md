@@ -111,6 +111,10 @@ JavaScript files are located in the `app` > `assets` > `js` directory.
 
 Template files are located in the `app` > `templates`.
 
+#### Assemble Helpers
+
+* [Handlebars Helpers](https://github.com/helpers/handlebars-helpers)
+
 ## Options and Settings
 
 ### Configuration File
