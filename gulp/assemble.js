@@ -217,7 +217,7 @@ module.exports = function(gulp, options) {
 
 
         if (!options.sitemap) {
-            utils.log.warn('⤷ Skipping generateSitemapFile: Key Message Sitemap does not exist');
+            utils.log.log(utils.log.chalk.yellow.bold('   ✗ Skipping generateSitemapFile: Key Message Sitemap does not exist'));
             deferred.resolve();
             return deferred.promise;
         }
@@ -268,55 +268,51 @@ module.exports = function(gulp, options) {
         if (options.deploy.keyMessage) {
             arrKeyMessages.splice(0, arrKeyMessages.length);
             arrKeyMessages.push(options.deploy.keyMessage);
-
-
         }
 
 
-
-        utils.executeWhen(!options.modeSingleKeyMessage, assembleTemplates, '⤷ Assembling Key Messages')
+        utils.executeWhen(!options.modeSingleKeyMessage, assembleTemplates, '   ✔︎ Assembling Key Messages')
 
             // single Key Message Mode
             .then(function() {
                 return utils.executeWhen(options.modeSingleKeyMessage, function() {
                     return assembleSingleTemplate(options.deploy.keyMessage);
-                }, '⤷ Assembling Single Key Message: ' + options.deploy.keyMessage.key_message);
+                }, '   ✔︎ Assembling Single Key Message: ' + options.deploy.keyMessage.key_message);
             })
 
             .then(function() {
                 return utils.executeWhen(options.modeSingleKeyMessage, function() {
                     return assembleSingleTemplate({ 'key_message': 'global' });
-                }, '⤷ Assembling Global Key Message');
+                }, '   ✔︎ Assembling Global Key Message');
             })
 
             .then(function() {
                 return utils.executeWhen(options.modeSingleKeyMessage, function() {
                     return copyTemplateAssets({ 'key_message': 'global' });
-                }, '⤷ Copying Global Key Message Assets');
+                }, '   ✔︎ Copying Global Key Message Assets');
             })
 
             .then(function() {
                 return utils.executeWhen(options.modeSingleKeyMessage, function() {
                     return copyTemplateAssets(options.deploy.keyMessage);
-                }, '⤷ Copying Single Key Message Assets');
+                }, '   ✔︎ Copying Single Key Message Assets');
             })
 
             .then(function() {
-                return utils.executeWhen(!options.modeSingleKeyMessage, copyTemplateAssets, '⤷ Copying Key Message Assets');
+                return utils.executeWhen(!options.modeSingleKeyMessage, copyTemplateAssets, '   ✔︎ Copying Key Message Assets');
             })
             .then(function() {
-                return utils.executeWhen(true, generateGlobalAppConfig, '⤷ Generating Global app.json file');
+                return utils.executeWhen(true, generateGlobalAppConfig, '   ✔︎ Generating Global app.json file');
             })
             .then(function() {
-                return utils.executeWhen(!options.modeSingleKeyMessage, generateSitemapFile, '⤷ Generating sitemap.json file');
+                return utils.executeWhen(!options.modeSingleKeyMessage, generateSitemapFile, '   ✔︎ Generating sitemap.json file');
             })
             .then(function() {
-                utils.log.note('⤷ Copying Global Assets to Key Messages');
+                utils.log.log(utils.log.chalk.green.bold('   ✔︎ Copying Global Assets to Key Messages'));
                 return handleGlobalAssets(arrKeyMessages);
             })
             .done(function() {
-                    utils.log.success('Done Assembling Key Messages');
-
+                    utils.log.log(utils.log.chalk.green.bold('   ✔︎ Done Assembling Key Messages\n'));
                     browserSync.reload();
 
                     deferred.resolve();

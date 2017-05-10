@@ -44,12 +44,19 @@ veeva.cli(args).then(function(options) {
         // import gulp tasks
         require('../gulp')(gulp, options);
 
-        if( checkForCommand(args[0]) ){
-            gulp.start(args[0]);
-        }
-        else{
-            gulp.start('default');
-        }
+        var gulpCommand = checkForCommand(args[0]) ? args[0] : 'default';
+
+        console.log();
+        console.log(chalk.yellow.bold(' ⤷ Running command: '), chalk.underline.yellow(gulpCommand));
+        console.log();
+
+        /**
+         * @notes:
+         *     * gulp.start will be depreciated in Gulp v4
+         *     * replace with gulp.series
+         */
+        gulp.start(gulpCommand);
+
     }
     else {
         process.exit(exitCode);

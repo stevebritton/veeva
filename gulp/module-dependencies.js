@@ -131,21 +131,21 @@ module.exports = function(gulp, options) {
 
         var deferred = Q.defer();
 
-        utils.executeWhen(true, processJSSingles, '⤷ Processing Veeva JS dependencies.')
+        utils.executeWhen(true, processJSSingles, '   ✔︎ Processing Veeva JS dependencies.')
             .then(function() {
-                return utils.executeWhen(true, processJSMain, '⤷ Main Scripts');
+                return utils.executeWhen(true, processJSMain, '   ✔︎ Main Scripts');
             })
             .then(function() {
-                return utils.executeWhen(!options.module.workflow.assemble.data.deploy, processJSVendor, '⤷ Vendor Scripts - Dev Mode');
+                return utils.executeWhen(!options.module.workflow.assemble.data.deploy, processJSVendor, '   ✔︎ Vendor Scripts - Dev Mode');
             })
             .then(function() {
-                return utils.executeWhen(options.module.workflow.assemble.data.deploy, processJSVendorBuild, '⤷ Vendor Scripts - Build Mode');
+                return utils.executeWhen(options.module.workflow.assemble.data.deploy, processJSVendorBuild, '   ✔︎ Vendor Scripts - Build Mode');
             })
             .then(function() {
-                return utils.executeWhen(true, processCopyScripts, '⤷ Copying Veeva JS dependencies to project');
+                return utils.executeWhen(true, processCopyScripts, '   ✔︎ Copying Veeva JS dependencies to project');
             })
             .done(function() {
-                    utils.log.success(' Done Processing Veeva JS dependencies.');
+                    utils.log.log('   ✔︎ Done Processing Veeva JS dependencies.');
                     deferred.resolve();
                 },
                 function(err) {
