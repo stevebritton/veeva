@@ -15,7 +15,6 @@ var ___ = require('lodash'),
 
 
 
-
 module.exports = function(gulp, options) {
 
 
@@ -245,7 +244,7 @@ module.exports = function(gulp, options) {
 
 
 
-    gulp.task('veeva-deploy', function() {
+    gulp.task('deploy', function() {
 
 
         var deferred = Q.defer();
@@ -267,7 +266,7 @@ module.exports = function(gulp, options) {
 
     });
 
-    gulp.task('veeva-vault-stage', function() {
+    gulp.task('vault-stage', function() {
 
 
         var deferred = Q.defer(),
