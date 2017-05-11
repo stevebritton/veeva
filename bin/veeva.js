@@ -3,7 +3,8 @@
 'use strict';
 var chalk = require('chalk'),
     gulp = require('gulp'),
-    pkg = require('../package.json');
+    pkg = require('../package.json'),
+    Q = require('q');
 
 var nodeVersion = process.version.replace('v',''),
     nodeVersionRequired = pkg.engines.node.replace('>=','');
@@ -38,40 +39,42 @@ function checkForCommand(command) {
 
 veeva.cli(args).then(function(options) {
 
+    var deferred = Q.defer();
 
-    if (options) {
+    // import gulp tasks
+    require('../lib/gulp')(gulp, options);
 
-        // import gulp tasks
-        require('../gulp')(gulp, options);
+    var gulpCommand = checkForCommand(args[0]) ? args[0] : 'default';
 
-        var gulpCommand = checkForCommand(args[0]) ? args[0] : 'default';
+    console.log();
+    console.log(chalk.yellow.bold(' ⤷ Running veeva workflow: '), chalk.underline.yellow(gulpCommand));
+    console.log();
 
-        console.log();
-        console.log(chalk.yellow.bold(' ⤷ Running command: '), chalk.underline.yellow(gulpCommand));
-        console.log();
+    /**
+     * @notes:
+     *     * gulp.start will be depreciated in Gulp v4
+     *     * replace with gulp.series
+     */
+    gulp.start(gulpCommand, function(err){
 
-        /**
-         * @notes:
-         *     * gulp.start will be depreciated in Gulp v4
-         *     * replace with gulp.series
-         */
-        gulp.start(gulpCommand);
+        if(err){
+            deferred.reject(err);
+        }
+        else{
+            deferred.resolve();
+        }
+    });
 
-    }
-    else {
-        process.exit(exitCode);
-    }
+    return deferred.promise;
+
+}).then(function(){
+    //process.exit(exitCode);
 }).catch(function(err) {
     exitCode = 1;
-    if (!isDebug) {
-        console.error(err);
-    } else {
-        throw new Error(err);
-    }
+    console.log(('\n\n', chalk.red.bold('✗ '), err));
 });
 
 
-
 process.on('exit', function() {
-    process.exit(exitCode);
+    //process.exit(exitCode);
 });
