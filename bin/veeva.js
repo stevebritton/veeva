@@ -21,8 +21,7 @@ if(nodeVersion <= nodeVersionRequired){
 
 var veeva = require('../index'),
     args = [].slice.call(process.argv, 2),
-    exitCode = 0,
-    isDebug = args.indexOf('--debug') !== -1;
+    exitCode = 0;
 
 function checkForCommand(command) {
 
