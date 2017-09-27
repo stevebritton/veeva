@@ -28,7 +28,7 @@ function checkForCommand(command) {
     var commands = [
             'build',
             'stage',
-            'veeva-deploy',
+            'deploy',
             'veeva-vault-stage'
         ];
 
