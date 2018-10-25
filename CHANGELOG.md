@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-alpha.5"></a>
+# [2.0.0-alpha.5](https://github.com/devopsgroup-io/veeva/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2018-10-25)
+
+
+### Features
+
+* Look for passed clm data file, and if it exists, pass the key messages through the workflow. ([faca61c](https://github.com/devopsgroup-io/veeva/commit/faca61c))
+
+
+
 <a name="2.0.0-alpha.4"></a>
 # [2.0.0-alpha.4](https://github.com/devopsgroup-io/veeva/compare/v2.0.0...v2.0.0-alpha.4) (2018-10-24)
 
