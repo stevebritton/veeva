@@ -6,6 +6,7 @@
     "veeva": "bin/veeva.js"
   },
   "scripts": {
+    "release": "standard-version",
     "test": "mocha"
   },
   "main": "./index.js",
@@ -61,7 +62,8 @@
     "yamljs": "^0.2.8"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "standard-version": "^4.4.0"
   },
   "engines": {
     "node": ">=6.0",
