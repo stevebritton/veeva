@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-alpha.7"></a>
+# [2.0.0-alpha.7](https://github.com/devopsgroup-io/veeva/compare/v2.0.0-alpha.6...v2.0.0-alpha.7) (2018-10-30)
+
+
+### Features
+
+* Update sass library to gulp-sass ([978c9ff](https://github.com/devopsgroup-io/veeva/commit/978c9ff))
+
+
+
 <a name="2.0.0-alpha.6"></a>
 # [2.0.0-alpha.6](https://github.com/devopsgroup-io/veeva/compare/v2.0.0-alpha.5...v2.0.0-alpha.6) (2018-10-25)
 
