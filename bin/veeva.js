@@ -28,7 +28,7 @@ function checkForCommand (command) {
     'deploy',
     'screenshots',
     'stage',
-    'vault-stage'
+    'stage-vault'
   ];
 
   return commands.includes(command);
