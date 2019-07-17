@@ -6,8 +6,8 @@
     "veeva": "bin/veeva.js"
   },
   "scripts": {
-    "lint": "eslint lib/gulp/**",
-    "lint:fix": "eslint lib/gulp/** --fix",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint lib/** --fix",
     "release": "standard-version",
     "test": "mocha"
   },
@@ -33,9 +33,9 @@
   "license": "MIT",
   "dependencies": {
     "assemble": "^0.24.3",
-    "browser-sync": "^2.26.3",
-    "chalk": "^2.4.1",
-    "del": "^3.0.0",
+    "browser-sync": "^2.26.7",
+    "chalk": "^2.4.2",
+    "del": "^5.0.0",
     "gulp": "^3.9.1",
     "gulp-changed": "^3.2.0",
     "gulp-clean-css": "^3.9.0",
@@ -52,9 +52,9 @@
     "gulp-zip": "^4.0.0",
     "handlebars-helpers": "^0.10.0",
     "imagemagick": "^0.1.3",
-    "js-yaml": "^3.10.0",
-    "json2csv": "^4.5.1",
-    "lodash": "^4.17.11",
+    "js-yaml": "^3.13.1",
+    "json2csv": "^4.5.2",
+    "lodash": "^4.17.14",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "pdfkit": "^0.10.0",
@@ -67,8 +67,8 @@
   },
   "devDependencies": {
     "eslint": "^6.0.1",
-    "mocha": "^5.2.0",
-    "standard-version": "^4.4.0"
+    "mocha": "^6.1.4",
+    "standard-version": "^6.0.1"
   },
   "engines": {
     "node": ">=6.0",

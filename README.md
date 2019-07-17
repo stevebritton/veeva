@@ -180,9 +180,10 @@ TASKS
 _________________________________________________________________________
 $ veeva                     Default task that kicks off development mode
 $ veeva build               Build task
-$ veeva stage               Stage task
 $ veeva deploy              Deploy task
-$ veeva vault-stage         Generates a Veeva Vault Multichannel Loader .CSV file
+$ veeva screenshots         Generates screenshots based clm.yml config file and outputs a PDF
+$ veeva stage               Stage task
+$ veeva stage-vault         Generates a Veeva Vault Multichannel Loader .CSV file
 
 OPTIONS
 _________________________________________________________________________
