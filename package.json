@@ -6,6 +6,8 @@
     "veeva": "bin/veeva.js"
   },
   "scripts": {
+    "lint": "eslint lib/gulp/**",
+    "lint:fix": "eslint lib/gulp/** --fix",
     "release": "standard-version",
     "test": "mocha"
   },
@@ -63,6 +65,7 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "eslint": "^6.0.1",
     "mocha": "^5.2.0",
     "standard-version": "^4.4.0"
   },
