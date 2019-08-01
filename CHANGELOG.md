@@ -1,6 +1,29 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [2.0.0-alpha.8](https://github.com/devopsgroup-io/veeva/compare/v2.0.0-alpha.7...v2.0.0-alpha.8) (2019-08-01)
+
+
+### Bug Fixes
+
+* Allow for loading local files when creating screenshots and wait for the page to load before taking screenshot. ([bf13727](https://github.com/devopsgroup-io/veeva/commit/bf13727))
+* Allow for single key message stage/deploy. ([e111a11](https://github.com/devopsgroup-io/veeva/commit/e111a11))
+* exclude hidden files. ([2efdff3](https://github.com/devopsgroup-io/veeva/commit/2efdff3))
+* Override vinyl-ftp _mkfirp function to avoid file detection/rejection on symbolic links. ([6fc5249](https://github.com/devopsgroup-io/veeva/commit/6fc5249))
+* Update temp image directories and include error reporting in the console. ([7968632](https://github.com/devopsgroup-io/veeva/commit/7968632))
+* working through a memory lek with assemble. ([8a7593d](https://github.com/devopsgroup-io/veeva/commit/8a7593d))
+
+
+### Features
+
+* Add new veeva screenshots command ([a7af3cd](https://github.com/devopsgroup-io/veeva/commit/a7af3cd))
+* Include error reporting in the console. ([aaee767](https://github.com/devopsgroup-io/veeva/commit/aaee767))
+* Include shared assets as part of the staging and/or deploying process. Also, correct the util logging function calls. ([3367b6e](https://github.com/devopsgroup-io/veeva/commit/3367b6e))
+* Look for clm.yml files and pass along the options in the workflow. ([20542c5](https://github.com/devopsgroup-io/veeva/commit/20542c5))
+* Updating project to use eslinting. ([fc1f5ff](https://github.com/devopsgroup-io/veeva/commit/fc1f5ff))
+
+
 
 <a name="2.0.0-alpha.7"></a>
 # [2.0.0-alpha.7](https://github.com/devopsgroup-io/veeva/compare/v2.0.0-alpha.6...v2.0.0-alpha.7) (2018-10-30)
