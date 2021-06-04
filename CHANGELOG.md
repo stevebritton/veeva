@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0-alpha.10](https://github.com/devopsgroup-io/veeva/compare/v2.0.0-alpha.9...v2.0.0-alpha.10) (2021-06-04)
+
+
+### Bug Fixes
+
+* Ensure file exists before attempting to take a screenshot. ([82c8670](https://github.com/devopsgroup-io/veeva/commit/82c8670))
+* Replacing the vinyl-ftp module with the basic-ftp module. ([cb7ab76](https://github.com/devopsgroup-io/veeva/commit/cb7ab76))
+
+
+### Features
+
+* Pass through device object for taking screenshots. Will default to iPad based on Puppeteer's device descriptors. ([29412b7](https://github.com/devopsgroup-io/veeva/commit/29412b7))
+
+
+
 ## [2.0.0-alpha.9](https://github.com/devopsgroup-io/veeva/compare/v2.0.0-alpha.8...v2.0.0-alpha.9) (2019-08-02)
 
 
