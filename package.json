@@ -33,6 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "assemble": "^0.24.3",
+    "basic-ftp": "^4.6.6",
     "browser-sync": "^2.26.14",
     "chalk": "^2.4.2",
     "del": "^5.0.0",
@@ -60,7 +61,6 @@
     "pdfkit": "^0.10.0",
     "puppeteer": "^1.20.0",
     "run-sequence": "^2.2.0",
-    "vinyl-ftp": "^0.6.0",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
